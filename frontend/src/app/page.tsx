@@ -20,7 +20,7 @@ export default function Home() {
   const [currentHero, setCurrentHero] = useState(0);
 
   const heroImages = [
-    "/assets/hero.png", // Keep original as fallback/first
+    "/assets/hero.jpg", // Changed from .png to .jpg
     "/assets/hero-1.jpg",
     "/assets/hero-2.jpg",
     "/assets/hero-3.jpg",
