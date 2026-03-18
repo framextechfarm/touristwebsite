@@ -1,10 +1,24 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
-import { Star, Menu, X } from "lucide-react";
+import { Star, Menu, X, Home, Map, Bed, Car } from "lucide-react";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { ThemeToggle } from "./ThemeToggle";
+
+const navLinks = [
+  { name: "Destinations", href: "/#destinations" },
+  { name: "Packages", href: "/packages" },
+  { name: "Stays", href: "/stays" },
+  { name: "Cabs", href: "/cabs" },
+];
+
+const mobileNavLinks = [
+  { name: "Home", href: "/", icon: Home },
+  { name: "Packages", href: "/packages", icon: Map },
+  { name: "Stays", href: "/stays", icon: Bed },
+  { name: "Cabs", href: "/cabs", icon: Car },
+];
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -27,18 +41,11 @@ export function Navbar() {
     }
   }, [isOpen]);
 
-  const navLinks = [
-    { name: "Destinations", href: "/#destinations" },
-    { name: "Packages", href: "/packages" },
-    { name: "Stays", href: "/stays" },
-    { name: "Cabs", href: "/cabs" },
-  ];
-
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 px-4 md:px-6 py-4 md:py-6 transition-all">
-      <nav className={`max-w-7xl mx-auto rounded-[2rem] px-6 md:px-8 py-4 flex items-center justify-between transition-all duration-300 ${scrolled ? 'glass shadow-lg backdrop-blur-3xl' : 'glass'}`}>
-        
-        {/* Logo */}
+    <header className={`fixed top-0 left-0 right-0 z-50 px-4 md:px-6 transition-all duration-300 ${scrolled ? 'py-4' : 'py-4 md:py-6'}`}>
+      
+      {/* --- DESKTOP NAVBAR --- */}
+      <nav className={`hidden lg:flex max-w-7xl mx-auto rounded-[2rem] px-8 py-4 items-center justify-between transition-all duration-300 ${scrolled ? 'glass shadow-lg backdrop-blur-3xl' : 'glass'}`}>
         <Link href="/" className="flex items-center gap-2 relative z-[60]">
           <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center relative shrink-0">
             <span className="text-white font-bold text-xl">S</span>
@@ -46,34 +53,69 @@ export function Navbar() {
           </div>
           <span className="text-xl md:text-2xl font-bold tracking-tight text-foreground whitespace-nowrap">SMR Holidays</span>
         </Link>
-
-        {/* Desktop Menu */}
-        <div className="hidden lg:flex items-center gap-10">
+        <div className="flex items-center gap-10">
           {navLinks.map((item) => (
             <Link key={item.name} href={item.href} className="text-[15px] font-medium text-foreground/70 hover:text-primary transition-colors">
               {item.name}
             </Link>
           ))}
         </div>
-
-        {/* Desktop Actions */}
-        <div className="hidden lg:flex items-center gap-6">
+        <div className="flex items-center gap-6">
           <ThemeToggle />
           <button className="text-[15px] font-medium text-foreground/70 hover:text-primary transition-colors">Login</button>
           <button className="btn-primary py-2.5 px-6 min-h-[44px]">Sign Up</button>
         </div>
+      </nav>
 
-        {/* Mobile Toggle */}
-        <div className="flex items-center gap-4 lg:hidden relative z-[60]">
-          <ThemeToggle />
-          <button 
-            onClick={() => setIsOpen(!isOpen)} 
-            className="w-12 h-12 flex items-center justify-center rounded-full glass hover:bg-white/20 active:scale-95 transition-all"
-            aria-label="Toggle menu"
-          >
-            {isOpen ? <X className="w-6 h-6 text-foreground" /> : <Menu className="w-6 h-6 text-foreground" />}
-          </button>
-        </div>
+      {/* --- MOBILE NAVBAR --- */}
+      <nav className={`flex lg:hidden mx-auto transition-all duration-500 ease-out flex-col justify-center overflow-hidden ${scrolled ? 'glass shadow-2xl backdrop-blur-3xl rounded-full px-6 py-2.5 w-fit border border-white/20 dark:border-white/10' : 'glass rounded-[2rem] px-5 py-3 w-full border border-border/50'}`}>
+        <AnimatePresence mode="popLayout" initial={false}>
+          {!scrolled ? (
+            <motion.div 
+              key="full-mobile"
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              transition={{ duration: 0.2, ease: "easeInOut" }}
+              className="flex justify-between items-center w-full"
+            >
+              <Link href="/" className="flex items-center gap-2">
+                <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center shrink-0">
+                  <span className="text-white font-bold text-lg">S</span>
+                </div>
+                <span className="text-lg font-bold tracking-tight text-foreground whitespace-nowrap">SMR Holidays</span>
+              </Link>
+              <div className="flex items-center gap-3">
+                <ThemeToggle />
+                <button 
+                  onClick={() => setIsOpen(true)} 
+                  className="w-10 h-10 flex items-center justify-center rounded-full glass hover:bg-white/20 active:scale-95 transition-all outline-none"
+                  aria-label="Open menu"
+                >
+                  <Menu className="w-5 h-5 text-foreground" />
+                </button>
+              </div>
+            </motion.div>
+          ) : (
+            <motion.div 
+              key="icon-mobile"
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.8 }}
+              transition={{ duration: 0.2, ease: "easeInOut" }}
+              className="flex items-center justify-center gap-6 md:gap-8"
+            >
+              {mobileNavLinks.map((link) => {
+                const Icon = link.icon;
+                return (
+                  <Link key={link.name} href={link.href} className="flex flex-col items-center justify-center p-2 rounded-full hover:bg-white/10 dark:hover:bg-white/5 active:scale-90 transition-all">
+                    <Icon className="w-5 h-5 text-foreground/80 hover:text-primary transition-colors" strokeWidth={2.5} />
+                  </Link>
+                );
+              })}
+            </motion.div>
+          )}
+        </AnimatePresence>
       </nav>
 
       {/* Floating Top Destination Card (Desktop only) */}
@@ -110,6 +152,13 @@ export function Navbar() {
               transition={{ type: "spring", bounce: 0, duration: 0.4 }}
               className="fixed top-0 right-0 bottom-0 w-[85vw] max-w-sm bg-background border-l border-border z-[55] lg:hidden flex flex-col pt-28 px-6 pb-10 overflow-y-auto shadow-2xl"
             >
+              <button 
+                onClick={() => setIsOpen(false)}
+                className="absolute top-6 right-6 w-10 h-10 flex items-center justify-center rounded-full glass hover:bg-white/20 active:scale-95 transition-all text-foreground"
+              >
+                <X className="w-5 h-5" />
+              </button>
+
               <div className="flex flex-col gap-6">
                 {navLinks.map((item, i) => (
                   <motion.div
