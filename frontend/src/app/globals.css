@@ -67,11 +67,15 @@
 
 @layer components {
   .glass {
-    @apply bg-white/70 backdrop-blur-xl border border-black/5;
+    @apply bg-white/30 backdrop-blur-2xl border border-white/20 shadow-xl;
+  }
+  
+  .dark .glass {
+    @apply bg-black/50 backdrop-blur-2xl border border-white/10 shadow-2xl;
   }
 
-  .dark .glass {
-    @apply bg-black/40 backdrop-blur-xl border border-white/5;
+  .glass-smoky {
+    @apply bg-black/20 backdrop-blur-3xl border border-white/10 shadow-2xl;
   }
 
   .glass-dark {
