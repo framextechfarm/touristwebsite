@@ -78,7 +78,7 @@ export function Footer() {
         </div>
 
         <div className="pt-8 border-t border-border text-center text-foreground/50 text-xs tracking-wider font-medium uppercase leading-relaxed">
-          <p>Designed and developed by FrameX tech 2026 and copyrights reserved.</p>
+          <p>designed and developed by JAMES ANDREW | FRAMEX TECH 2026 COPYRIGHTS RESERVED</p>
         </div>
       </div>
     </footer>
