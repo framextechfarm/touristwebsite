@@ -56,7 +56,7 @@ export default function Home() {
         <div className="absolute inset-x-0 top-0 h-full overflow-hidden z-0">
           <AnimatePresence>
             <motion.div
-              key={currentHero % 3}
+              key={currentHero % heroImages.length}
               initial={{ opacity: 0, scale: 1.1 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0 }}
