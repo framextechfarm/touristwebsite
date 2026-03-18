@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { MapPin, Calendar, Users, Star, ArrowRight, CheckCircle2 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -17,6 +17,21 @@ type Slot = {
 
 export default function Home() {
   const [slots, setSlots] = useState<Slot[]>([]);
+  const [currentHero, setCurrentHero] = useState(0);
+
+  const heroImages = [
+    "/assets/hero.png", // Keep original as fallback/first
+    "/assets/hero-1.jpg",
+    "/assets/hero-2.jpg",
+    "/assets/hero-3.jpg",
+  ];
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentHero((prev) => (prev + 1) % heroImages.length);
+    }, 5000);
+    return () => clearInterval(timer);
+  }, [heroImages.length]);
 
   useEffect(() => {
     fetch("http://localhost:8000/admin/image-slots")
@@ -37,15 +52,26 @@ export default function Home() {
 
       {/* --- HERO SECTION --- */}
       <section className="relative min-h-screen w-full flex items-center pt-32 pb-20 overflow-hidden">
-        {/* Background Image */}
+        {/* Background Carousel */}
         <div className="absolute inset-x-0 top-0 h-full overflow-hidden z-0">
-          <Image
-            src="/assets/hero.png"
-            alt="Majestic Mountains"
-            fill
-            className="object-cover brightness-[0.4]"
-            priority
-          />
+          <AnimatePresence>
+            <motion.div
+              key={currentHero % 3}
+              initial={{ opacity: 0, scale: 1.1 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 1.5, ease: "easeInOut" }}
+              className="absolute inset-0"
+            >
+              <Image
+                src={heroImages[currentHero % heroImages.length]}
+                alt="Majestic Mountains"
+                fill
+                className="object-cover brightness-[0.4]"
+                priority
+              />
+            </motion.div>
+          </AnimatePresence>
           <div className="absolute inset-0 bg-gradient-to-b from-transparent via-background/20 to-background" />
         </div>
 
