@@ -1,0 +1,172 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ─── PACKAGES MODULE ─────────────────────────────────────────────────────────
+
+model Package {
+  id          Int            @id @default(autoincrement())
+  title       String
+  slug        String         @unique
+  duration    String         // e.g., "3D/2N"
+  description String
+  price       Float
+  location    String
+  isFeatured  Boolean        @default(false)
+  rating      Float          @default(0.0)
+
+  images      PackageImage[]
+  itinerary   ItineraryItem[]
+
+  @@map("packages")
+}
+
+model PackageImage {
+  id        Int     @id @default(autoincrement())
+  url       String
+  packageId Int
+  package   Package @relation(fields: [packageId], references: [id], onDelete: Cascade)
+
+  @@map("package_images")
+}
+
+model ItineraryItem {
+  id          Int     @id @default(autoincrement())
+  day         Int
+  title       String
+  description String
+  packageId   Int
+  package     Package @relation(fields: [packageId], references: [id], onDelete: Cascade)
+
+  @@map("itinerary_items")
+}
+
+// ─── STAYS MODULE ────────────────────────────────────────────────────────────
+
+model Stay {
+  id            Int         @id @default(autoincrement())
+  name          String
+  slug          String      @unique
+  propertyType  String      // cottage, villa, tent, homestay
+  description   String
+  location      String
+  pricePerNight Float
+  capacity      Int
+  bedrooms      Int         @default(1)
+  bathrooms     Int         @default(1)
+  rating        Float       @default(0.0)
+  isFeatured    Boolean     @default(false)
+
+  images        StayImage[]
+  amenities     StayAmenity[]
+
+  @@map("stays")
+}
+
+model StayImage {
+  id     Int    @id @default(autoincrement())
+  url    String
+  stayId Int
+  stay   Stay   @relation(fields: [stayId], references: [id], onDelete: Cascade)
+
+  @@map("stay_images")
+}
+
+model Amenity {
+  id    Int           @id @default(autoincrement())
+  name  String        @unique
+  icon  String        // lucide-react icon name
+  stays StayAmenity[]
+
+  @@map("amenities")
+}
+
+// Join table for Stay <-> Amenity many-to-many
+model StayAmenity {
+  stayId    Int
+  amenityId Int
+  stay      Stay    @relation(fields: [stayId], references: [id], onDelete: Cascade)
+  amenity   Amenity @relation(fields: [amenityId], references: [id], onDelete: Cascade)
+
+  @@id([stayId, amenityId])
+  @@map("stay_amenities")
+}
+
+// ─── CABS MODULE ─────────────────────────────────────────────────────────────
+
+model CabRoute {
+  id            Int          @id @default(autoincrement())
+  fromLocation  String
+  toLocation    String
+  distanceKm    Float
+  durationHours Float
+  isActive      Boolean      @default(true)
+  pricing       CabPricing[]
+
+  @@map("cab_routes")
+}
+
+model Vehicle {
+  id              Int          @id @default(autoincrement())
+  name            String       @unique
+  capacity        Int
+  luggageCapacity String
+  features        String       // JSON string of features
+  isActive        Boolean      @default(true)
+  pricing         CabPricing[]
+  bookings        Booking[]
+
+  @@map("vehicles")
+}
+
+model CabPricing {
+  id        Int      @id @default(autoincrement())
+  routeId   Int
+  vehicleId Int
+  price     Float
+  route     CabRoute @relation(fields: [routeId], references: [id], onDelete: Cascade)
+  vehicle   Vehicle  @relation(fields: [vehicleId], references: [id], onDelete: Cascade)
+
+  @@map("cab_pricing")
+}
+
+// ─── BOOKINGS MODULE ─────────────────────────────────────────────────────────
+
+model Booking {
+  id               Int      @id @default(autoincrement())
+  bookingReference String   @unique
+  bookingType      String   // 'package', 'stay', 'cab'
+  itemId           Int
+  vehicleId        Int?
+  vehicle          Vehicle? @relation(fields: [vehicleId], references: [id])
+  customerName     String
+  customerEmail    String
+  customerPhone    String
+  bookingDate      String
+  travelDate       String
+  endDate          String?
+  totalAmount      Float
+  bookingStatus    String   @default("pending")   // pending, confirmed, cancelled
+  paymentStatus    String   @default("pending")   // pending, completed, failed, refunded
+  specialRequests  String?
+
+  @@map("bookings")
+}
+
+// ─── ADMIN MODULE ─────────────────────────────────────────────────────────────
+
+model ImageSlot {
+  id          Int     @id @default(autoincrement())
+  slotKey     String  @unique
+  title       String?
+  description String?
+  imageUrl    String?
+  category    String?
+
+  @@map("image_slots")
+}

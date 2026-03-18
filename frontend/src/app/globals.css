@@ -1,0 +1,105 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222 47% 4%;
+
+    --primary: 171 100% 41%;
+    --primary-foreground: 0 0% 100%;
+
+    --accent: 38 92% 50%;
+    --accent-foreground: 222 47% 11%;
+
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222 47% 11.2%;
+
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 35%; /* Darkened for better contrast in light mode */
+
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 4.7%;
+
+    --border: 214.3 31.8% 90%; /* Slightly darker border for visibility */
+    --input: 214.3 31.8% 90%;
+    --ring: 171 100% 41%;
+
+    --radius: 1.5rem;
+  }
+
+  .dark {
+    --background: 222 47% 4%;
+    --foreground: 210 40% 98%;
+
+    --primary: 171 100% 41%;
+    --primary-foreground: 0 0% 100%;
+
+    --accent: 38 92% 50%;
+    --accent-foreground: 222 47% 11%;
+
+    --secondary: 222 47% 11%;
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 217 32% 17%;
+    --muted-foreground: 215 16% 70%;
+
+    --card: 222 47% 7%;
+    --card-foreground: 210 40% 98%;
+
+    --border: 217 32% 17%;
+    --input: 217 32% 17%;
+    --ring: 171 100% 41%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+}
+
+@layer components {
+  .glass {
+    @apply bg-white/70 backdrop-blur-xl border border-black/5;
+  }
+
+  .dark .glass {
+    @apply bg-black/40 backdrop-blur-xl border border-white/5;
+  }
+
+  .glass-dark {
+    @apply bg-black/40 backdrop-blur-xl border border-white/5;
+  }
+
+  .card-glass {
+    @apply bg-card/80 backdrop-blur-xl border border-border/50 shadow-xl;
+  }
+
+  .btn-primary {
+    @apply bg-primary text-white px-8 py-3 rounded-full font-semibold active:scale-95 transition-all shadow-lg shadow-primary/20 min-h-[48px] inline-flex items-center justify-center;
+  }
+
+  .btn-accent {
+    @apply bg-accent text-white px-8 py-3 rounded-full font-semibold active:scale-95 transition-all shadow-lg shadow-accent/20 min-h-[48px] inline-flex items-center justify-center;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .btn-primary:hover {
+      @apply brightness-110;
+    }
+    .btn-accent:hover {
+      @apply brightness-110;
+    }
+  }
+
+  .card-gradient {
+    @apply bg-gradient-to-br from-white/10 to-transparent border border-white/5 backdrop-blur-sm;
+  }
+}
