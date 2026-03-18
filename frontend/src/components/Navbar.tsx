@@ -68,22 +68,32 @@ export function Navbar() {
       </nav>
 
       {/* --- MOBILE NAVBAR --- */}
-      <nav className={`flex lg:hidden mx-auto transition-all duration-500 ease-out flex-col justify-center overflow-hidden ${scrolled ? 'glass shadow-2xl backdrop-blur-3xl rounded-full px-6 py-2.5 w-fit border border-white/20 dark:border-white/10' : 'glass rounded-[2rem] px-5 py-3 w-full border border-border/50'}`}>
-        <AnimatePresence mode="popLayout" initial={false}>
+      <motion.nav 
+        layout
+        transition={{ type: "spring", stiffness: 300, damping: 30 }}
+        className={`flex lg:hidden mx-auto overflow-hidden glass shadow-2xl backdrop-blur-3xl border border-white/20 dark:border-white/10 ${
+          scrolled 
+            ? 'rounded-full px-4 py-2 w-fit' 
+            : 'rounded-[2rem] px-5 py-3 w-full'
+        }`}
+      >
+        <AnimatePresence mode="wait">
           {!scrolled ? (
             <motion.div 
               key="full-mobile"
-              initial={{ opacity: 0, scale: 0.95 }}
+              initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.95 }}
-              transition={{ duration: 0.2, ease: "easeInOut" }}
+              exit={{ opacity: 0, scale: 0.9 }}
+              transition={{ duration: 0.2 }}
               className="flex justify-between items-center w-full"
             >
               <Link href="/" className="flex items-center gap-2">
-                <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center shrink-0">
+                <motion.div layout className="w-8 h-8 bg-primary rounded-full flex items-center justify-center shrink-0">
                   <span className="text-white font-bold text-lg">S</span>
-                </div>
-                <span className="text-lg font-bold tracking-tight text-foreground whitespace-nowrap">SMR Holidays</span>
+                </motion.div>
+                <motion.span layout className="text-lg font-bold tracking-tight text-foreground whitespace-nowrap">
+                  SMR Holidays
+                </motion.span>
               </Link>
               <div className="flex items-center gap-3">
                 <ThemeToggle />
@@ -102,21 +112,35 @@ export function Navbar() {
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.8 }}
-              transition={{ duration: 0.2, ease: "easeInOut" }}
-              className="flex items-center justify-center gap-6 md:gap-8"
+              transition={{ duration: 0.2 }}
+              className="flex items-center justify-center gap-4 md:gap-6"
             >
-              {mobileNavLinks.map((link) => {
+              {mobileNavLinks.map((link, i) => {
                 const Icon = link.icon;
                 return (
-                  <Link key={link.name} href={link.href} className="flex flex-col items-center justify-center p-2 rounded-full hover:bg-white/10 dark:hover:bg-white/5 active:scale-90 transition-all">
-                    <Icon className="w-5 h-5 text-foreground/80 hover:text-primary transition-colors" strokeWidth={2.5} />
-                  </Link>
+                  <motion.div
+                    key={link.name}
+                    initial={{ opacity: 0, x: 10 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: i * 0.05 }}
+                  >
+                    <Link href={link.href} className="flex flex-col items-center justify-center p-2 rounded-full hover:bg-white/10 dark:hover:bg-white/5 active:scale-90 transition-all">
+                      <Icon className="w-5 h-5 text-foreground/80 hover:text-primary transition-colors" strokeWidth={2.5} />
+                    </Link>
+                  </motion.div>
                 );
               })}
+              <div className="w-px h-6 bg-border mx-1" />
+              <button 
+                onClick={() => setIsOpen(true)}
+                className="p-2 rounded-full hover:bg-white/10 dark:hover:bg-white/5 active:scale-90 transition-all"
+              >
+                <Menu className="w-5 h-5 text-foreground/80 hover:text-primary transition-colors" strokeWidth={2.5} />
+              </button>
             </motion.div>
           )}
         </AnimatePresence>
-      </nav>
+      </motion.nav>
 
       {/* Floating Top Destination Card (Desktop only) */}
       <div className="absolute top-24 right-10 hidden xl:block">
