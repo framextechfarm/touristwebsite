@@ -47,9 +47,15 @@ export default function Home() {
   }, [heroImages.length]);
 
   const [loading, setLoading] = useState(true);
+  const [showWakingUp, setShowWakingUp] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    // Show "Waking up" notice if server takes more than 3 seconds
+    const timeoutId = setTimeout(() => {
+      if (loading) setShowWakingUp(true);
+    }, 3000);
+
     const fetchData = async () => {
       try {
         setLoading(true);
@@ -68,38 +74,47 @@ export default function Home() {
         }
       } catch (err) {
         console.error("Error fetching data:", err);
+        setError("Connection failed");
       } finally {
         setLoading(false);
+        setShowWakingUp(false);
       }
     };
 
     fetchData();
-  }, []);
+    return () => clearTimeout(timeoutId);
+  }, [loading]);
 
   return (
     <main className="min-h-screen font-sans bg-background selection:bg-primary selection:text-white">
       <Hero heroImages={heroImages} currentHero={currentHero} />
       <CategoryCards />
       
-      {loading ? (
-        <div className="py-24 flex flex-col items-center justify-center gap-4">
-          <div className="w-10 h-10 border-4 border-primary border-t-transparent rounded-full animate-spin" />
+      {/* "Server Waking Up" Notice */}
+      {loading && showWakingUp && (
+        <div className="fixed bottom-10 left-1/2 -translate-x-1/2 z-[100]">
+          <div className="bg-primary/90 backdrop-blur-xl border border-white/20 px-6 py-3 rounded-2xl flex items-center gap-3 shadow-2xl animate-in fade-in slide-in-from-bottom-5">
+            <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+            <p className="text-sm font-bold text-white">Waking up the mountain servers...</p>
+          </div>
         </div>
-      ) : error ? (
+      )}
+
+      {error ? (
         <div className="py-24 px-6 max-w-7xl mx-auto">
           <div className="bg-red-500/10 border border-red-500/20 rounded-[2rem] p-12 text-center">
             <h3 className="text-xl font-bold text-red-500 mb-2">Something went wrong</h3>
-            <p className="text-foreground/60 mb-6">We couldn't load the latest packages. Please try again later.</p>
+            <p className="text-foreground/60 mb-6 font-medium">We couldn't reach the server. It might be cold-starting.</p>
             <button 
               onClick={() => window.location.reload()}
-              className="bg-red-500 text-white px-8 py-3 rounded-xl font-bold hover:brightness-110 transition-all"
+              className="bg-red-500 text-white px-8 py-3 rounded-xl font-bold hover:brightness-110 shadow-lg shadow-red-500/20 active:scale-95 transition-all"
             >
-              Retry
+              Retry Connection
             </button>
           </div>
         </div>
       ) : (
-        <FeaturedPackages packages={packages} API_URL={API_URL} />
+        <FeaturedPackages packages={packages} API_URL={API_URL} loading={loading} />
       )}
       
       <Stats />

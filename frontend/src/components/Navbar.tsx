@@ -5,6 +5,7 @@ import { Star, Menu, X, Home, Map, Bed, Car } from "lucide-react";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { ThemeToggle } from "./ThemeToggle";
+import { API_URL } from "@/lib/config";
 
 const navLinks = [
   { name: "Destinations", href: "/#destinations" },
@@ -21,25 +22,29 @@ const mobileNavLinks = [
 ];
 
 export function Navbar() {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 50);
+      setScrolled(window.scrollY > 20);
     };
     window.addEventListener("scroll", handleScroll);
+
+    // Early Warming: Ping the server to start the cold-start wake-up
+    fetch(`${API_URL}/health`).catch(() => {});
+
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   // Lock body scroll when drawer is open
   useEffect(() => {
-    if (isOpen) {
+    if (isMenuOpen) {
       document.body.style.overflow = "hidden";
     } else {
       document.body.style.overflow = "unset";
     }
-  }, [isOpen]);
+  }, [isMenuOpen]);
 
   return (
     <header className={`fixed top-0 left-0 right-0 z-50 px-4 md:px-6 transition-all duration-300 ${scrolled ? 'py-4' : 'py-4 md:py-6'}`}>
@@ -98,7 +103,7 @@ export function Navbar() {
               <div className="flex items-center gap-3">
                 <ThemeToggle />
                 <button 
-                  onClick={() => setIsOpen(true)} 
+                  onClick={() => setIsMenuOpen(true)} 
                   className="w-10 h-10 flex items-center justify-center rounded-full glass hover:bg-white/20 active:scale-95 transition-all outline-none"
                   aria-label="Open menu"
                 >
@@ -132,7 +137,7 @@ export function Navbar() {
               })}
               <div className="w-px h-6 bg-border mx-1" />
               <button 
-                onClick={() => setIsOpen(true)}
+                onClick={() => setIsMenuOpen(true)}
                 className="p-2 rounded-full hover:bg-white/10 dark:hover:bg-white/5 active:scale-90 transition-all"
               >
                 <Menu className="w-5 h-5 text-foreground/80 hover:text-primary transition-colors" strokeWidth={2.5} />
@@ -157,14 +162,14 @@ export function Navbar() {
 
       {/* Mobile Slide-out Drawer (Sheet) */}
       <AnimatePresence>
-        {isOpen && (
+        {isMenuOpen && (
           <>
             {/* Backdrop */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              onClick={() => setIsOpen(false)}
+              onClick={() => setIsMenuOpen(false)}
               className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[50] lg:hidden"
             />
             
@@ -177,7 +182,7 @@ export function Navbar() {
               className="fixed top-0 right-0 bottom-0 w-[85vw] max-w-sm bg-background border-l border-border z-[55] lg:hidden flex flex-col pt-28 px-6 pb-10 overflow-y-auto shadow-2xl"
             >
               <button 
-                onClick={() => setIsOpen(false)}
+                onClick={() => setIsMenuOpen(false)}
                 className="absolute top-6 right-6 w-10 h-10 flex items-center justify-center rounded-full glass hover:bg-white/20 active:scale-95 transition-all text-foreground"
               >
                 <X className="w-5 h-5" />
@@ -193,7 +198,7 @@ export function Navbar() {
                   >
                     <Link 
                       href={item.href} 
-                      onClick={() => setIsOpen(false)}
+                      onClick={() => setIsMenuOpen(false)}
                       className="text-2xl font-semibold text-foreground hover:text-primary transition-colors block py-2 border-b border-border/50"
                     >
                       {item.name}

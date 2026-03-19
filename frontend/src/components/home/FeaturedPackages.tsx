@@ -2,7 +2,7 @@
 
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
-import { PackageCard } from "./PackageCard";
+import { PackageCard, PackageSkeleton } from "./PackageCard";
 
 interface Package {
   id: number;
@@ -18,9 +18,10 @@ interface Package {
 interface FeaturedPackagesProps {
   packages: Package[];
   API_URL: string;
+  loading?: boolean;
 }
 
-export const FeaturedPackages = ({ packages, API_URL }: FeaturedPackagesProps) => {
+export const FeaturedPackages = ({ packages, API_URL, loading = false }: FeaturedPackagesProps) => {
   const chips = ["All", "Trending", "Mountains", "Forest", "Budget", "Luxury"];
 
   return (
@@ -55,9 +56,18 @@ export const FeaturedPackages = ({ packages, API_URL }: FeaturedPackagesProps) =
 
       <div className="relative">
         <div className="flex gap-5 overflow-x-auto pb-8 snap-x snap-mandatory no-scrollbar px-6">
-          {packages.map((pkg) => (
-            <PackageCard key={pkg.id} pkg={pkg} API_URL={API_URL} />
-          ))}
+          {loading ? (
+            <>
+              <PackageSkeleton />
+              <PackageSkeleton />
+              <PackageSkeleton />
+              <PackageSkeleton />
+            </>
+          ) : (
+            packages.map((pkg) => (
+              <PackageCard key={pkg.id} pkg={pkg} API_URL={API_URL} />
+            ))
+          )}
           {/* Empty card at the end for spacing */}
           <div className="min-w-[20px] shrink-0" />
         </div>

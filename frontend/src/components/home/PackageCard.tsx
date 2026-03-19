@@ -141,3 +141,21 @@ const PackageCardContent = ({ pkg, API_URL, isMobile = false }: { pkg: Package, 
     </Link>
   );
 };
+
+export const PackageSkeleton = () => {
+  return (
+    <div className="min-w-[320px] aspect-[4/5] bg-card rounded-[3rem] overflow-hidden border border-border/50 shadow-2xl relative shrink-0 animate-pulse">
+      <div className="absolute inset-x-0 bottom-0 p-6 pt-16 bg-gradient-to-t from-black/90 via-black/30 to-transparent flex flex-col justify-end">
+        <div className="flex items-center gap-2 mb-2">
+          <div className="w-3 h-3 bg-white/20 rounded-full" />
+          <div className="w-20 h-3 bg-white/20 rounded-full" />
+        </div>
+        <div className="w-3/4 h-8 bg-white/20 rounded-xl mb-4" />
+        <div className="flex justify-between items-center">
+          <div className="w-24 h-6 bg-primary/20 rounded-lg" />
+          <div className="w-8 h-8 bg-white/10 rounded-xl" />
+        </div>
+      </div>
+    </div>
+  );
+};
