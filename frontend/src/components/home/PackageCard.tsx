@@ -22,9 +22,10 @@ interface PackageCardProps {
 }
 
 export const PackageCard = ({ pkg, API_URL }: PackageCardProps) => {
-  const imageUrl = (pkg.images[0]?.url.startsWith('http') || pkg.images[0]?.url.startsWith('/')) 
-    ? pkg.images[0]?.url 
-    : `${API_URL}${pkg.images[0]?.url}`;
+  const firstImageUrl = pkg.images?.[0]?.url;
+  const imageUrl = (firstImageUrl?.startsWith('http') || firstImageUrl?.startsWith('/')) 
+    ? firstImageUrl 
+    : firstImageUrl ? `${API_URL}${firstImageUrl}` : '/assets/hero.jpg';
 
   return (
     <motion.div

@@ -47,12 +47,12 @@ export default function Home() {
   }, [heroImages.length]);
 
   useEffect(() => {
-    fetch("http://localhost:8000/admin/image-slots")
+    fetch(`${API_URL}/admin/image-slots`)
       .then(res => res.json())
       .then(data => setSlots(data))
       .catch(err => console.error("Error fetching slots:", err));
 
-    fetch("http://localhost:8000/packages")
+    fetch(`${API_URL}/packages`)
       .then(res => res.json())
       .then(data => setPackages(data))
       .catch(err => console.error("Error fetching packages:", err));
