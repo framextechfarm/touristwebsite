@@ -45,24 +45,24 @@ export function Navbar() {
     <header className={`fixed top-0 left-0 right-0 z-50 px-4 md:px-6 transition-all duration-300 ${scrolled ? 'py-4' : 'py-4 md:py-6'}`}>
       
       {/* --- DESKTOP NAVBAR --- */}
-      <nav className={`hidden lg:flex max-w-7xl mx-auto rounded-[2rem] px-8 py-4 items-center justify-between transition-all duration-300 ${scrolled ? 'glass shadow-2xl backdrop-blur-2xl' : 'glass'}`}>
+      <nav className={`hidden lg:flex max-w-7xl mx-auto rounded-[2rem] px-8 py-4 items-center justify-between transition-all duration-500 border border-white/10 ${scrolled ? 'bg-black/20 backdrop-blur-lg shadow-2xl' : 'bg-transparent backdrop-blur-md'}`}>
         <Link href="/" className="flex items-center gap-2 relative z-[60]">
           <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center relative shrink-0">
             <span className="text-white font-bold text-xl">S</span>
             <div className="absolute -top-1 -right-1 w-3 h-3 bg-primary rounded-full border-2 border-background" />
           </div>
-          <span className="text-xl md:text-2xl font-bold tracking-tight text-foreground whitespace-nowrap">SMR Holidays</span>
+          <span className="text-xl md:text-2xl font-bold tracking-tight text-white whitespace-nowrap">SMR Holidays</span>
         </Link>
         <div className="flex items-center gap-10">
           {navLinks.map((item) => (
-            <Link key={item.name} href={item.href} className="text-[15px] font-medium text-foreground/70 hover:text-primary transition-colors">
+            <Link key={item.name} href={item.href} className="text-[15px] font-medium text-white/70 hover:text-primary transition-colors">
               {item.name}
             </Link>
           ))}
         </div>
         <div className="flex items-center gap-6">
           <ThemeToggle />
-          <button className="text-[15px] font-medium text-foreground/70 hover:text-primary transition-colors">Login</button>
+          <button className="text-[15px] font-medium text-white/70 hover:text-primary transition-colors">Login</button>
           <button className="btn-primary py-2.5 px-6 min-h-[44px]">Sign Up</button>
         </div>
       </nav>
@@ -71,10 +71,10 @@ export function Navbar() {
       <motion.nav 
         layout
         transition={{ type: "spring", stiffness: 300, damping: 30 }}
-        className={`flex lg:hidden mx-auto overflow-hidden glass shadow-2xl backdrop-blur-3xl border border-white/20 dark:border-white/10 ${
+        className={`flex lg:hidden mx-auto overflow-hidden backdrop-blur-lg border border-white/10 ${
           scrolled 
-            ? 'rounded-full px-4 py-2 w-fit bg-black/20 dark:bg-black/40' 
-            : 'rounded-[2rem] px-5 py-3 w-full'
+            ? 'rounded-full px-4 py-2 w-fit bg-black/20' 
+            : 'rounded-[2rem] px-5 py-3 w-full bg-transparent'
         }`}
       >
         <AnimatePresence mode="wait">

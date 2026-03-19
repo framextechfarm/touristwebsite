@@ -16,22 +16,23 @@ export const Hero = ({ heroImages, currentHero }: HeroProps) => {
         <AnimatePresence mode="wait">
           <motion.div
             key={currentHero % heroImages.length}
-            initial={{ opacity: 0, scale: 1.1 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 1.5, ease: "easeInOut" }}
+            initial={{ opacity: 0, scale: 1.05, filter: "blur(10px)" }}
+            animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
+            exit={{ opacity: 0, scale: 0.95, filter: "blur(10px)" }}
+            transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
             className="absolute inset-0"
           >
             <Image
               src={heroImages[currentHero % heroImages.length]}
               alt="Majestic Mountains"
               fill
-              className="object-cover brightness-[0.4]"
+              className="object-cover brightness-[0.75]"
               priority
             />
           </motion.div>
         </AnimatePresence>
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-background/20 to-background" />
+        {/* Subtle Bottom-to-Top Gradient */}
+        <div className="absolute inset-0 bg-gradient-to-t from-background via-background/20 to-transparent pointer-events-none" />
       </div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-6 w-full text-center flex flex-col items-center">
