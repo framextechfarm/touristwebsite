@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 import { MapPin, Users, Star, Bed, Bath, Wifi, Car, ChefHat, Wind, Flame, Tv, Mountain, Trees, Home as HomeIcon, Droplets, Dog, LucideIcon, Shield, Zap } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
+import { API_URL } from "@/lib/config";
 
 type Amenity = {
     id: number;
@@ -50,7 +51,7 @@ export default function StayDetailsPage() {
         if (!id) return;
         async function fetchStay() {
             try {
-                const res = await fetch(`http://localhost:8000/stays/${id}`);
+                const res = await fetch(`${API_URL}/stays/${id}`);
                 if (!res.ok) throw new Error("Not found");
                 const data = await res.json();
                 setStay(data);

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { API_URL } from "@/lib/config";
 import { motion } from "framer-motion";
 import { Upload, Save, Image as ImageIcon, CheckCircle, AlertCircle, ArrowLeft } from "lucide-react";
 import Link from "next/link";
@@ -27,7 +28,7 @@ export default function AdminImagesPage() {
 
   const fetchSlots = async () => {
     try {
-      const response = await fetch("http://localhost:8000/admin/image-slots");
+      const response = await fetch(`${API_URL}/admin/image-slots`);
       if (response.ok) {
         const data = await response.json();
         setSlots(data);
@@ -158,7 +159,7 @@ function SlotCard({ slot, onUpload, onUpdate, isSaving }: {
 
   // Backend image URL might be relative to /uploads, so we need to point to localhost:8000
   const imageUrl = slot.image_url 
-    ? (slot.image_url.startsWith("http") ? slot.image_url : `http://localhost:8000${slot.image_url}`)
+    ? (slot.image_url.startsWith("http") ? slot.image_url : `${API_URL}${slot.image_url}`)
     : null;
 
   return (
