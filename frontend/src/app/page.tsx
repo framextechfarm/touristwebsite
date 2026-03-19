@@ -83,7 +83,7 @@ export default function Home() {
 
     fetchData();
     return () => clearTimeout(timeoutId);
-  }, [loading]);
+  }, []);
 
   return (
     <main className="min-h-screen font-sans bg-background selection:bg-primary selection:text-white">
@@ -104,7 +104,7 @@ export default function Home() {
         <div className="py-24 px-6 max-w-7xl mx-auto">
           <div className="bg-red-500/10 border border-red-500/20 rounded-[2rem] p-12 text-center">
             <h3 className="text-xl font-bold text-red-500 mb-2">Something went wrong</h3>
-            <p className="text-foreground/60 mb-6 font-medium">We couldn't reach the server. It might be cold-starting.</p>
+            <p className="text-foreground/60 mb-6 font-medium">We couldn&apos;t reach the server. It might be cold-starting.</p>
             <button 
               onClick={() => window.location.reload()}
               className="bg-red-500 text-white px-8 py-3 rounded-xl font-bold hover:brightness-110 shadow-lg shadow-red-500/20 active:scale-95 transition-all"

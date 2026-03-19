@@ -34,6 +34,7 @@ export const PackageCarousel = ({ packages, API_URL }: PackageCarouselProps) => 
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleDragEnd = (event: any, info: any) => {
     if (info.offset.x < -100 && activeIndex < packages.length - 1) {
       setActiveIndex(activeIndex + 1);
@@ -139,6 +140,17 @@ const PackageCardContent = ({ pkg, API_URL, isMobile = false }: { pkg: Package, 
         </div>
       </div>
     </Link>
+  );
+};
+
+export const PackageCard = ({ pkg, API_URL, isMobile = false }: { pkg: Package, API_URL: string, isMobile?: boolean }) => {
+  return (
+    <motion.div
+      whileHover={!isMobile ? { y: -10 } : {}}
+      className="min-w-[320px] aspect-[4/5] bg-card rounded-[3rem] overflow-hidden border border-border/50 shadow-2xl relative group snap-center shrink-0"
+    >
+      <PackageCardContent pkg={pkg} API_URL={API_URL} isMobile={isMobile} />
+    </motion.div>
   );
 };
 
