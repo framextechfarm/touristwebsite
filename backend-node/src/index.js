@@ -22,11 +22,21 @@ if (!fs.existsSync(uploadsDir)) {
 // ─── Middleware ───────────────────────────────────────────────────────────────
 const allowedOrigins = (process.env.CORS_ORIGINS || "http://localhost:3000")
   .split(",")
-  .map((o) => o.trim());
+  .map((o) => o.trim().replace(/\/$/, "")); // Remove trailing slashes
 
 app.use(
   cors({
-    origin: allowedOrigins,
+    origin: (origin, callback) => {
+      // Allow requests with no origin (like mobile apps or curl)
+      if (!origin) return callback(null, true);
+      
+      const cleanOrigin = origin.replace(/\/$/, "");
+      if (allowedOrigins.includes("*") || allowedOrigins.includes(cleanOrigin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
     credentials: true,
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
