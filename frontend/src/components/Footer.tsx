@@ -33,6 +33,7 @@ export function Footer() {
               <li><Link href="#" className="hover:text-primary transition-colors inline-block py-1">Careers</Link></li>
               <li><Link href="#" className="hover:text-primary transition-colors inline-block py-1">Blog</Link></li>
               <li><Link href="#" className="hover:text-primary transition-colors inline-block py-1">Press Kit</Link></li>
+              <li><Link href="/admin/images" className="hover:text-primary transition-colors inline-block py-1 text-primary/70 font-bold">Admin Dashboard</Link></li>
             </ul>
           </div>
 
