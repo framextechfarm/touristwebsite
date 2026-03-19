@@ -15,8 +15,20 @@ type Slot = {
   category?: string;
 };
 
+type Package = {
+  id: number;
+  title: string;
+  slug: string;
+  duration: string;
+  price: number;
+  location: string;
+  rating: number;
+  images: { url: string }[];
+};
+
 export default function Home() {
   const [slots, setSlots] = useState<Slot[]>([]);
+  const [packages, setPackages] = useState<Package[]>([]);
   const [currentHero, setCurrentHero] = useState(0);
 
   const heroImages = [
@@ -38,6 +50,11 @@ export default function Home() {
       .then(res => res.json())
       .then(data => setSlots(data))
       .catch(err => console.error("Error fetching slots:", err));
+
+    fetch("http://localhost:8000/packages")
+      .then(res => res.json())
+      .then(data => setPackages(data))
+      .catch(err => console.error("Error fetching packages:", err));
   }, []);
 
   const getSlot = (key: string) => slots.find(s => s.slot_key === key);
@@ -116,7 +133,7 @@ export default function Home() {
                     <h3 className="text-xs md:text-2xl font-bold text-white mb-0.5 md:mb-2">{category.title}</h3>
                     <p className="text-white/60 text-[8px] md:text-sm font-medium hidden xs:block">{category.desc}</p>
                     <div className="mt-2 md:mt-6 w-6 h-6 md:w-10 md:h-10 rounded-full bg-white/10 flex items-center justify-center group-hover:bg-primary transition-colors">
-                        <ArrowRight className="w-2.5 h-2.5 md:w-4 md:h-4 text-white" />
+                      <ArrowRight className="w-2.5 h-2.5 md:w-4 md:h-4 text-white" />
                     </div>
                   </div>
                 </Link>
@@ -126,97 +143,89 @@ export default function Home() {
         </div>
       </section>
 
-      {/* --- MAJESTIC KODAIKANAL BENTO GALLERY --- */}
-      <section className="py-16 max-w-7xl mx-auto px-6">
-        <div className="flex flex-col md:flex-row justify-between items-end mb-8 gap-6">
-          <div className="space-y-4">
-            <h4 className="text-primary font-bold uppercase tracking-widest text-xs">The Princess of Hill Stations</h4>
-            <h2 className="text-4xl md:text-5xl font-bold text-foreground">Explore Kodaikanal</h2>
+
+
+      {/* --- FEATURED PACKAGES CAROUSEL --- */}
+      <section className="py-24 overflow-hidden">
+        <div className="max-w-7xl mx-auto px-6 mb-12">
+          <div className="flex flex-col md:flex-row justify-between items-end gap-6 mb-10">
+            <div className="space-y-4">
+              <h4 className="text-primary font-bold uppercase tracking-widest text-xs">Handpicked Adventures</h4>
+              <h2 className="text-4xl md:text-5xl font-bold text-foreground">Featured Packages</h2>
+            </div>
+            <Link href="/packages" className="group flex items-center gap-2 text-primary font-bold hover:opacity-80 transition-opacity">
+              Explore All Packages <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
+            </Link>
           </div>
-          <p className="text-foreground/60 max-w-md text-sm leading-relaxed">
-            Discover the breathtaking beauty of Kodaikanal through our curated selection of must-visit spots and fascinating original facts about the hills.
-          </p>
+
+          {/* Filter Chips */}
+          <div className="flex gap-3 overflow-x-auto pb-4 no-scrollbar">
+            {["All", "Trending", "Mountains", "Forest", "Budget", "Luxury"].map((chip) => (
+              <button
+                key={chip}
+                className={`px-6 py-2.5 rounded-full text-sm font-bold border transition-all shrink-0 ${
+                  chip === "All"
+                    ? "bg-primary text-white border-primary shadow-lg shadow-primary/20"
+                    : "bg-background text-foreground/60 border-border/50 hover:border-primary/40 hover:text-primary"
+                }`}
+              >
+                {chip}
+              </button>
+            ))}
+          </div>
         </div>
 
-        <div className="flex md:grid md:grid-cols-4 md:grid-rows-2 gap-4 h-[450px] overflow-x-auto snap-x snap-mandatory pb-6 md:pb-0 px-2 md:px-0 -mx-2 md:mx-0 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
-          {/* Main Feature: Kurinji */}
-          <motion.div 
-            whileHover={{ scale: 0.98 }}
-            className="w-[85vw] shrink-0 md:w-auto md:col-span-2 md:row-span-2 relative rounded-[2rem] overflow-hidden group shadow-2xl border border-border/50 snap-center active:scale-[0.98] transition-all"
-          >
-            <Image 
-              src={getImageUrl(getSlot("explore_kodai_1"), "/assets/destination_1.png")} 
-              alt={getSlot("explore_kodai_1")?.title || "Kurinji Hills"} 
-              fill
-              className="object-cover transition-transform duration-700 group-hover:scale-110"
-              sizes="(max-width: 768px) 85vw, 50vw"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent pointer-events-none" />
-            <div className="absolute bottom-6 md:bottom-8 left-6 md:left-8 right-6 md:right-8">
-              <span className="bg-primary/20 backdrop-blur-md text-primary-foreground text-[10px] font-black px-4 py-1.5 rounded-full uppercase tracking-widest border border-primary/30 mb-3 md:mb-4 inline-block">
-                {getSlot("explore_kodai_1")?.category === "homepage" ? "The 12-Year Miracle" : "Featured Destination"}
-              </span>
-              <h3 className="text-3xl md:text-4xl font-bold text-white mb-2">{getSlot("explore_kodai_1")?.title || "Neelakurinji Bloom"}</h3>
-              <p className="text-white/80 text-xs md:text-sm max-w-[350px] leading-relaxed">
-                {getSlot("explore_kodai_1")?.description || "Kodaikanal is world-famous for the rare Kurinji flowers..."}
-              </p>
-            </div>
-          </motion.div>
+        <div className="relative">
+          <div className="flex gap-5 overflow-x-auto pb-8 snap-x snap-mandatory no-scrollbar px-6">
+            {packages.map((pkg) => (
+              <motion.div
+                key={pkg.id}
+                whileHover={{ y: -10 }}
+                className="min-w-[280px] md:min-w-[320px] aspect-[4/5] bg-card rounded-[3rem] overflow-hidden border border-border/50 shadow-2xl relative group snap-center"
+              >
+                <Link href={`/packages/${pkg.id}`}>
+                  {/* Full Image Background */}
+                  <Image
+                    src={(pkg.images[0]?.url.startsWith('http') || pkg.images[0]?.url.startsWith('/')) ? pkg.images[0]?.url : `${API_URL}${pkg.images[0]?.url}`}
+                    alt={pkg.title}
+                    fill
+                    className="object-cover transition-transform duration-700 group-hover:scale-110"
+                  />
+                  
+                  {/* Floating Rating Badge */}
+                  <div className="absolute top-5 right-5 bg-white/10 backdrop-blur-xl border border-white/20 px-3 py-1.5 rounded-2xl flex items-center gap-1.5 z-10 shadow-xl">
+                    <Star className="w-3.5 h-3.5 text-primary fill-primary" />
+                    <span className="text-xs font-black text-white">{pkg.rating}</span>
+                  </div>
 
-          {/* Secondary: Kodai Lake */}
-          <motion.div 
-            whileHover={{ scale: 0.98 }}
-            className="w-[85vw] shrink-0 md:w-auto md:col-span-2 relative rounded-[2rem] overflow-hidden group shadow-xl border border-border/50 snap-center active:scale-[0.98] transition-all"
-          >
-            <Image 
-              src={getImageUrl(getSlot("explore_kodai_2"), "/assets/hero.png")} 
-              alt={getSlot("explore_kodai_2")?.title || "Kodai Lake"} 
-              fill
-              className="object-cover transition-transform duration-700 group-hover:scale-110"
-              sizes="(max-width: 768px) 85vw, 50vw"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent pointer-events-none" />
-            <div className="absolute bottom-6 left-6 right-6">
-              <h3 className="text-xl md:text-2xl font-bold text-white mb-1">{getSlot("explore_kodai_2")?.title || "The Star-Shaped Lake"}</h3>
-              <div className="flex items-center gap-2 text-white/80 text-[10px] md:text-xs font-medium mt-1 leading-relaxed">
-                {getSlot("explore_kodai_2")?.description || "Created in 1863, the legendary Kodai Lake spans 60 acres in an incredible star shape."}
-              </div>
-            </div>
-          </motion.div>
-
-          {/* Tertiary: Pine Forest */}
-          <motion.div 
-            whileHover={{ scale: 0.98 }}
-            className="w-[85vw] shrink-0 md:w-auto relative rounded-[2rem] overflow-hidden group shadow-xl border border-border/50 snap-center active:scale-[0.98] transition-all"
-          >
-            <Image 
-              src={getImageUrl(getSlot("explore_kodai_3"), "/assets/destination_2.png")} 
-              alt={getSlot("explore_kodai_3")?.title || "Pine Forest"} 
-              fill
-              className="object-cover transition-transform duration-700 group-hover:scale-110"
-              sizes="(max-width: 768px) 85vw, 25vw"
-            />
-            <div className="absolute inset-0 bg-black/40 group-hover:bg-black/60 transition-colors pointer-events-none" />
-            <div className="absolute inset-0 flex flex-col items-center justify-center p-4 text-center">
-              <h4 className="text-white font-bold text-lg mb-1">{getSlot("explore_kodai_3")?.title || "Solar Observatory"}</h4>
-              <p className="text-white/80 text-[10px] font-medium leading-relaxed mt-2 uppercase tracking-wide">
-                {getSlot("explore_kodai_3")?.description || "Established 1899 Studying the sun from Kodai's highest peak"}
-              </p>
-            </div>
-          </motion.div>
-
-          {/* Quaternary: Quick Facts */}
-          <div className="w-[85vw] shrink-0 md:w-auto glass rounded-[2rem] p-6 border border-border/50 flex flex-col justify-between snap-center active:scale-[0.98] transition-all">
-            <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
-              <Star className="w-5 h-5 text-primary" />
-            </div>
-            <div>
-              <p className="text-2xl font-black text-foreground mb-1">{getSlot("explore_kodai_4")?.title || "7,200 ft"}</p>
-              <p className="text-[10px] font-bold text-foreground/50 uppercase tracking-widest">{getSlot("explore_kodai_4")?.description || "Elevation Above Sea Level"}</p>
-            </div>
-            <Link href="/packages" className="flex items-center gap-2 text-primary font-bold text-xs group hover:opacity-80 transition-opacity">
-              View Packages <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-            </Link>
+                  {/* Bottom Content Overlay */}
+                  <div className="absolute inset-x-0 bottom-0 p-8 pt-20 bg-gradient-to-t from-black/95 via-black/40 to-transparent flex flex-col justify-end">
+                    <div className="flex items-center gap-2 text-white/80 font-bold text-[10px] uppercase tracking-widest mb-2">
+                      <MapPin className="w-3 h-3 text-primary" />
+                      {pkg.location}
+                    </div>
+                    <h3 className="text-2xl font-black text-white mb-4 line-clamp-1 group-hover:text-primary transition-colors">
+                      {pkg.title}
+                    </h3>
+                    
+                    <div className="flex justify-between items-center">
+                      <div className="flex flex-col">
+                        <span className="text-[10px] text-white/50 font-bold uppercase tracking-widest leading-none mb-1">Price</span>
+                        <div className="flex items-baseline gap-1">
+                          <span className="text-xl font-black text-primary">₹{pkg.price.toLocaleString()}</span>
+                          <span className="text-[10px] text-white/40 font-bold">/ person</span>
+                        </div>
+                      </div>
+                      <div className="w-10 h-10 rounded-2xl bg-primary/20 backdrop-blur-md border border-primary/30 flex items-center justify-center group-hover:bg-primary transition-all duration-500">
+                        <ArrowRight className="w-4 h-4 text-white" />
+                      </div>
+                    </div>
+                  </div>
+                </Link>
+              </motion.div>
+            ))}
+            {/* Empty card at the end for spacing */}
+            <div className="min-w-[20px] shrink-0" />
           </div>
         </div>
       </section>

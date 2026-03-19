@@ -17,12 +17,14 @@
     --secondary-foreground: 222 47% 11.2%;
 
     --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 35%; /* Darkened for better contrast in light mode */
+    --muted-foreground: 215.4 16.3% 35%;
+    /* Darkened for better contrast in light mode */
 
     --card: 0 0% 100%;
     --card-foreground: 222 47% 4.7%;
 
-    --border: 214.3 31.8% 90%; /* Slightly darker border for visibility */
+    --border: 214.3 31.8% 90%;
+    /* Slightly darker border for visibility */
     --input: 214.3 31.8% 90%;
     --ring: 171 100% 41%;
 
@@ -69,7 +71,7 @@
   .glass {
     @apply bg-white/30 backdrop-blur-2xl border border-white/20 shadow-xl;
   }
-  
+
   .dark .glass {
     @apply bg-black/50 backdrop-blur-2xl border border-white/10 shadow-2xl;
   }
@@ -98,6 +100,7 @@
     .btn-primary:hover {
       @apply brightness-110;
     }
+
     .btn-accent:hover {
       @apply brightness-110;
     }
