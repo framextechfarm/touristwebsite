@@ -51,34 +51,23 @@ export default function Home() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 10000); // 10s timeout
-
       try {
         setLoading(true);
-        setError(null);
-
         const [slotsRes, pkgsRes] = await Promise.all([
-          fetch(`${API_URL}/admin/image-slots`, { signal: controller.signal }),
-          fetch(`${API_URL}/packages`, { signal: controller.signal })
+          fetch(`${API_URL}/admin/image-slots`),
+          fetch(`${API_URL}/packages`)
         ]);
 
-        clearTimeout(timeoutId);
-
-        if (!slotsRes.ok || !pkgsRes.ok) {
-          throw new Error(`Fetch failed: Slots(${slotsRes.status}) Packages(${pkgsRes.status})`);
+        if (slotsRes.ok && pkgsRes.ok) {
+          const [slotsData, pkgsData] = await Promise.all([
+            slotsRes.json(),
+            pkgsRes.json()
+          ]);
+          setSlots(slotsData);
+          setPackages(pkgsData);
         }
-
-        const [slotsData, pkgsData] = await Promise.all([
-          slotsRes.json(),
-          pkgsRes.json()
-        ]);
-
-        setSlots(slotsData);
-        setPackages(pkgsData);
-      } catch (err: any) {
-        console.error("Connection Diagnostic Error:", err);
-        setError(err.name === 'AbortError' ? "Connection timed out" : (err.message || "Failed to connect to backend"));
+      } catch (err) {
+        console.error("Error fetching data:", err);
       } finally {
         setLoading(false);
       }
@@ -95,25 +84,18 @@ export default function Home() {
       {loading ? (
         <div className="py-24 flex flex-col items-center justify-center gap-4">
           <div className="w-10 h-10 border-4 border-primary border-t-transparent rounded-full animate-spin" />
-          <p className="text-sm font-bold text-foreground/40 uppercase tracking-widest animate-pulse">Loading Adventures...</p>
-          <p className="text-[10px] text-foreground/20 uppercase tracking-widest">
-            Connecting to: {API_URL}
-          </p>
         </div>
       ) : error ? (
         <div className="py-24 px-6 max-w-7xl mx-auto">
           <div className="bg-red-500/10 border border-red-500/20 rounded-[2rem] p-12 text-center">
-            <h3 className="text-xl font-bold text-red-500 mb-2">Connection Error</h3>
-            <p className="text-foreground/60 mb-6">{error}</p>
+            <h3 className="text-xl font-bold text-red-500 mb-2">Something went wrong</h3>
+            <p className="text-foreground/60 mb-6">We couldn't load the latest packages. Please try again later.</p>
             <button 
               onClick={() => window.location.reload()}
               className="bg-red-500 text-white px-8 py-3 rounded-xl font-bold hover:brightness-110 transition-all"
             >
-              Retry Connection
+              Retry
             </button>
-            <p className="mt-4 text-[10px] text-foreground/30 uppercase tracking-widest">
-              API: {API_URL}
-            </p>
           </div>
         </div>
       ) : (
