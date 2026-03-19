@@ -1,9 +1,10 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, AnimatePresence, useMotionValue, useTransform } from "framer-motion";
 import { MapPin, Star, ArrowRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { useState, useEffect } from "react";
 
 interface Package {
   id: number;
@@ -16,61 +17,127 @@ interface Package {
   images: { url: string }[];
 }
 
-interface PackageCardProps {
-  pkg: Package;
+interface PackageCarouselProps {
+  packages: Package[];
   API_URL: string;
 }
 
-export const PackageCard = ({ pkg, API_URL }: PackageCardProps) => {
+export const PackageCarousel = ({ packages, API_URL }: PackageCarouselProps) => {
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Check for mobile view to switch engines
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
+
+  const handleDragEnd = (event: any, info: any) => {
+    if (info.offset.x < -100 && activeIndex < packages.length - 1) {
+      setActiveIndex(activeIndex + 1);
+    } else if (info.offset.x > 100 && activeIndex > 0) {
+      setActiveIndex(activeIndex - 1);
+    }
+  };
+
+  // --- DESKTOP VIEW (Your Original Code Logic) ---
+  if (!isMobile) {
+    return (
+      <div className="flex gap-5 overflow-x-auto pb-8 snap-x snap-mandatory no-scrollbar px-6">
+        {packages.map((pkg) => (
+          <motion.div
+            key={pkg.id}
+            whileHover={{ y: -10 }}
+            className="min-w-[320px] aspect-[4/5] bg-card rounded-[3rem] overflow-hidden border border-border/50 shadow-2xl relative group snap-center shrink-0"
+          >
+            <PackageCardContent pkg={pkg} API_URL={API_URL} />
+          </motion.div>
+        ))}
+      </div>
+    );
+  }
+
+  // --- MOBILE VIEW (The New Stacked Design) ---
+  return (
+    <div className="relative h-[500px] w-full flex items-center justify-center perspective-1000">
+      <AnimatePresence initial={false}>
+        {packages.map((pkg, index) => {
+          const isVisible = index >= activeIndex && index <= activeIndex + 2;
+          if (!isVisible) return null;
+
+          const dragEnabled = index === activeIndex;
+          const positionIndex = index - activeIndex;
+
+          return (
+            <motion.div
+              key={pkg.id}
+              drag={dragEnabled ? "x" : false}
+              dragConstraints={{ left: 0, right: 0 }}
+              onDragEnd={handleDragEnd}
+              style={{
+                zIndex: packages.length - index,
+              }}
+              animate={{
+                scale: 1 - positionIndex * 0.08,
+                y: positionIndex * 15,
+                x: positionIndex * 35, // Creates the "fanned out" look from your image
+                opacity: 1 - positionIndex * 0.3,
+              }}
+              transition={{ type: "spring", stiffness: 260, damping: 20 }}
+              className="absolute w-[280px] aspect-[3/4.5] bg-card rounded-[2.5rem] overflow-hidden shadow-2xl border border-white/10"
+            >
+              <PackageCardContent pkg={pkg} API_URL={API_URL} isMobile />
+            </motion.div>
+          );
+        })}
+      </AnimatePresence>
+    </div>
+  );
+};
+
+// Reusable Content Component to keep logic clean
+const PackageCardContent = ({ pkg, API_URL, isMobile = false }: { pkg: Package, API_URL: string, isMobile?: boolean }) => {
   const firstImageUrl = pkg.images?.[0]?.url;
-  const imageUrl = (firstImageUrl?.startsWith('http') || firstImageUrl?.startsWith('/')) 
-    ? firstImageUrl 
+  const imageUrl = (firstImageUrl?.startsWith('http') || firstImageUrl?.startsWith('/'))
+    ? firstImageUrl
     : firstImageUrl ? `${API_URL}${firstImageUrl}` : '/assets/hero.jpg';
 
   return (
-    <motion.div
-      whileHover={{ y: -10 }}
-      className="min-w-[280px] md:min-w-[320px] aspect-[4/5] bg-card rounded-[3rem] overflow-hidden border border-border/50 shadow-2xl relative group snap-center"
-    >
-      <Link href={`/packages/${pkg.id}`}>
-        {/* Full Image Background */}
-        <Image
-          src={imageUrl}
-          alt={pkg.title}
-          fill
-          className="object-cover transition-transform duration-700 group-hover:scale-110"
-        />
-        
-        {/* Floating Rating Badge */}
-        <div className="absolute top-5 right-5 bg-white/10 backdrop-blur-xl border border-white/20 px-3 py-1.5 rounded-2xl flex items-center gap-1.5 z-10 shadow-xl">
-          <Star className="w-3.5 h-3.5 text-primary fill-primary" />
-          <span className="text-xs font-black text-white">{pkg.rating}</span>
-        </div>
+    <Link href={`/packages/${pkg.id}`} className="block h-full w-full relative">
+      <Image
+        src={imageUrl}
+        alt={pkg.title}
+        fill
+        className={`object-cover ${!isMobile ? 'transition-transform duration-700 group-hover:scale-110' : ''}`}
+      />
 
-        {/* Bottom Content Overlay */}
-        <div className="absolute inset-x-0 bottom-0 p-8 pt-20 bg-gradient-to-t from-black/95 via-black/40 to-transparent flex flex-col justify-end">
-          <div className="flex items-center gap-2 text-white/80 font-bold text-[10px] uppercase tracking-widest mb-2">
-            <MapPin className="w-3 h-3 text-primary" />
-            {pkg.location}
+      <div className="absolute top-4 right-4 bg-white/10 backdrop-blur-xl border border-white/20 px-3 py-1 rounded-2xl flex items-center gap-1 z-10">
+        <Star className="w-3 h-3 text-primary fill-primary" />
+        <span className="text-[10px] font-black text-white">{pkg.rating}</span>
+      </div>
+
+      <div className="absolute inset-x-0 bottom-0 p-6 pt-16 bg-gradient-to-t from-black/90 via-black/30 to-transparent flex flex-col justify-end">
+        <div className="flex items-center gap-1.5 text-white/80 font-bold text-[9px] uppercase tracking-widest mb-1">
+          <MapPin className="w-2.5 h-2.5 text-primary" />
+          {pkg.location}
+        </div>
+        <h3 className={`${isMobile ? 'text-xl' : 'text-2xl'} font-black text-white mb-3 line-clamp-1`}>
+          {pkg.title}
+        </h3>
+
+        <div className="flex justify-between items-center">
+          <div className="flex flex-col">
+            <div className="flex items-baseline gap-1">
+              <span className="text-lg font-black text-primary">₹{pkg.price.toLocaleString()}</span>
+            </div>
           </div>
-          <h3 className="text-2xl font-black text-white mb-4 line-clamp-1 group-hover:text-primary transition-colors">
-            {pkg.title}
-          </h3>
-          
-          <div className="flex justify-between items-center">
-            <div className="flex flex-col">
-              <span className="text-[10px] text-white/50 font-bold uppercase tracking-widest leading-none mb-1">Price</span>
-              <div className="flex items-baseline gap-1">
-                <span className="text-xl font-black text-primary">₹{pkg.price.toLocaleString()}</span>
-                <span className="text-[10px] text-white/40 font-bold">/ person</span>
-              </div>
-            </div>
-            <div className="w-10 h-10 rounded-2xl bg-primary/20 backdrop-blur-md border border-primary/30 flex items-center justify-center group-hover:bg-primary transition-all duration-500">
-              <ArrowRight className="w-4 h-4 text-white" />
-            </div>
+          <div className="w-8 h-8 rounded-xl bg-primary flex items-center justify-center">
+            <ArrowRight className="w-4 h-4 text-white" />
           </div>
         </div>
-      </Link>
-    </motion.div>
+      </div>
+    </Link>
   );
 };

@@ -23,28 +23,28 @@ export const CategoryCards = () => {
           <Link 
             key={category.id} 
             href={category.href} 
-            className={`group relative overflow-hidden flex flex-col justify-between p-6 md:p-8 rounded-[2rem] border border-white/10 backdrop-blur-xl transition-all duration-500 hover:border-primary/50 hover:shadow-[0_0_30px_-10px_rgba(20,241,149,0.3)] bg-white/5 dark:bg-black/20 ${category.span}`}
+            className={`group relative overflow-hidden flex flex-col justify-between p-6 md:p-8 rounded-[2rem] border border-white/20 backdrop-blur-xl transition-all duration-500 hover:border-primary/50 hover:shadow-[0_0_40px_-10px_rgba(20,241,149,0.4)] bg-black/10 dark:bg-black/40 ${category.span}`}
           >
             {/* Background Gradient Glow */}
             <div className={`absolute -right-10 -bottom-10 w-40 h-40 rounded-full bg-gradient-to-br ${category.color} to-transparent blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700`} />
             
             <div className="relative z-10 flex flex-col h-full">
               <div className="flex justify-between items-start mb-8 md:mb-12">
-                <div className="w-12 h-12 md:w-16 md:h-16 rounded-2xl bg-white/10 flex items-center justify-center group-hover:scale-110 group-hover:bg-primary transition-all duration-500 group-hover:shadow-lg group-hover:shadow-primary/30">
-                  <category.icon className="w-6 h-6 md:w-8 md:h-8 text-white" />
+                <div className="w-12 h-12 md:w-16 md:h-16 rounded-2xl bg-primary/10 border border-primary/20 flex items-center justify-center group-hover:scale-110 group-hover:bg-primary transition-all duration-500 group-hover:shadow-lg group-hover:shadow-primary/30">
+                  <category.icon className="w-6 h-6 md:w-8 md:h-8 text-primary group-hover:text-white transition-colors" />
                 </div>
                 
-                <span className="px-3 py-1.5 rounded-full bg-white/5 border border-white/5 text-[10px] items-center md:text-xs font-bold text-white/50 uppercase tracking-widest backdrop-blur-md">
+                <span className="px-3 py-1.5 rounded-full bg-white/10 border border-white/10 text-[10px] items-center md:text-xs font-bold text-white uppercase tracking-widest backdrop-blur-md">
                   {category.count}
                 </span>
               </div>
 
               <div>
-                <h3 className="text-xl md:text-3xl font-bold text-white mb-2 tracking-tight">{category.title}</h3>
-                <p className="text-white/40 text-sm md:text-base font-medium line-clamp-1">{category.desc}</p>
+                <h3 className="text-xl md:text-3xl font-bold text-white mb-2 tracking-tight group-hover:text-primary transition-colors">{category.title}</h3>
+                <p className="text-white/60 text-sm md:text-base font-medium line-clamp-1">{category.desc}</p>
               </div>
 
-              <div className="mt-8 md:mt-12 flex items-center gap-2 text-primary font-bold text-sm opacity-0 group-hover:opacity-100 transition-all transform translate-x-[-10px] group-hover:translate-x-0 duration-500">
+              <div className="mt-8 md:mt-12 flex items-center gap-2 text-primary font-bold text-sm opacity-100 lg:opacity-0 group-hover:opacity-100 transition-all transform translate-x-0 lg:translate-x-[-10px] lg:group-hover:translate-x-0 duration-500">
                 Explore Now <ArrowRight className="w-4 h-4" />
               </div>
             </div>
