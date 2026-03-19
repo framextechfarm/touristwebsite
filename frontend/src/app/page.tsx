@@ -50,17 +50,20 @@ export default function Home() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    console.log("Current API_URL:", API_URL);
-    
     const fetchData = async () => {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 10000); // 10s timeout
+
       try {
         setLoading(true);
         setError(null);
 
         const [slotsRes, pkgsRes] = await Promise.all([
-          fetch(`${API_URL}/admin/image-slots`),
-          fetch(`${API_URL}/packages`)
+          fetch(`${API_URL}/admin/image-slots`, { signal: controller.signal }),
+          fetch(`${API_URL}/packages`, { signal: controller.signal })
         ]);
+
+        clearTimeout(timeoutId);
 
         if (!slotsRes.ok || !pkgsRes.ok) {
           throw new Error(`Fetch failed: Slots(${slotsRes.status}) Packages(${pkgsRes.status})`);
@@ -75,7 +78,7 @@ export default function Home() {
         setPackages(pkgsData);
       } catch (err: any) {
         console.error("Connection Diagnostic Error:", err);
-        setError(err.message || "Failed to connect to the backend");
+        setError(err.name === 'AbortError' ? "Connection timed out" : (err.message || "Failed to connect to backend"));
       } finally {
         setLoading(false);
       }
@@ -92,7 +95,10 @@ export default function Home() {
       {loading ? (
         <div className="py-24 flex flex-col items-center justify-center gap-4">
           <div className="w-10 h-10 border-4 border-primary border-t-transparent rounded-full animate-spin" />
-          <p className="text-sm font-bold text-foreground/40 uppercase tracking-widest">Loading Adventures...</p>
+          <p className="text-sm font-bold text-foreground/40 uppercase tracking-widest animate-pulse">Loading Adventures...</p>
+          <p className="text-[10px] text-foreground/20 uppercase tracking-widest">
+            Connecting to: {API_URL}
+          </p>
         </div>
       ) : error ? (
         <div className="py-24 px-6 max-w-7xl mx-auto">
