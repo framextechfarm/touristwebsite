@@ -9,6 +9,7 @@ const staysRouter = require("./routes/stays");
 const cabsRouter = require("./routes/cabs");
 const bookingsRouter = require("./routes/bookings");
 const adminRouter = require("./routes/admin");
+const reviewsRouter = require("./routes/reviews");
 
 const app = express();
 const PORT = process.env.PORT || 8000;
@@ -55,6 +56,7 @@ app.use("/stays", staysRouter);
 app.use("/cabs", cabsRouter);
 app.use("/bookings", bookingsRouter);
 app.use("/admin", adminRouter);
+app.use("/reviews", reviewsRouter);
 
 // ─── Root & Health ───────────────────────────────────────────────────────────
 app.get("/", (req, res) => {

@@ -170,3 +170,16 @@ model ImageSlot {
 
   @@map("image_slots")
 }
+
+model Review {
+  id          Int      @id @default(autoincrement())
+  userName    String
+  userRole    String?  // e.g., "Verified Traveler"
+  rating      Int      @default(5)
+  comment     String
+  userImage   String?  // URL to image
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+
+  @@map("reviews")
+}

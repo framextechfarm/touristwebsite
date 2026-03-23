@@ -23,7 +23,7 @@ export const CategoryCards = () => {
           <Link 
             key={category.id} 
             href={category.href} 
-            className={`group relative overflow-hidden flex flex-col justify-between p-4 md:p-8 rounded-[1.5rem] md:rounded-[2rem] border border-white/20 backdrop-blur-xl transition-all duration-500 hover:border-primary/50 hover:shadow-[0_0_40px_-10px_rgba(20,241,149,0.4)] bg-black/10 dark:bg-black/40 ${category.span}`}
+            className={`group relative overflow-hidden flex flex-col justify-between p-4 md:p-8 rounded-[1.5rem] md:rounded-[2rem] border border-white/10 transition-all duration-500 hover:border-primary/50 hover:shadow-[0_20px_50px_-12px_rgba(0,0,0,0.5)] bg-[#005D71] ${category.span}`}
           >
             {/* Background Gradient Glow */}
             <div className={`absolute -right-10 -bottom-10 w-40 h-40 rounded-full bg-gradient-to-br ${category.color} to-transparent blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700`} />
@@ -34,7 +34,7 @@ export const CategoryCards = () => {
                   <category.icon className="w-5 h-5 md:w-8 md:h-8 text-primary group-hover:text-white transition-colors" />
                 </div>
                 
-                <span className="px-2 md:px-3 py-1 md:py-1.5 rounded-full bg-white/10 border border-white/10 text-[8px] md:text-xs font-bold text-white uppercase tracking-widest backdrop-blur-md">
+                <span className="px-2 md:px-3 py-1 md:py-1.5 rounded-full bg-primary border border-primary text-[8px] md:text-xs font-bold text-white uppercase tracking-widest shadow-lg shadow-primary/20">
                   {category.count}
                 </span>
               </div>

@@ -131,7 +131,14 @@ const PackageCardContent = ({ pkg, API_URL, isMobile = false }: { pkg: Package, 
         <div className="flex justify-between items-center">
           <div className="flex flex-col">
             <div className="flex items-baseline gap-1">
-              <span className="text-lg font-black text-primary">₹{pkg.price.toLocaleString()}</span>
+              {pkg.price === 0 || pkg.title.toLowerCase().includes("tour 4") || pkg.title.toLowerCase().includes("tour 5") ? (
+                <span className="text-sm font-black text-primary uppercase tracking-tighter">seasonal package (negotiable)</span>
+              ) : (
+                <>
+                  <span className="text-[10px] font-bold text-white/60 uppercase tracking-widest mr-1">Starting from</span>
+                  <span className="text-lg font-black text-primary">₹{pkg.price.toLocaleString()}</span>
+                </>
+              )}
             </div>
           </div>
           <div className="w-8 h-8 rounded-xl bg-primary flex items-center justify-center">

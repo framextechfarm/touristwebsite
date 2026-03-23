@@ -28,28 +28,12 @@ const upload = multer({
   },
 });
 
-// ─── Default seed slots ───────────────────────────────────────────────────────
-
-const DEFAULT_SLOTS = [
-  { slotKey: "explore_kodai_1", title: "Neelakurinji Bloom", description: "The 12-Year Miracle...", imageUrl: "/assets/destination_1.png", category: "homepage" },
-  { slotKey: "explore_kodai_2", title: "The Star-Shaped Lake", description: "Created in 1863...", imageUrl: "/assets/hero.png", category: "homepage" },
-  { slotKey: "explore_kodai_3", title: "Solar Observatory", description: "Established 1899...", imageUrl: "/assets/destination_2.png", category: "homepage" },
-  { slotKey: "explore_kodai_4", title: "7,200 ft", description: "Elevation Above Sea Level", imageUrl: null, category: "homepage" },
-];
-
 // ─── Routes ───────────────────────────────────────────────────────────────────
 
 // GET /admin/image-slots
 router.get("/image-slots", async (req, res, next) => {
   try {
-    let slots = await prisma.imageSlot.findMany();
-
-    // Seed defaults if empty
-    if (slots.length === 0) {
-      await prisma.imageSlot.createMany({ data: DEFAULT_SLOTS });
-      slots = await prisma.imageSlot.findMany();
-    }
-
+    const slots = await prisma.imageSlot.findMany();
     res.json(slots);
   } catch (err) {
     next(err);

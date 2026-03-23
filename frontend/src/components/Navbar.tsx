@@ -147,18 +147,6 @@ export function Navbar() {
         </AnimatePresence>
       </motion.nav>
 
-      {/* Floating Top Destination Card (Desktop only) */}
-      <div className="absolute top-24 right-10 hidden xl:block">
-        <div className="glass px-5 py-3 rounded-2xl flex items-center gap-4 shadow-2xl backdrop-blur-2xl">
-          <div className="w-10 h-10 bg-accent rounded-full flex items-center justify-center">
-            <Star className="w-5 h-5 text-white fill-white" />
-          </div>
-          <div>
-            <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">Top destination</p>
-            <p className="text-sm font-bold text-foreground">Kodaikanal</p>
-          </div>
-        </div>
-      </div>
 
       {/* Mobile Slide-out Drawer (Sheet) */}
       <AnimatePresence>

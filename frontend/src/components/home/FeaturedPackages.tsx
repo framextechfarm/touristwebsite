@@ -22,8 +22,6 @@ interface FeaturedPackagesProps {
 }
 
 export const FeaturedPackages = ({ packages, API_URL, loading = false }: FeaturedPackagesProps) => {
-  const chips = ["All", "Trending", "Mountains", "Forest", "Budget", "Luxury"];
-
   return (
     <section className="py-24 overflow-hidden">
       <div className="max-w-7xl mx-auto px-6 mb-12">
@@ -35,22 +33,6 @@ export const FeaturedPackages = ({ packages, API_URL, loading = false }: Feature
           <Link href="/packages" className="group flex items-center gap-2 text-primary font-bold hover:opacity-80 transition-opacity">
             Explore All Packages <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
           </Link>
-        </div>
-
-        {/* Filter Chips */}
-        <div className="flex gap-3 overflow-x-auto pb-4 no-scrollbar">
-          {chips.map((chip) => (
-            <button
-              key={chip}
-              className={`px-6 py-2.5 rounded-full text-sm font-bold border transition-all shrink-0 ${
-                chip === "All"
-                  ? "bg-primary text-white border-primary shadow-lg shadow-primary/20"
-                  : "bg-background text-foreground/60 border-border/50 hover:border-primary/40 hover:text-primary"
-              }`}
-            >
-              {chip}
-            </button>
-          ))}
         </div>
       </div>
 

@@ -72,10 +72,7 @@ export default function RootLayout({
       <body
         className={`${inter.variable} font-sans antialiased pb-[env(safe-area-inset-bottom)]`}
       >
-        <Navbar />
         {children}
-        <Footer />
-        <ScrollToTop />
       </body>
     </html>
   );
