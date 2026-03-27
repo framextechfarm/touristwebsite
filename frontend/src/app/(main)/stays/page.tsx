@@ -177,7 +177,7 @@ export default function StaysPage() {
                                             <div>
                                                 <p className="text-[10px] text-foreground/60 uppercase font-black tracking-widest mb-1">Per night</p>
                                                 <span className="text-3xl font-black text-foreground">
-                                                    ₹{stay.price_per_night.toLocaleString()}
+                                                    ₹{stay.price_per_night?.toLocaleString() || "N/A"}
                                                 </span>
                                             </div>
                                             <div className="w-12 h-12 rounded-xl bg-secondary flex items-center justify-center border border-border group-hover:bg-primary transition-colors">

@@ -11,7 +11,7 @@ const STAY_CATEGORIES = [
     title: "Cottages / Rooms",
     description: "Cozy spaces with breathtaking views of the valley.",
     image: "https://images.unsplash.com/photo-1587061949409-02df41d5e562?q=80&w=600&h=800&fit=crop",
-    link: "/stays?type=cottage"
+    link: "/stays/cottages"
   },
   {
     id: "tents",
