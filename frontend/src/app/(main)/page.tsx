@@ -6,6 +6,7 @@ import { Hero } from "@/components/home/Hero";
 import { CategoryCards } from "@/components/home/CategoryCards";
 import { FeaturedPackages } from "@/components/home/FeaturedPackages";
 import { Stats } from "@/components/home/Stats";
+import { StaysSection } from "@/components/home/StaysSection";
 import { CabService } from "@/components/home/CabService";
 import { ReviewCarousel } from "@/components/home/ReviewCarousel";
 import { staticPackages } from "@/data/packages";
@@ -113,6 +114,7 @@ export default function Home() {
       )}
       
       <Stats />
+      <StaysSection />
       <CabService />
       <ReviewCarousel API_URL={API_URL} />
     </main>
