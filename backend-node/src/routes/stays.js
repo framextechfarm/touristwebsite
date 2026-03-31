@@ -41,6 +41,7 @@ router.get("/", async (req, res, next) => {
 
     res.json(result);
   } catch (err) {
+    console.error("GET /stays Error:", err);
     next(err);
   }
 });

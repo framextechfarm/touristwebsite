@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
-import { MapPin, Users, Star, Bed, Bath, Zap, Shield, ArrowRight } from "lucide-react";
+import { useEffect, useState, Suspense } from "react";
+import { useSearchParams } from "next/navigation";
+import { motion, AnimatePresence } from "framer-motion";
+import { MapPin, Users, Star, Bed, Bath, Zap, Shield, ArrowRight, ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { API_URL } from "@/lib/config";
@@ -22,177 +23,271 @@ type Stay = {
     id: number;
     name: string;
     slug: string;
-    property_type: string;
+    propertyType: string;
     location: string;
-    price_per_night: number;
+    pricePerNight: number;
     capacity: number;
     bedrooms: number;
     bathrooms: number;
     rating: number;
-    is_featured: boolean;
+    isFeatured: boolean;
     images: StayImage[];
     amenities: Amenity[];
 };
 
-const PROPERTY_TYPES = ["cottage", "villa", "tent", "homestay"];
+const PROPERTY_TYPES = ["cottage", "villa", "tent", "hut", "aframe", "homestay"];
 
-export default function StaysPage() {
+const StaysContent = () => {
+    const searchParams = useSearchParams();
+    const initialType = searchParams.get("type");
+
     const [stays, setStays] = useState<Stay[]>([]);
     const [loading, setLoading] = useState(true);
-    const [selectedType, setSelectedType] = useState<string | null>(null);
-    const [priceRange] = useState<[number, number]>([0, 10000]);
+    const [selectedType, setSelectedType] = useState<string | null>(initialType);
+    const [priceRange, setPriceRange] = useState<[number, number]>([0, 10000]);
+
+    const fetchStays = async () => {
+        setLoading(true);
+        try {
+            let url = `${API_URL}/stays`;
+            const params = new URLSearchParams();
+            
+            if (selectedType && selectedType !== "tent-hut") {
+                params.append("property_type", selectedType);
+            }
+            if (priceRange[0] > 0) params.append("min_price", priceRange[0].toString());
+            if (priceRange[1] < 10000) params.append("max_price", priceRange[1].toString());
+
+            if (params.toString()) url += `?${params.toString()}`;
+
+            const res = await fetch(url);
+            if (!res.ok) {
+                const errorData = await res.json().catch(() => ({}));
+                console.error("API error:", res.status, errorData);
+                setStays([]);
+                return;
+            }
+            const data = await res.json();
+            
+            if (!Array.isArray(data)) {
+                console.error("Expected an array of stays but received:", data);
+                setStays([]);
+                return;
+            }
+
+            // Parity check for property_type vs propertyType
+            const normalizedData = data.map((s: any) => ({
+                ...s,
+                propertyType: s.propertyType || s.property_type
+            }));
+
+            // Filter for tent-hut mode if needed
+            if (selectedType === "tent-hut") {
+                setStays(normalizedData.filter((s: Stay) => ["tent", "hut", "aframe"].includes(s.propertyType)));
+            } else {
+                setStays(normalizedData);
+            }
+        } catch (error) {
+            console.error("Failed to fetch stays:", error);
+        } finally {
+            setLoading(false);
+        }
+    };
 
     useEffect(() => {
-        async function fetchStays() {
-            try {
-                let url = `${API_URL}/stays`;
-                const params = new URLSearchParams();
-
-                if (selectedType) params.append("property_type", selectedType);
-                if (priceRange[0] > 0) params.append("min_price", priceRange[0].toString());
-                if (priceRange[1] < 10000) params.append("max_price", priceRange[1].toString());
-
-                if (params.toString()) url += `?${params.toString()}`;
-
-                const res = await fetch(url);
-                const data = await res.json();
-                setStays(data);
-            } catch (error) {
-                console.error("Failed to fetch stays", error);
-            } finally {
-                setLoading(false);
-            }
-        }
         fetchStays();
     }, [selectedType, priceRange]);
 
+    const [activeStay, setActiveStay] = useState<Stay | null>(null);
+    const [activeImageIndex, setActiveImageIndex] = useState(0);
+
+    const renderStayCard = (stay: Stay, index: number) => {
+        const whatsappUrl = `https://wa.me/919003922073?text=${encodeURIComponent(`Hello! I'm interested in booking the ${stay.name}.`)}`;
+        
+        return (
+            <motion.div
+                key={stay.id}
+                initial={{ opacity: 0, x: 50 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: index * 0.2 }}
+                whileHover={{ y: -10 }}
+                className="min-w-[85vw] md:min-w-[450px] bg-card rounded-[2.5rem] md:rounded-[3rem] overflow-hidden border border-border hover:border-primary/20 transition-all duration-500 shadow-2xl group flex flex-col h-full cursor-pointer"
+                onClick={() => {
+                    setActiveStay(stay);
+                    setActiveImageIndex(0);
+                }}
+            >
+                <div className="flex flex-col h-full">
+                    <div className="relative h-[300px] md:h-[400px] overflow-hidden">
+                        <Image
+                            src={stay.images[0]?.url || "https://placehold.co/600x400"}
+                            alt={stay.name}
+                            width={800}
+                            height={600}
+                            className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
+                        />
+                        <div className="absolute top-6 left-6 md:top-8 md:left-8">
+                            <span className="bg-primary/90 backdrop-blur-md text-white text-[10px] md:text-[12px] font-black px-4 md:px-6 py-1.5 md:py-2 rounded-full uppercase tracking-widest shadow-2xl">
+                                {stay.propertyType}
+                            </span>
+                        </div>
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end p-8 md:p-12">
+                            <p className="text-white font-bold text-sm md:text-lg flex items-center gap-2">
+                                <Zap className="w-4 h-4 md:w-5 md:h-5 text-primary" /> View Gallery
+                            </p>
+                        </div>
+                    </div>
+
+                    <div className="p-8 md:p-12 flex flex-col flex-1 bg-gradient-to-b from-card to-secondary/30">
+                        <h3 className="text-2xl md:text-4xl font-bold text-foreground mb-2 md:mb-4 group-hover:text-primary transition-colors tracking-tight leading-tight">{stay.name}</h3>
+                        <div className="flex items-center text-foreground/60 text-base md:text-lg font-medium mb-6 md:mb-8">
+                            <MapPin className="w-4 h-4 md:w-5 md:h-5 mr-2 md:mr-3 text-primary" />
+                            {stay.location}
+                        </div>
+                        
+                        <div className="flex items-center gap-6 md:gap-8 text-sm text-foreground/40 font-black uppercase tracking-[0.2em] text-[9px] md:text-[10px] mb-8 md:mb-10">
+                            <span className="flex items-center gap-1.5 md:gap-2">
+                                <Users className="w-4 h-4 md:w-5 md:h-5 text-primary/50" /> {stay.capacity} Guests
+                            </span>
+                            <span className="flex items-center gap-1.5 md:gap-2">
+                                <Bed className="w-4 h-4 md:w-5 md:h-5 text-primary/50" /> {stay.bedrooms} BR
+                            </span>
+                        </div>
+                        
+                        <div className="mt-auto">
+                            <a 
+                                href={whatsappUrl}
+                                onClick={(e) => e.stopPropagation()}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="w-full py-4 md:py-5 bg-primary text-white rounded-xl md:rounded-2xl font-black text-[9px] md:text-[10px] uppercase tracking-[0.3em] flex items-center justify-center gap-2 md:gap-3 hover:brightness-110 transition-all active:scale-95 shadow-2xl shadow-primary/30"
+                            >
+                                <svg className="w-4 h-4 md:w-5 md:h-5" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+                                </svg>
+                                Book on WhatsApp
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </motion.div>
+        );
+    };
+
     return (
-        <main className="min-h-screen bg-background text-foreground">
-
-
-            {/* Header Content Section */}
-            <div className="pt-48 pb-12 px-6">
+        <main className="min-h-screen bg-background text-foreground overflow-x-hidden">
+            <div className="pt-32 md:pt-48 pb-8 md:pb-12 px-6">
                 <div className="max-w-7xl mx-auto text-center">
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
-                        className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass border border-border mb-6"
+                        className="inline-flex items-center gap-2 px-4 md:px-6 py-2 md:py-2.5 rounded-full bg-primary/10 border border-primary/20 mb-6 md:mb-8"
                     >
-                        <Zap className="w-4 h-4 text-primary" />
-                        <span className="text-xs font-bold tracking-widest uppercase">Premium Stays</span>
+                        <Zap className="w-4 h-4 md:w-5 md:h-5 text-primary" />
+                        <span className="text-[9px] md:text-[10px] font-black tracking-[0.3em] uppercase text-primary">Limited Edition Stays</span>
                     </motion.div>
-                    <h1 className="text-5xl md:text-7xl font-bold mb-6 tracking-tight">Find Your Perfect <span className="text-primary italic">Stay</span></h1>
-                    <p className="text-muted-foreground text-lg max-w-2xl mx-auto">Cottages, villas, tents & homestays in the hills of Kodaikanal.</p>
+                    <h1 className="text-4xl md:text-8xl font-black mb-6 md:mb-8 tracking-tighter leading-none">
+                        Escape to the <span className="text-primary italic">Hills.</span>
+                    </h1>
+                    <p className="text-foreground/60 text-lg md:text-xl max-w-2xl mx-auto font-medium">Discover our exclusive collection of handpicked stays in Kodaikanal.</p>
                 </div>
             </div>
 
-            <div className="max-w-7xl mx-auto px-6 py-8">
-                {/* Desktop Filters */}
-                <div className="hidden md:block bg-card glass rounded-[2rem] p-6 mb-12 border border-border">
-                    <h3 className="font-bold text-foreground mb-4 opacity-70 text-sm uppercase tracking-widest">Filter by Property Type</h3>
-                    <div className="flex flex-wrap gap-3">
-                        <button
-                            onClick={() => setSelectedType(null)}
-                            className={`px-6 py-2 rounded-full font-bold text-xs uppercase tracking-widest transition-all ${selectedType === null
-                                ? "bg-primary text-white shadow-xl shadow-primary/20"
-                                : "bg-secondary text-muted-foreground hover:bg-primary/10 hover:text-primary active:scale-95"
-                                }`}
+            <div className="py-12 md:py-24 relative">
+                <div className="flex overflow-x-auto pb-8 md:pb-12 px-6 md:px-24 gap-8 md:gap-12 no-scrollbar scroll-smooth">
+                    {loading ? (
+                        [1, 2, 3].map(i => (
+                            <div key={i} className="min-w-[85vw] md:min-w-[450px] h-[500px] md:h-[700px] bg-secondary rounded-[2.5rem] md:rounded-[3rem] animate-pulse border border-border"></div>
+                        ))
+                    ) : (
+                        stays.map((stay, index) => renderStayCard(stay, index))
+                    )}
+                </div>
+                
+                <div className="flex justify-center gap-2 md:gap-3 mt-4 md:mt-8">
+                    {stays.map((_, i) => (
+                        <div key={i} className="w-1.5 h-1.5 md:w-2 md:h-2 rounded-full bg-primary/30" />
+                    ))}
+                </div>
+            </div>
+
+            <AnimatePresence>
+                {activeStay && (
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-12 bg-black/95 backdrop-blur-2xl"
+                    >
+                        <button 
+                            onClick={() => setActiveStay(null)}
+                            className="absolute top-6 right-6 md:top-12 md:right-12 text-white/50 hover:text-white transition-colors z-[110]"
                         >
-                            All
+                            <svg className="w-8 h-8 md:w-12 md:h-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                            </svg>
                         </button>
-                        {PROPERTY_TYPES.map((type) => (
-                            <button
-                                key={type}
-                                onClick={() => setSelectedType(type)}
-                                className={`px-6 py-2 rounded-full font-bold text-xs uppercase tracking-widest capitalize transition-all ${selectedType === type
-                                    ? "bg-primary text-white shadow-xl shadow-primary/20"
-                                    : "bg-secondary text-muted-foreground hover:bg-primary/10 hover:text-primary active:scale-95"
-                                    }`}
-                            >
-                                {type}
-                            </button>
-                        ))}
-                    </div>
-                </div>
 
-                {/* Stays Grid */}
-                {loading ? (
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                        {[1, 2, 3].map(i => (
-                            <div key={i} className="h-[450px] bg-secondary rounded-[2.5rem] animate-pulse border border-border"></div>
-                        ))}
-                    </div>
-                ) : (
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                        {stays.map((stay, index) => (
-                            <motion.div
-                                key={stay.id}
-                                initial={{ opacity: 0, y: 20 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ delay: index * 0.1 }}
-                                whileHover={{ y: -10 }}
-                                className="bg-card rounded-[2.5rem] overflow-hidden border border-border hover:border-primary/20 transition-all duration-500 shadow-lg group flex flex-col"
-                            >
-                                <Link href={`/stays/${stay.id}`} className="flex flex-col h-full">
-                                    {/* Image */}
-                                    <div className="relative h-64 overflow-hidden">
-                                        <Image
-                                            src={stay.images[0]?.url || "https://placehold.co/600x400"}
-                                            alt={stay.name}
-                                            width={600}
-                                            height={400}
-                                            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                                        />
-                                        <div className="absolute top-6 left-6">
-                                            <span className="bg-primary text-white text-[10px] font-black px-4 py-1.5 rounded-full uppercase tracking-widest shadow-lg">
-                                                {stay.property_type}
-                                            </span>
-                                        </div>
-                                    </div>
-
-                                    {/* Content */}
-                                    <div className="p-8 flex flex-col flex-1">
-                                        <h3 className="text-2xl font-bold text-foreground mb-3 group-hover:text-primary transition-colors">{stay.name}</h3>
-
-                                        <div className="flex items-center text-foreground/70 text-sm font-medium mb-6">
-                                            <MapPin className="w-4 h-4 mr-2 text-primary" />
-                                            {stay.location}
-                                        </div>
-
-                                        {/* Stats */}
-                                        <div className="flex items-center gap-6 text-sm text-foreground/60 font-bold uppercase tracking-widest text-[10px] mb-8">
-                                            <span className="flex items-center gap-1.5">
-                                                <Users className="w-4 h-4 text-primary" /> {stay.capacity}
-                                            </span>
-                                            <span className="flex items-center gap-1.5">
-                                                <Bed className="w-4 h-4 text-primary" /> {stay.bedrooms}
-                                            </span>
-                                            <span className="flex items-center gap-1.5">
-                                                <Bath className="w-4 h-4 text-primary" /> {stay.bathrooms}
-                                            </span>
-                                        </div>
-
-                                        {/* Price & Rating */}
-                                        <div className="mt-auto pt-8 border-t border-border flex items-center justify-between">
-                                            <div>
-                                                <p className="text-[10px] text-foreground/60 uppercase font-black tracking-widest mb-1">Per night</p>
-                                                <span className="text-3xl font-black text-foreground">
-                                                    ₹{stay.price_per_night?.toLocaleString() || "N/A"}
-                                                </span>
-                                            </div>
-                                            <div className="w-12 h-12 rounded-xl bg-secondary flex items-center justify-center border border-border group-hover:bg-primary transition-colors">
-                                                <ArrowRight className="w-5 h-5 text-foreground group-hover:text-white" />
-                                            </div>
-                                        </div>
-                                    </div>
-                                </Link>
-                            </motion.div>
-                        ))}
-                    </div>
+                        <div className="w-full max-w-7xl flex flex-col h-full">
+                            <div className="flex-1 relative mb-4 md:mb-8 rounded-[2rem] md:rounded-[3rem] overflow-hidden group">
+                                <Image
+                                    src={activeStay.images[activeImageIndex]?.url}
+                                    alt={activeStay.name}
+                                    fill
+                                    className="object-contain"
+                                />
+                                
+                                <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 flex justify-between px-4 md:px-8">
+                                    <button 
+                                        onClick={() => setActiveImageIndex(prev => (prev > 0 ? prev - 1 : activeStay.images.length - 1))}
+                                        className="w-12 h-12 md:w-16 md:h-16 rounded-full bg-white/10 backdrop-blur-lg flex items-center justify-center text-white hover:bg-white/20 transition-all border border-white/10"
+                                    >
+                                        <ArrowLeft className="w-6 h-6 md:w-8 md:h-8" />
+                                    </button>
+                                    <button 
+                                        onClick={() => setActiveImageIndex(prev => (prev < activeStay.images.length - 1 ? prev + 1 : 0))}
+                                        className="w-12 h-12 md:w-16 md:h-16 rounded-full bg-white/10 backdrop-blur-lg flex items-center justify-center text-white hover:bg-white/20 transition-all border border-white/10"
+                                    >
+                                        <ArrowRight className="w-6 h-6 md:w-8 md:h-8" />
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div className="flex gap-4 overflow-x-auto py-6 no-scrollbar h-24">
+                                {activeStay.images.map((img, idx) => (
+                                    <button
+                                        key={idx}
+                                        onClick={() => setActiveImageIndex(idx)}
+                                        className={`relative w-24 h-full rounded-2xl overflow-hidden shrink-0 transition-all ${
+                                            activeImageIndex === idx ? "ring-4 ring-primary ring-offset-4 ring-offset-black" : "opacity-40 hover:opacity-100"
+                                        }`}
+                                    >
+                                        <Image src={img.url} alt="thumbnail" fill className="object-cover" />
+                                    </button>
+                                ))}
+                            </div>
+                            
+                            <div className="flex items-center justify-between py-8">
+                                <div>
+                                    <h2 className="text-4xl font-black text-white mb-2 tracking-tighter">{activeStay.name}</h2>
+                                    <p className="text-white/40 font-bold uppercase tracking-widest text-xs flex items-center gap-2">
+                                        <MapPin className="w-4 h-4" /> {activeStay.location}
+                                    </p>
+                                </div>
+                                <a 
+                                    href={`https://wa.me/919003922073?text=${encodeURIComponent(`Hello! I'm interested in booking the ${activeStay.name}.`)}`}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="px-12 py-5 bg-primary text-white rounded-full font-black text-xs uppercase tracking-[0.3em] hover:brightness-110 transition-all border border-white/10 shadow-2xl shadow-primary/30 flex items-center gap-3"
+                                >
+                                    Book Now
+                                </a>
+                            </div>
+                        </div>
+                    </motion.div>
                 )}
-            </div>
+            </AnimatePresence>
 
-            {/* --- TRUST BADGES --- */}
             <section className="bg-secondary/50 py-12 border-y border-border hidden md:block mt-20">
                 <div className="max-w-7xl mx-auto px-6 flex justify-around">
                     {[
@@ -207,54 +302,14 @@ export default function StaysPage() {
                     ))}
                 </div>
             </section>
-
-            {/* Mobile Filter FAB and Overlay */}
-            <div className="md:hidden fixed bottom-24 right-6 z-40">
-                <button 
-                  onClick={() => document.getElementById('filter-overlay')?.classList.remove('hidden')}
-                  className="w-14 h-14 bg-primary text-white rounded-full shadow-2xl flex items-center justify-center hover:bg-primary/90 active:scale-90 transition-all shadow-primary/30"
-                >
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon></svg>
-                </button>
-            </div>
-
-            <div id="filter-overlay" className="fixed inset-0 bg-background/95 backdrop-blur-3xl z-[100] hidden flex-col">
-                <div className="flex items-center justify-between p-6 border-b border-border">
-                    <h2 className="text-xl font-bold">Filters</h2>
-                    <button 
-                        onClick={() => document.getElementById('filter-overlay')?.classList.add('hidden')}
-                        className="w-10 h-10 rounded-full bg-secondary flex items-center justify-center active:scale-95 transition-transform"
-                    >
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
-                    </button>
-                </div>
-                <div className="p-6 flex-1 overflow-y-auto">
-                    <h3 className="font-bold text-foreground mb-4 opacity-70 text-sm uppercase tracking-widest">Property Type</h3>
-                    <div className="flex flex-col gap-3">
-                        <button
-                            onClick={() => { setSelectedType(null); document.getElementById('filter-overlay')?.classList.add('hidden'); }}
-                            className={`p-4 rounded-xl font-bold text-left transition-all ${selectedType === null
-                                ? "bg-primary/20 text-primary border border-primary/30"
-                                : "bg-secondary text-foreground border border-transparent"
-                                }`}
-                        >
-                            All Properties
-                        </button>
-                        {PROPERTY_TYPES.map((type) => (
-                            <button
-                                key={type}
-                                onClick={() => { setSelectedType(type); document.getElementById('filter-overlay')?.classList.add('hidden'); }}
-                                className={`p-4 rounded-xl font-bold text-left capitalize transition-all ${selectedType === type
-                                    ? "bg-primary/20 text-primary border border-primary/30"
-                                    : "bg-secondary text-foreground border border-transparent"
-                                    }`}
-                            >
-                                {type}
-                            </button>
-                        ))}
-                    </div>
-                </div>
-            </div>
         </main>
+    );
+}
+
+export default function StaysPage() {
+    return (
+        <Suspense fallback={<div>Loading...</div>}>
+            <StaysContent />
+        </Suspense>
     );
 }

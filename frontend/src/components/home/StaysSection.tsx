@@ -18,7 +18,7 @@ const STAY_CATEGORIES = [
     title: "Tent / Hut Stay",
     description: "Experience nature up close with our secure camping setups.",
     image: "https://images.unsplash.com/photo-1517824806704-9040b037703b?q=80&w=600&h=800&fit=crop",
-    link: "/stays?type=tent"
+    link: "/stays?type=tent-hut"
   },
   {
     id: "homestays",
