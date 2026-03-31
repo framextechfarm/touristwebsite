@@ -243,15 +243,17 @@ export default function PackageDetailsPage() {
                                     </div>
                                 </div>
 
-                                <Link
-                                    href={`/checkout?type=package&id=${pkg.id}`}
+                                <a
+                                    href={`https://wa.me/919003922073?text=${encodeURIComponent(`Hello! I'm interested in the "${pkg.title}" package for ${pkg.duration}.`)}`}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
                                     className="w-full bg-primary text-white py-5 rounded-2xl font-black uppercase tracking-widest text-sm shadow-xl shadow-primary/20 hover:brightness-110 active:scale-95 transition-all block text-center"
                                 >
-                                    Confirm Booking
-                                </Link>
+                                    Enquire Now
+                                </a>
                                 
                                 <p className="text-center text-[10px] text-muted-foreground font-bold uppercase tracking-widest mt-6">
-                                    Instant Confirmation • Secure Payment
+                                    Chat with our experts for custom quotes
                                 </p>
                             </div>
 
@@ -279,12 +281,14 @@ export default function PackageDetailsPage() {
                             {pkg.price > 0 ? `₹${pkg.price.toLocaleString()}` : "Negotiable"}
                         </span>
                     </div>
-                    <Link
-                        href={`/checkout?type=package&id=${pkg.id}`}
+                    <a
+                        href={`https://wa.me/919003922073?text=${encodeURIComponent(`Hello! I'm interested in the "${pkg.title}" package for ${pkg.duration}.`)}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
                         className="bg-primary text-white px-8 py-4 rounded-xl font-black uppercase tracking-widest text-xs shadow-xl shadow-primary/20"
                     >
-                        Book Now
-                    </Link>
+                        Enquire Now
+                    </a>
                 </div>
             </div>
         </main>

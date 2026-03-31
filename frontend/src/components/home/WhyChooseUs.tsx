@@ -86,7 +86,14 @@ export const WhyChooseUs = () => {
             ))}
           </div>
 
-          <button className="btn-primary">Start Your Journey</button>
+          <a 
+            href="https://wa.me/919003922073?text=Hello! I'm interested in starting a journey with Hill Trek."
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn-primary inline-block text-center"
+          >
+            Enquire Now
+          </a>
         </div>
       </div>
     </section>

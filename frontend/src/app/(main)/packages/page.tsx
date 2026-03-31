@@ -192,7 +192,7 @@ export default function PackagesPage() {
         <div className="max-w-7xl mx-auto px-6 flex justify-around">
             {[
                 { icon: Shield, text: "Verified Operators" },
-                { icon: Zap, text: "Instant Booking" },
+                { icon: Zap, text: "Quality Service" },
                 { icon: Star, text: "Premium Experience" }
             ].map((item, i) => (
                 <div key={i} className="flex items-center gap-4 text-muted-foreground uppercase tracking-widest text-[11px] font-black">

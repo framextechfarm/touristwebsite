@@ -67,8 +67,14 @@ export function Navbar() {
         </div>
         <div className="flex items-center gap-6">
           <ThemeToggle />
-          <button className="text-[15px] font-medium text-white/70 hover:text-primary transition-colors">Login</button>
-          <button className="btn-primary py-2.5 px-6 min-h-[44px]">Sign Up</button>
+          <a 
+            href="https://wa.me/919003922073?text=Hello! I have an enquiry about your services."
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn-primary py-2.5 px-6 min-h-[44px]"
+          >
+            Enquire Now
+          </a>
         </div>
       </nav>
 
@@ -196,12 +202,14 @@ export function Navbar() {
               </div>
 
               <div className="mt-auto pt-8 flex flex-col gap-4">
-                <button className="w-full py-4 text-lg font-medium text-foreground border border-border rounded-xl active:scale-95 transition-all">
-                  Login
-                </button>
-                <button className="w-full btn-primary py-4 text-lg">
-                  Sign Up
-                </button>
+                <a 
+                  href="https://wa.me/919003922073?text=Hello! I have an enquiry about your services."
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full btn-primary py-4 text-lg text-center"
+                >
+                  Enquire Now
+                </a>
               </div>
             </motion.div>
           </>

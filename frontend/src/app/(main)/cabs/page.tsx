@@ -232,12 +232,14 @@ export default function CabsPage() {
                                                     ₹{result.price.toLocaleString()}
                                                 </div>
                                             </div>
-                                            <Link
-                                                href={`/checkout?type=cab&id=${result.route.id}&vehicleId=${result.vehicle.id}`}
+                                             <a
+                                                href={`https://wa.me/919003922073?text=${encodeURIComponent(`Hello! I'd like to enquire about booking a ${result.vehicle.name} from ${result.route.from_location} to ${result.route.to_location}.`)}`}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
                                                 className="bg-primary text-white px-8 py-4 rounded-xl font-bold hover:brightness-110 active:scale-95 transition-all whitespace-nowrap shadow-xl shadow-primary/20"
                                             >
-                                                Book Now
-                                            </Link>
+                                                Enquire Now
+                                            </a>
                                         </div>
                                     </div>
                                 </motion.div>

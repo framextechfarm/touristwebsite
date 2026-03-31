@@ -248,17 +248,19 @@ export default function StayDetailsPage() {
                                 <span className="text-xs font-bold text-foreground/40 uppercase">EXCLUDING TAX</span>
                             </div>
 
-                            <Link
-                                href={`/checkout?type=stay&id=${stay.id}`}
+                            <a
+                                href={`https://wa.me/919003922073?text=${encodeURIComponent(`Hello! I'm interested in the "${stay.name}" in ${stay.location}.`)}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
                                 className="w-full bg-primary text-white py-5 rounded-2xl font-black uppercase tracking-widest text-sm shadow-xl shadow-primary/20 hover:brightness-110 active:scale-95 transition-all block text-center mb-8"
                             >
-                                Safe Booking
-                            </Link>
+                                Enquire Now
+                            </a>
 
                             <div className="space-y-6 pt-8 border-t border-border">
                                 {[
                                     { icon: Shield, text: "Safety First Policy" },
-                                    { icon: Zap, text: "Instant Confirmation" }
+                                    { icon: Zap, text: "Verified Excellence" }
                                 ].map((item, i) => (
                                     <div key={i} className="flex items-center gap-4 text-xs font-black uppercase tracking-widest text-foreground/60">
                                         <item.icon className="w-5 h-5 text-primary" />
@@ -282,12 +284,14 @@ export default function StayDetailsPage() {
                             ₹{stay.price_per_night.toLocaleString()}
                         </span>
                     </div>
-                    <Link
-                        href={`/checkout?type=stay&id=${stay.id}`}
+                    <a
+                        href={`https://wa.me/919003922073?text=${encodeURIComponent(`Hello! I'm interested in the "${stay.name}" in ${stay.location}.`)}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
                         className="bg-primary text-white px-8 py-4 rounded-xl font-black uppercase tracking-widest text-xs shadow-xl shadow-primary/20 hover:brightness-110 active:scale-95 transition-all text-center"
                     >
-                        Book Now
-                    </Link>
+                        Enquire Now
+                    </a>
                 </div>
             </div>
         </main>
