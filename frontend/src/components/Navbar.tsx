@@ -31,9 +31,6 @@ export function Navbar() {
     };
     window.addEventListener("scroll", handleScroll);
 
-    // Early Warming: Ping the server to start the cold-start wake-up
-    fetch(`${API_URL}/health`).catch(() => {});
-
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 

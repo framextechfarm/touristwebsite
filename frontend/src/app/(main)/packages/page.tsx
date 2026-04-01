@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import { MapPin, Clock, Star, ArrowRight, Shield, Zap } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
-import { API_URL } from "@/lib/config";
+import { staticPackages } from "@/data/packages";
 
 type Package = {
   id: number;
@@ -20,23 +20,7 @@ type Package = {
 };
 
 export default function PackagesPage() {
-  const [packages, setPackages] = useState<Package[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    async function fetchPackages() {
-      try {
-        const res = await fetch(`${API_URL}/packages`);
-        const data = await res.json();
-        setPackages(data);
-      } catch (error) {
-        console.error("Failed to fetch packages", error);
-      } finally {
-        setLoading(false);
-      }
-    }
-    fetchPackages();
-  }, []);
+  const packages = staticPackages;
 
   const getTag = (title: string) => {
     if (title.toLowerCase().includes("valley")) return { text: "POPULAR", color: "bg-blue-500" };
@@ -88,13 +72,6 @@ export default function PackagesPage() {
 
       {/* --- PACKAGES GRID --- */}
       <section className="max-w-7xl mx-auto px-6 pb-32">
-        {loading ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {[1, 2, 3, 4, 5, 6].map((i) => (
-              <div key={i} className="h-[500px] bg-secondary rounded-[2rem] animate-pulse border border-border"></div>
-            ))}
-          </div>
-        ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {packages.map((pkg, index) => {
                 const tag = getTag(pkg.title);
@@ -184,7 +161,6 @@ export default function PackagesPage() {
                 );
             })}
           </div>
-        )}
       </section>
 
       {/* --- TRUST BADGES --- */}

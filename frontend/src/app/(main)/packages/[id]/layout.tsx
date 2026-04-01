@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { API_URL } from "@/lib/config";
+import { staticPackages } from "@/data/packages";
 
 type Props = {
   params: Promise<{ id: string }>;
@@ -9,8 +9,9 @@ type Props = {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   try {
     const resolvedParams = await params;
-    const res = await fetch(`${API_URL}/packages/${resolvedParams.id}`);
-    const pkg = await res.json();
+    const pkg = staticPackages.find(p => p.id.toString() === resolvedParams.id);
+
+    if (!pkg) return { title: "Package Details" };
 
     return {
       title: `${pkg.title} | Hill Trek Packages`,
@@ -20,10 +21,21 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         description: pkg.description.substring(0, 160),
         images: pkg.images?.[0] ? [{ url: pkg.images[0].url }] : [],
       },
+      twitter: {
+        card: "summary_large_image",
+        title: pkg.title,
+        description: pkg.description.substring(0, 160),
+      }
     };
   } catch {
     return { title: "Package Details" };
   }
+}
+
+export async function generateStaticParams() {
+  return staticPackages.map((pkg) => ({
+    id: pkg.id.toString(),
+  }));
 }
 
 export default function PackageLayout({ children }: Props) {

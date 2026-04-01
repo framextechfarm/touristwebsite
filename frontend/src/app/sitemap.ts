@@ -1,5 +1,6 @@
 import type { MetadataRoute } from 'next';
 import { API_URL } from '@/lib/config';
+import { staticPackages } from '@/data/packages';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const routes = [
@@ -14,20 +15,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: route === '' ? 1 : 0.8,
   }));
 
-  // Fetch dynamic packages
-  let packageRoutes: MetadataRoute.Sitemap = [];
-  try {
-    const pkgRes = await fetch(`${API_URL}/packages`);
-    const packages = await pkgRes.json();
-    packageRoutes = packages.map((pkg: { id: number }) => ({
-      url: `https://hilltrek.vercel.app/packages/${pkg.id}`,
-      lastModified: new Date(),
-      changeFrequency: 'weekly' as const,
-      priority: 0.6,
-    }));
-  } catch {
-    console.error("Failed to fetch packages for sitemap");
-  }
+  // Map static packages
+  const packageRoutes: MetadataRoute.Sitemap = staticPackages.map((pkg) => ({
+    url: `https://hilltrek.vercel.app/packages/${pkg.id}`,
+    lastModified: new Date(),
+    changeFrequency: 'weekly' as const,
+    priority: 0.6,
+  }));
 
   // Fetch dynamic stays
   let stayRoutes: MetadataRoute.Sitemap = [];

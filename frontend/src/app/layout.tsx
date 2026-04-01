@@ -14,10 +14,10 @@ export const metadata: Metadata = {
     template: "%s | Hill Trek"
   },
   description: "Experience the ultimate hill station adventure with our curated trekking and stay packages in Kodaikanal and beyond. Premium cottages, villas, and unforgettable experiences.",
-  keywords: ["Kodaikanal", "Hill Station", "Trekking", "Cottages", "Villas", "Tour Packages", "Hill Trek", "South India Tourism", "Mountain Escapes", "Cab Bookings"],
-  authors: [{ name: "Hill Trek Team" }],
-  creator: "Hill Trek Team",
-  publisher: "Hill Trek",
+  keywords: ["Kodaikanal", "Kodaikanal Tour Packages", "Hill Station", "Trekking", "Cottages in Kodaikanal", "Villas in Kodaikanal", "Tour Packages", "Hill Trek", "South India Tourism", "Mountain Escapes", "Cab Bookings Kodaikanal", "SMR Holidays", "Homestay Kodaikanal"],
+  authors: [{ name: "SMR Holidays Team" }],
+  creator: "SMR Holidays",
+  publisher: "SMR Holidays",
   formatDetection: {
     email: false,
     address: false,
@@ -67,8 +67,31 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "TravelAgency",
+    "name": "SMR Holidays Kodaikanal",
+    "image": "https://hilltrek.vercel.app/og-image.jpg",
+    "description": "Experience the ultimate hill station adventure with our curated trekking and stay packages in Kodaikanal and beyond. Premium cottages, villas, and unforgettable experiences.",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Kodaikanal",
+      "addressRegion": "Tamil Nadu",
+      "addressCountry": "IN"
+    },
+    "telephone": "+91-9003922073",
+    "url": "https://hilltrek.vercel.app",
+    "priceRange": "$$"
+  };
+
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+      </head>
       <body
         className={`${inter.variable} font-sans antialiased pb-[env(safe-area-inset-bottom)]`}
       >

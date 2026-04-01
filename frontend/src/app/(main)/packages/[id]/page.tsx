@@ -6,7 +6,8 @@ import { motion } from "framer-motion";
 import { MapPin, Clock, Star, CheckCircle, Zap, ArrowRight } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
-import { API_URL } from "@/lib/config";
+import { staticPackages } from "@/data/packages";
+import { notFound } from "next/navigation";
 
 type ItineraryItem = {
     id: number;
@@ -30,42 +31,12 @@ type Package = {
 
 export default function PackageDetailsPage() {
     const { id } = useParams();
-    const [pkg, setPkg] = useState<Package | null>(null);
-    const [loading, setLoading] = useState(true);
     const [activeTab, setActiveTab] = useState("itinerary");
 
-    useEffect(() => {
-        if (!id) return;
-        async function fetchPackage() {
-            try {
-                const res = await fetch(`${API_URL}/packages/${id}`);
-                if (!res.ok) throw new Error("Not found");
-                const data = await res.json();
-                setPkg(data);
-            } catch (error) {
-                console.error("Failed to fetch package", error);
-            } finally {
-                setLoading(false);
-            }
-        }
-        fetchPackage();
-    }, [id]);
+    const idString = Array.isArray(id) ? id[0] : id;
+    const pkg = staticPackages.find(p => p.id.toString() === idString);
 
-    if (loading) return (
-        <div className="min-h-screen bg-background relative pb-24 md:pb-10">
-            <div className="h-[60vh] md:h-[70vh] bg-secondary animate-pulse" />
-            <div className="max-w-7xl mx-auto px-6 -mt-12 relative z-10">
-                <div className="bg-card glass rounded-[2.5rem] p-8 md:p-12 h-[400px] border border-border animate-pulse shadow-2xl" />
-            </div>
-        </div>
-    );
-
-    if (!pkg) return (
-        <div className="min-h-screen bg-background flex flex-col items-center justify-center gap-6">
-            <h2 className="text-3xl font-bold">Package not found</h2>
-            <Link href="/packages" className="btn-primary">Back to Packages</Link>
-        </div>
-    );
+    if (!pkg) return notFound();
 
     return (
         <main className="min-h-screen bg-background text-foreground pb-24 md:pb-10">
@@ -175,8 +146,8 @@ export default function PackageDetailsPage() {
                                 {activeTab === "itinerary" && (
                                     <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="space-y-12">
                                         <div className="relative border-l-2 border-primary/20 ml-6 space-y-16 py-4">
-                                            {pkg.itinerary.map((item) => (
-                                                <div key={item.id} className="relative pl-12">
+                                            {pkg.itinerary.map((item, index) => (
+                                                <div key={index} className="relative pl-12">
                                                     <div className="absolute -left-[11px] top-0 w-5 h-5 rounded-full bg-primary border-4 border-background shadow-lg shadow-primary/20"></div>
                                                     <div className="inline-block px-3 py-1 rounded-lg bg-primary/10 text-primary text-[10px] font-black uppercase tracking-widest mb-4">
                                                         Day {item.day}
