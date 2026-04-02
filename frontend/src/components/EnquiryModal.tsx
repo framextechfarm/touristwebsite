@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Calendar, Users, Phone, MapPin, Send, CheckCircle2, ChevronRight, Moon, Sun, Baby, User } from "lucide-react";
+import { X, Calendar, Phone, MapPin, Send, CheckCircle2, ChevronRight, Moon, ShieldCheck } from "lucide-react";
 import { API_URL } from "@/lib/config";
 
 interface EnquiryModalProps {
