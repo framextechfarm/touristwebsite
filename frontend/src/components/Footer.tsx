@@ -78,8 +78,18 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="pt-8 border-t border-border text-center text-foreground/50 text-xs tracking-wider font-medium uppercase leading-relaxed">
-          <p>designed and developed by JAMES ANDREW | FRAMEX TECH 2026 COPYRIGHTS RESERVED</p>
+        <div className="pt-8 border-t border-border text-center text-foreground/50 text-[10px] md:text-xs tracking-wider font-medium uppercase leading-relaxed space-y-2">
+          <p>
+            designed and developed by{" "}
+            <Link 
+              href="https://portfolio-blue-nu-31.vercel.app/" 
+              target="_blank"
+              className="text-primary font-black hover:border-b-2 border-primary transition-all pb-1 mx-1"
+            >
+              JAMES ANDREW
+            </Link>{" "}
+            | FRAMEX TECH 2026 COPYRIGHTS RESERVED
+          </p>
         </div>
       </div>
     </footer>
