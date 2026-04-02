@@ -123,23 +123,6 @@ export default function PackageDetailsPage() {
                                             <p className="text-muted-foreground text-lg leading-relaxed">{pkg.description}</p>
                                         </div>
 
-                                        <div className="pt-8 border-t border-border">
-                                            <h4 className="text-xs font-black uppercase tracking-widest text-primary mb-6">Package Highlights</h4>
-                                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                                {[
-                                                    "Premium Accommodation included",
-                                                    "Private Cab for sightseeing",
-                                                    "Breakfast & Dinner included",
-                                                    "Expert Local Guide",
-                                                    "24/7 Concierge Support"
-                                                ].map((item, i) => (
-                                                    <div key={i} className="flex items-center gap-4 p-4 rounded-2xl bg-secondary/50 border border-border/50">
-                                                        <CheckCircle className="w-5 h-5 text-primary shrink-0" />
-                                                        <span className="text-sm font-medium">{item}</span>
-                                                    </div>
-                                                ))}
-                                            </div>
-                                        </div>
                                     </motion.div>
                                 )}
 

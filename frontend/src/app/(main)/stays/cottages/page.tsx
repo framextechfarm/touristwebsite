@@ -297,19 +297,7 @@ export default function CottagesPage() {
                 </div>
               </div>
 
-              <div>
-                <h4 className="text-sm font-bold uppercase tracking-widest mb-4">Highlights & Amenities</h4>
-                <div className="grid grid-cols-2 gap-3">
-                  {stay.amenities.map((amenity, idx) => (
-                    <div key={idx} className="flex items-center gap-2 text-sm text-foreground/80 font-medium">
-                      <div className="w-5 h-5 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
-                        <Check className="w-3 h-3 text-primary" />
-                      </div>
-                      {amenity}
-                    </div>
-                  ))}
-                </div>
-              </div>
+
 
               <div className="pt-4">
                  <a 
