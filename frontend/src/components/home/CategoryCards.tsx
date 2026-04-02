@@ -6,7 +6,7 @@ import Link from "next/link";
 
 const categories = [
   { id: "pkgs", title: "Packages", desc: "Adventure & Hill Treks", icon: MapPin, href: "/packages", color: "from-primary/20", count: "14+ Tours", span: "col-span-2 lg:col-span-2" },
-  { id: "stays", title: "Stays", desc: "Cozy Cottages", icon: Calendar, href: "/stays/cottages", color: "from-emerald-500/20", count: "25+ Rooms", span: "col-span-1 lg:col-span-1" },
+  { id: "stays", title: "Stays", desc: "Cottages, Aframes & Tents", icon: Calendar, href: "/stays/cottages", color: "from-emerald-500/20", count: "50+ Options", span: "col-span-1 lg:col-span-1" },
   { id: "cabs", title: "Cabs", desc: "Intercity Transfers", icon: Users, href: "/cabs", color: "from-blue-500/20", count: "10+ Fleets", span: "col-span-1 lg:col-span-1" },
 ];
 

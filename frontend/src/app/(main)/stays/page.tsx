@@ -230,23 +230,51 @@ const StaysContent = () => {
 
                         <div className="w-full max-w-7xl flex flex-col h-full">
                             <div className="flex-1 relative mb-4 md:mb-8 rounded-[2rem] md:rounded-[3rem] overflow-hidden group">
-                                <Image
-                                    src={activeStay.images[activeImageIndex]?.url}
-                                    alt={activeStay.name}
-                                    fill
-                                    className="object-contain"
-                                />
+                                <AnimatePresence initial={false} custom={activeImageIndex}>
+                                    <motion.div
+                                        key={activeImageIndex}
+                                        initial={{ opacity: 0 }}
+                                        animate={{ opacity: 1 }}
+                                        exit={{ opacity: 0 }}
+                                        transition={{ duration: 0.3 }}
+                                        drag="x"
+                                        dragConstraints={{ left: 0, right: 0 }}
+                                        dragElastic={0.2}
+                                        onDragEnd={(e, { offset, velocity }) => {
+                                            const swipe = Math.abs(offset.x) * velocity.x;
+                                            if (swipe < -500) {
+                                                setActiveImageIndex(prev => (prev < activeStay.images.length - 1 ? prev + 1 : 0));
+                                            } else if (swipe > 500) {
+                                                setActiveImageIndex(prev => (prev > 0 ? prev - 1 : activeStay.images.length - 1));
+                                            }
+                                        }}
+                                        className="absolute inset-0 z-10 cursor-grab active:cursor-grabbing"
+                                    >
+                                        <Image
+                                            src={activeStay.images[activeImageIndex]?.url}
+                                            alt={activeStay.name}
+                                            fill
+                                            className="object-contain pointer-events-none"
+                                        />
+                                    </motion.div>
+                                </AnimatePresence>
                                 
-                                <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 flex justify-between px-4 md:px-8">
+                                <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 flex justify-between px-4 md:px-8 z-20 pointer-events-none">
                                     <button 
-                                        onClick={() => setActiveImageIndex(prev => (prev > 0 ? prev - 1 : activeStay.images.length - 1))}
-                                        className="w-12 h-12 md:w-16 md:h-16 rounded-full bg-white/10 backdrop-blur-lg flex items-center justify-center text-white hover:bg-white/20 transition-all border border-white/10"
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            setActiveImageIndex(prev => (prev > 0 ? prev - 1 : activeStay.images.length - 1));
+                                        }}
+                                        className="w-12 h-12 md:w-16 md:h-16 rounded-full bg-white/10 backdrop-blur-lg flex items-center justify-center text-white hover:bg-white/20 transition-all border border-white/10 pointer-events-auto"
                                     >
                                         <ArrowLeft className="w-6 h-6 md:w-8 md:h-8" />
                                     </button>
                                     <button 
-                                        onClick={() => setActiveImageIndex(prev => (prev < activeStay.images.length - 1 ? prev + 1 : 0))}
-                                        className="w-12 h-12 md:w-16 md:h-16 rounded-full bg-white/10 backdrop-blur-lg flex items-center justify-center text-white hover:bg-white/20 transition-all border border-white/10"
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            setActiveImageIndex(prev => (prev < activeStay.images.length - 1 ? prev + 1 : 0));
+                                        }}
+                                        className="w-12 h-12 md:w-16 md:h-16 rounded-full bg-white/10 backdrop-blur-lg flex items-center justify-center text-white hover:bg-white/20 transition-all border border-white/10 pointer-events-auto"
                                     >
                                         <ArrowRight className="w-6 h-6 md:w-8 md:h-8" />
                                     </button>

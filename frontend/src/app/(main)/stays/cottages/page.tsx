@@ -16,7 +16,7 @@ type RoomType = {
   images: string[];
 };
 
-const ROOM_TYPES: RoomType[] = [
+const STAY_CATEGORIES: RoomType[] = [
   {
     id: "triple-cot",
     name: "Triple Cot Room",
@@ -91,18 +91,86 @@ const ROOM_TYPES: RoomType[] = [
       "/assets/rooms/four-cot/1.jpg",
       "/assets/rooms/four-cot/2.jpg"
     ]
+  },
+  {
+    id: "aframe-stay",
+    name: "Luxury A-Frame Stays",
+    description: "Experience the unique charm of our A-frame cabins. Architecturally stunning and cozy, these stays offer a perfect blend of modern design and mountain serenity.",
+    capacity: "Up to 2 adults + 1 child",
+    bedType: "1 Queen Size Bed + Attic Space",
+    amenities: ["Unique Architecture", "Attic Bedroom", "Glass Frontage", "Free Wi-Fi", "Mountain View", "Private Setup"],
+    images: [
+      "/images/stays/aframestay/IMG-20260331-WA0013.jpg.jpeg",
+      "/images/stays/aframestay/IMG-20260331-WA0015.jpg.jpeg",
+      "/images/stays/aframestay/IMG-20260331-WA0016.jpg.jpeg",
+      "/images/stays/aframestay/IMG-20260331-WA0019.jpg.jpeg"
+    ]
+  },
+  {
+    id: "homestays",
+    name: "Authentic Homestays",
+    description: "Immerse yourself in local culture with our handpicked homestays. Enjoy home-cooked traditional meals and warm hospitality from local families in the heart of Kodaikanal.",
+    capacity: "Up to 4 guests",
+    bedType: "Varies per home (Double/Twin)",
+    amenities: ["Traditional Meals", "Local Experience", "Garden Access", "Free Wi-Fi", "Parking", "Personalized Care"],
+    images: [
+      "/images/stays/homestay/IMG-20251120-WA0000.jpg.jpeg",
+      "/images/stays/homestay/IMG-20251229-WA0005.jpg.jpeg",
+      "/images/stays/homestay/IMG-20260309-WA0015.jpg.jpeg",
+      "/images/stays/homestay/IMG-20260309-WA0019.jpg.jpeg",
+      "/images/stays/homestay/IMG-20260309-WA0020.jpg.jpeg"
+    ]
+  },
+  {
+    id: "hut-stays",
+    name: "Rustic Hut Stays",
+    description: "Connect with nature in our traditional-style huts. These stays provide an eco-friendly and minimalist experience without compromising on essential comforts.",
+    capacity: "Up to 2 guests",
+    bedType: "1 Queen Size Bed",
+    amenities: ["Eco-friendly Design", "Rustic Interirors", "Private Campfire Area", "Essential Amenities", "Scenic Surroundings"],
+    images: [
+      "/images/stays/hutstay/IMG-20260331-WA0027.jpg.jpeg",
+      "/images/stays/hutstay/IMG-20260331-WA0029.jpg.jpeg",
+      "/images/stays/hutstay/IMG-20260331-WA0030.jpg.jpeg",
+      "/images/stays/hutstay/IMG-20260331-WA0041.jpg.jpeg",
+      "/images/stays/hutstay/IMG-20260331-WA0074.jpg.jpeg"
+    ]
+  },
+  {
+    id: "tent-stays",
+    name: "Mountain Tent Stays",
+    description: "The ultimate adventure experience. Our secure and high-grade tents offer an authentic camping vibe with comfortable bedding and access to shared quality facilities.",
+    capacity: "2-4 guests",
+    bedType: "Floor Mattresses / Sleeping Bags",
+    amenities: ["Star Gazing", "Secure Camping Site", "Shared Facilities", "Early Morning Trek", "Campfire", "Quality Gear"],
+    images: [
+      "/images/stays/tentstay/IMG-20260331-WA0051.jpg.jpeg",
+      "/images/stays/tentstay/IMG-20260331-WA0056.jpg.jpeg",
+      "/images/stays/tentstay/IMG-20260331-WA0058.jpg.jpeg",
+      "/images/stays/tentstay/IMG-20260331-WA0059.jpg.jpeg",
+      "/images/stays/tentstay/IMG-20260331-WA0067.jpg.jpeg",
+      "/images/stays/tentstay/IMG-20260331-WA0072.jpg.jpeg"
+    ]
   }
 ];
 
 const ImageCarousel = ({ images, name }: { images: string[], name: string }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [direction, setDirection] = useState(0);
 
   const nextSlide = () => {
+    setDirection(1);
     setCurrentIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1));
   };
 
   const prevSlide = () => {
+    setDirection(-1);
     setCurrentIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1));
+  };
+
+  const swipeConfidenceThreshold = 10000;
+  const swipePower = (offset: number, velocity: number) => {
+    return Math.abs(offset) * velocity;
   };
 
   return (
@@ -112,21 +180,36 @@ const ImageCarousel = ({ images, name }: { images: string[], name: string }) => 
          <span className="text-sm font-bold uppercase tracking-widest opacity-50">Upload {name} Images</span>
       </div>
 
-      <AnimatePresence mode="wait">
+      <AnimatePresence initial={false} custom={direction}>
         <motion.div
           key={currentIndex}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.5 }}
-          className="absolute inset-0 z-10"
+          custom={direction}
+          initial={{ opacity: 0, x: direction > 0 ? 300 : -300 }}
+          animate={{ opacity: 1, x: 0 }}
+          exit={{ opacity: 0, x: direction > 0 ? -300 : 300 }}
+          transition={{
+            x: { type: "spring", stiffness: 300, damping: 30 },
+            opacity: { duration: 0.2 }
+          }}
+          drag="x"
+          dragConstraints={{ left: 0, right: 0 }}
+          dragElastic={1}
+          onDragEnd={(e, { offset, velocity }) => {
+            const swipe = swipePower(offset.x, velocity.x);
+
+            if (swipe < -swipeConfidenceThreshold) {
+              nextSlide();
+            } else if (swipe > swipeConfidenceThreshold) {
+              prevSlide();
+            }
+          }}
+          className="absolute inset-0 z-10 cursor-grab active:cursor-grabbing"
         >
           <Image
             src={images[currentIndex]}
             alt={`${name} - View ${currentIndex + 1}`}
             fill
-            className="object-cover"
-            // Use onError to hide broken image icons, exposing the fallback background
+            className="object-cover pointer-events-none"
             onError={(e) => {
               (e.target as HTMLImageElement).style.opacity = '0';
             }}
@@ -134,16 +217,16 @@ const ImageCarousel = ({ images, name }: { images: string[], name: string }) => 
         </motion.div>
       </AnimatePresence>
 
-      <div className="absolute inset-0 z-20 flex items-center justify-between p-4 opacity-0 group-hover:opacity-100 transition-opacity">
+      <div className="absolute inset-0 z-20 flex items-center justify-between p-4 opacity-0 lg:group-hover:opacity-100 transition-opacity pointer-events-none">
         <button 
           onClick={prevSlide}
-          className="w-10 h-10 rounded-full bg-black/50 backdrop-blur text-white flex items-center justify-center hover:bg-black/80 transition-colors"
+          className="w-10 h-10 rounded-full bg-black/50 backdrop-blur text-white flex items-center justify-center hover:bg-black/80 transition-colors pointer-events-auto"
         >
           <ChevronLeft className="w-6 h-6" />
         </button>
         <button 
           onClick={nextSlide}
-          className="w-10 h-10 rounded-full bg-black/50 backdrop-blur text-white flex items-center justify-center hover:bg-black/80 transition-colors"
+          className="w-10 h-10 rounded-full bg-black/50 backdrop-blur text-white flex items-center justify-center hover:bg-black/80 transition-colors pointer-events-auto"
         >
           <ChevronRight className="w-6 h-6" />
         </button>
@@ -165,25 +248,27 @@ const ImageCarousel = ({ images, name }: { images: string[], name: string }) => 
 };
 
 export default function CottagesPage() {
+  const whatsappUrl = (name: string) => `https://wa.me/919003922073?text=${encodeURIComponent(`Hello! I'm interested in enquiring about the ${name}.`)}`;
+
   return (
     <main className="min-h-screen bg-background text-foreground pt-32 pb-24">
       <div className="max-w-7xl mx-auto px-6 mb-16">
         <Link href="/" className="inline-flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors font-bold text-sm uppercase tracking-widest mb-8">
           <ArrowLeft className="w-4 h-4" /> Back to Home
         </Link>
-        <h1 className="text-5xl md:text-7xl font-bold mb-6 tracking-tight">Premium <span className="text-primary italic">Cottages & Rooms</span></h1>
-        <p className="text-muted-foreground text-lg max-w-2xl">Discover our specialized room varieties designed to cater to families, couples, and large groups, ensuring a perfect stay in Kodaikanal.</p>
+        <h1 className="text-5xl md:text-7xl font-bold mb-6 tracking-tight">Premium <span className="text-primary italic">Stays & Experiences</span></h1>
+        <p className="text-muted-foreground text-lg max-w-2xl">Discover our exclusive collection of accommodations, from luxury cottages and A-frame cabins to authentic homestays and mountain adventures.</p>
       </div>
 
       <div className="max-w-7xl mx-auto px-6 space-y-24">
-        {ROOM_TYPES.map((room, index) => (
+        {STAY_CATEGORIES.map((stay, index) => (
           <div 
-            key={room.id}
+            key={stay.id}
             className={`flex flex-col gap-12 ${index % 2 !== 0 ? 'lg:flex-row-reverse' : 'lg:flex-row'} items-center`}
           >
             {/* Image Carousel Side */}
             <div className="w-full lg:w-1/2">
-              <ImageCarousel images={room.images} name={room.name} />
+              <ImageCarousel images={stay.images} name={stay.name} />
             </div>
 
             {/* Content Side */}
@@ -191,10 +276,10 @@ export default function CottagesPage() {
               <div>
                 <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary mb-6">
                   <Zap className="w-4 h-4" />
-                  <span className="text-xs font-bold tracking-widest uppercase">Room Type {index + 1}</span>
+                  <span className="text-xs font-bold tracking-widest uppercase">Stay Category {index + 1}</span>
                 </div>
-                <h2 className="text-4xl font-bold mb-4">{room.name}</h2>
-                <p className="text-muted-foreground text-lg leading-relaxed">{room.description}</p>
+                <h2 className="text-4xl font-bold mb-4">{stay.name}</h2>
+                <p className="text-muted-foreground text-lg leading-relaxed">{stay.description}</p>
               </div>
 
               <div className="grid grid-cols-2 gap-6 py-6 border-y border-border">
@@ -202,20 +287,20 @@ export default function CottagesPage() {
                   <h4 className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-2 flex items-center gap-2">
                     <Users className="w-4 h-4 text-primary" /> Capacity
                   </h4>
-                  <p className="font-medium">{room.capacity}</p>
+                  <p className="font-medium">{stay.capacity}</p>
                 </div>
                 <div>
                   <h4 className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-2 flex items-center gap-2">
-                    <Bed className="w-4 h-4 text-primary" /> Bed Type
+                    <Bed className="w-4 h-4 text-primary" /> Setup
                   </h4>
-                  <p className="font-medium">{room.bedType}</p>
+                  <p className="font-medium">{stay.bedType}</p>
                 </div>
               </div>
 
               <div>
-                <h4 className="text-sm font-bold uppercase tracking-widest mb-4">Room Amenities</h4>
+                <h4 className="text-sm font-bold uppercase tracking-widest mb-4">Highlights & Amenities</h4>
                 <div className="grid grid-cols-2 gap-3">
-                  {room.amenities.map((amenity, idx) => (
+                  {stay.amenities.map((amenity, idx) => (
                     <div key={idx} className="flex items-center gap-2 text-sm text-foreground/80 font-medium">
                       <div className="w-5 h-5 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
                         <Check className="w-3 h-3 text-primary" />
@@ -227,9 +312,14 @@ export default function CottagesPage() {
               </div>
 
               <div className="pt-4">
-                 <button className="bg-primary text-white font-bold px-8 py-4 rounded-xl shadow-xl shadow-primary/20 hover:brightness-110 transition-all active:scale-95">
-                    Check Availability
-                 </button>
+                 <a 
+                   href={whatsappUrl(stay.name)}
+                   target="_blank"
+                   rel="noopener noreferrer"
+                   className="inline-block bg-primary text-white font-bold px-8 py-4 rounded-xl shadow-xl shadow-primary/20 hover:brightness-110 transition-all active:scale-95"
+                 >
+                    Enquire Now
+                 </a>
               </div>
             </div>
           </div>
