@@ -29,21 +29,21 @@ export function Footer() {
           <div>
             <h5 className="font-bold mb-6 md:mb-8 text-lg text-foreground">Company</h5>
             <ul className="space-y-4 text-foreground/60 text-[15px]">
-              <li><Link href="#" className="hover:text-primary transition-colors inline-block py-1">About Us</Link></li>
-              <li><Link href="#" className="hover:text-primary transition-colors inline-block py-1">Careers</Link></li>
-              <li><Link href="#" className="hover:text-primary transition-colors inline-block py-1">Blog</Link></li>
-              <li><Link href="#" className="hover:text-primary transition-colors inline-block py-1">Press Kit</Link></li>
-              <li><Link href="/admin/images" className="hover:text-primary transition-colors inline-block py-1 text-primary/70 font-bold">Admin Dashboard</Link></li>
+              <li><Link href="/" className="hover:text-primary transition-colors inline-block py-1">About Us</Link></li>
+              <li><Link href="/" className="hover:text-primary transition-colors inline-block py-1">Careers</Link></li>
+              <li><Link href="/" className="hover:text-primary transition-colors inline-block py-1">Blog</Link></li>
+              <li><Link href="/" className="hover:text-primary transition-colors inline-block py-1">Press Kit</Link></li>
+              <li><Link href="/admin/login" className="hover:text-primary transition-colors inline-block py-1 text-primary/70 font-black uppercase tracking-widest text-[10px]">Admin Login</Link></li>
             </ul>
           </div>
 
           <div>
             <h5 className="font-bold mb-6 md:mb-8 text-lg text-foreground">Support</h5>
             <ul className="space-y-4 text-foreground/60 text-[15px]">
-              <li><Link href="#" className="hover:text-primary transition-colors inline-block py-1">Help Center</Link></li>
-              <li><Link href="#" className="hover:text-primary transition-colors inline-block py-1">Safety Guides</Link></li>
-              <li><Link href="#" className="hover:text-primary transition-colors inline-block py-1">Cancellation Policy</Link></li>
-              <li><Link href="#" className="hover:text-primary transition-colors inline-block py-1">Terms of Service</Link></li>
+              <li><Link href="/" className="hover:text-primary transition-colors inline-block py-1">Help Center</Link></li>
+              <li><Link href="/" className="hover:text-primary transition-colors inline-block py-1">Safety Guides</Link></li>
+              <li><Link href="/cancellation-policy" className="hover:text-primary transition-colors inline-block py-1">Cancellation Policy</Link></li>
+              <li><Link href="/terms" className="hover:text-primary transition-colors inline-block py-1">Terms of Service</Link></li>
             </ul>
           </div>
 

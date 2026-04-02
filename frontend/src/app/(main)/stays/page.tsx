@@ -45,9 +45,11 @@ const StaysContent = () => {
     const [loading, setLoading] = useState(true);
     const [selectedType, setSelectedType] = useState<string | null>(initialType);
     const [priceRange, setPriceRange] = useState<[number, number]>([0, 10000]);
+    const [error, setError] = useState<string | null>(null);
 
     const fetchStays = async () => {
         setLoading(true);
+        setError(null);
         try {
             let url = `${API_URL}/stays`;
             const params = new URLSearchParams();
@@ -64,6 +66,7 @@ const StaysContent = () => {
             if (!res.ok) {
                 const errorData = await res.json().catch(() => ({}));
                 console.error("API error:", res.status, errorData);
+                setError(`Server returned ${res.status}. It might be cold-starting.`);
                 setStays([]);
                 return;
             }
@@ -71,6 +74,7 @@ const StaysContent = () => {
             
             if (!Array.isArray(data)) {
                 console.error("Expected an array of stays but received:", data);
+                setError("Invalid data format received from server.");
                 setStays([]);
                 return;
             }
@@ -89,6 +93,7 @@ const StaysContent = () => {
             }
         } catch (error) {
             console.error("Failed to fetch stays:", error);
+            setError("Unable to connect to the server. Please check your internet connection.");
         } finally {
             setLoading(false);
         }
@@ -194,21 +199,39 @@ const StaysContent = () => {
             </div>
 
             <div className="py-12 md:py-24 relative">
-                <div className="flex overflow-x-auto pb-8 md:pb-12 px-6 md:px-24 gap-8 md:gap-12 no-scrollbar scroll-smooth">
-                    {loading ? (
-                        [1, 2, 3].map(i => (
-                            <div key={i} className="min-w-[85vw] md:min-w-[450px] h-[500px] md:h-[700px] bg-secondary rounded-[2.5rem] md:rounded-[3rem] animate-pulse border border-border"></div>
-                        ))
-                    ) : (
-                        stays.map((stay, index) => renderStayCard(stay, index))
-                    )}
-                </div>
-                
-                <div className="flex justify-center gap-2 md:gap-3 mt-4 md:mt-8">
-                    {stays.map((_, i) => (
-                        <div key={i} className="w-1.5 h-1.5 md:w-2 md:h-2 rounded-full bg-primary/30" />
-                    ))}
-                </div>
+                {error ? (
+                    <div className="max-w-4xl mx-auto px-6 text-center py-20">
+                        <div className="bg-red-500/10 border border-red-500/20 rounded-[3rem] p-12 md:p-20">
+                            <Zap className="w-16 h-16 text-red-500 mx-auto mb-6 opacity-50" />
+                            <h3 className="text-2xl md:text-3xl font-black mb-4">Connection Issue</h3>
+                            <p className="text-foreground/60 text-lg mb-10 max-w-md mx-auto">{error}</p>
+                            <button 
+                                onClick={() => fetchStays()}
+                                className="bg-red-500 text-white px-12 py-5 rounded-2xl font-black uppercase tracking-widest text-xs hover:brightness-110 active:scale-95 transition-all shadow-2xl shadow-red-500/20"
+                            >
+                                Retry Connection
+                            </button>
+                        </div>
+                    </div>
+                ) : (
+                    <>
+                        <div className="flex overflow-x-auto pb-8 md:pb-12 px-6 md:px-24 gap-8 md:gap-12 no-scrollbar scroll-smooth">
+                            {loading ? (
+                                [1, 2, 3].map(i => (
+                                    <div key={i} className="min-w-[85vw] md:min-w-[450px] h-[500px] md:h-[700px] bg-secondary rounded-[2.5rem] md:rounded-[3rem] animate-pulse border border-border"></div>
+                                ))
+                            ) : (
+                                stays.map((stay, index) => renderStayCard(stay, index))
+                            )}
+                        </div>
+                        
+                        <div className="flex justify-center gap-2 md:gap-3 mt-4 md:mt-8">
+                            {stays.map((_, i) => (
+                                <div key={i} className="w-1.5 h-1.5 md:w-2 md:h-2 rounded-full bg-primary/30" />
+                            ))}
+                        </div>
+                    </>
+                )}
             </div>
 
             <AnimatePresence>

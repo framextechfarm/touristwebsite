@@ -128,7 +128,7 @@ const PackageCardContent = ({ pkg, API_URL, isMobile = false }: { pkg: Package, 
           {pkg.title}
         </h3>
 
-        <div className="flex justify-between items-center">
+        <div className="flex justify-between items-end">
           <div className="flex flex-col">
             <div className="flex items-baseline gap-1">
               {pkg.price === 0 || pkg.title.toLowerCase().includes("tour 4") || pkg.title.toLowerCase().includes("tour 5") ? (
@@ -140,9 +140,19 @@ const PackageCardContent = ({ pkg, API_URL, isMobile = false }: { pkg: Package, 
                 </>
               )}
             </div>
+            
+            <a 
+              href={`https://wa.me/919003922073?text=${encodeURIComponent(`Hello! I'm interested in the "${pkg.title}" package priced at ₹${pkg.price}. Please provide more details.`)}`}
+              onClick={(e) => e.stopPropagation()}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-3 bg-primary text-white px-4 py-2 rounded-xl font-black uppercase tracking-widest text-[9px] hover:brightness-110 active:scale-95 transition-all text-center"
+            >
+              Enquire Now
+            </a>
           </div>
-          <div className="w-8 h-8 rounded-xl bg-primary flex items-center justify-center">
-            <ArrowRight className="w-4 h-4 text-white" />
+          <div className="w-10 h-10 rounded-2xl bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/10 mb-1">
+            <ArrowRight className="w-5 h-5 text-white" />
           </div>
         </div>
       </div>

@@ -3,7 +3,8 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { LayoutDashboard, Images, MessageSquare, ArrowLeft, Menu, X } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 
 export default function AdminLayout({
@@ -12,7 +13,38 @@ export default function AdminLayout({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
+  const router = useRouter();
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [isAuthorized, setIsAuthorized] = useState(false);
+
+  useEffect(() => {
+    // Skip auth check for login page itself
+    if (pathname === "/admin/login") {
+      setIsAuthorized(true);
+      return;
+    }
+
+    const auth = localStorage.getItem("admin_auth");
+    if (!auth) {
+      router.push("/admin/login");
+    } else {
+      setIsAuthorized(true);
+    }
+  }, [pathname, router]);
+
+  // If we are checking auth, don't show the layout yet to prevent flickering
+  if (!isAuthorized && pathname !== "/admin/login") {
+    return (
+        <div className="min-h-screen bg-background flex items-center justify-center">
+            <div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin" />
+        </div>
+    );
+  }
+
+  // Pure login page doesn't need the admin sidebar/layout structure
+  if (pathname === "/admin/login") {
+    return <>{children}</>;
+  }
 
   const menuItems = [
     { title: "Dashboard", icon: LayoutDashboard, href: "/admin" },

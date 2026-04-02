@@ -248,12 +248,30 @@ export default function CabsPage() {
                     </div>
                 )}
 
-                {/* Empty State */}
+                {/* Empty State / WhatsApp Fallback */}
                 {searched && searchResults.length === 0 && !loading && (
-                    <div className="text-center py-16">
-                        <Car className="w-16 h-16 text-slate-300 mx-auto mb-4" />
-                        <h3 className="text-xl font-bold text-slate-700 mb-2">No cabs available</h3>
-                        <p className="text-slate-500">Try a different route</p>
+                    <div className="text-center py-16 px-6">
+                        <div className="bg-primary/5 w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-8">
+                            <Car className="w-12 h-12 text-primary" />
+                        </div>
+                        <h3 className="text-3xl font-black text-foreground mb-4">No Digital Routes Found</h3>
+                        <p className="text-foreground/60 mb-10 max-w-sm mx-auto">We might have cabs available offline for this route. Contact us directly for instant booking.</p>
+                        
+                        <a 
+                            href={`https://wa.me/919003922073?text=${encodeURIComponent(`Hello! I'm looking for a cab from ${fromLocation} to ${toLocation}. Please let me know the availability and pricing.`)}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-3 bg-primary text-white px-10 py-5 rounded-2xl font-black uppercase tracking-widest text-xs hover:brightness-110 active:scale-95 transition-all shadow-2xl shadow-primary/20"
+                        >
+                            Enquire on WhatsApp <ArrowRight className="w-4 h-4" />
+                        </a>
+
+                        <button 
+                            onClick={() => {setSearched(false); setFromLocation(""); setToLocation("");}}
+                            className="block mx-auto mt-8 text-foreground/40 font-bold uppercase tracking-widest text-[10px] hover:text-primary transition-colors"
+                        >
+                            Reset Search
+                        </button>
                     </div>
                 )}
 
