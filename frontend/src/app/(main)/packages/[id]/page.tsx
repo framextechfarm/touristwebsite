@@ -149,10 +149,6 @@ export default function PackageDetailsPage() {
                                         <ul className="space-y-4 text-muted-foreground text-sm">
                                             <li className="flex gap-4">
                                                 <div className="w-1.5 h-1.5 rounded-full bg-primary mt-1.5 shrink-0" />
-                                                Free cancellation up to 48 hours before the trip starts.
-                                            </li>
-                                            <li className="flex gap-4">
-                                                <div className="w-1.5 h-1.5 rounded-full bg-primary mt-1.5 shrink-0" />
                                                 Partial refund (50%) between 24 and 48 hours.
                                             </li>
                                             <li className="flex gap-4">
@@ -178,7 +174,7 @@ export default function PackageDetailsPage() {
                                             <span className="text-xs font-bold text-foreground/40 uppercase">ALL INCLUSIVE</span>
                                         </>
                                     ) : (
-                                        <span className="text-3xl font-black text-primary uppercase tracking-tight">Seasonal (Negotiable)</span>
+                                        <span className="text-3xl font-black text-primary uppercase tracking-tight">Seasonal Price</span>
                                     )}
                                 </div>
 
@@ -232,7 +228,7 @@ export default function PackageDetailsPage() {
                             {pkg.price > 0 ? "Starting from" : "Pricing Label"}
                         </span>
                         <span className="text-2xl font-black">
-                            {pkg.price > 0 ? `₹${pkg.price.toLocaleString()}` : "Negotiable"}
+                            {pkg.price > 0 ? `₹${pkg.price.toLocaleString()}` : "Seasonal Price"}
                         </span>
                     </div>
                     <a

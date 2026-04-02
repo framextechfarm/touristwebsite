@@ -4,12 +4,10 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Star, Menu, X, Home, Map, Bed, Car } from "lucide-react";
 import Link from "next/link";
 import { useState, useEffect } from "react";
-import { ThemeToggle } from "./ThemeToggle";
 import { EnquiryModal } from "./EnquiryModal";
 import { API_URL } from "@/lib/config";
 
 const navLinks = [
-  { name: "Destinations", href: "/#destinations" },
   { name: "Packages", href: "/packages" },
   { name: "Stays", href: "/stays" },
   { name: "Cabs", href: "/cabs" },
@@ -65,7 +63,6 @@ export function Navbar() {
           ))}
         </div>
         <div className="flex items-center gap-6">
-          <ThemeToggle />
           <button 
             onClick={() => setIsEnquiryOpen(true)}
             className="btn-primary py-2.5 px-6 min-h-[44px] flex items-center justify-center gap-2"
@@ -104,7 +101,6 @@ export function Navbar() {
                 </motion.span>
               </Link>
               <div className="flex items-center gap-3">
-                <ThemeToggle />
                 <button 
                   onClick={() => setIsMenuOpen(true)} 
                   className="w-10 h-10 flex items-center justify-center rounded-full glass hover:bg-white/20 active:scale-95 transition-all outline-none"

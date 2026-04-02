@@ -1,125 +1,114 @@
 "use client";
 
 import { useState } from "react";
-import { motion } from "framer-motion";
-import { MapPin, Users, Luggage, Car, ArrowRight, Search } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { MapPin, Users, Luggage, Car, ArrowRight, Search, CheckCircle2 } from "lucide-react";
 import Link from "next/link";
-import { API_URL } from "@/lib/config";
+import Image from "next/image";
 
-type Vehicle = {
-    id: number;
+type VehicleType = {
+    id: string;
     name: string;
-    capacity: number;
-    luggage_capacity: string;
-    features: string;
-    is_active: boolean;
+    capacity: string;
+    luggage: string;
+    image: string;
 };
 
-type CabRoute = {
-    id: number;
-    from_location: string;
-    to_location: string;
-    distance_km: number;
-    duration_hours: number;
-    is_active: boolean;
-};
-
-type CabSearchResult = {
-    route: CabRoute;
-    vehicle: Vehicle;
-    price: number;
-};
+const VEHICLE_TYPES: VehicleType[] = [
+    {
+        id: "4seater",
+        name: "4 Seater (Sedan)",
+        capacity: "4 Passengers",
+        luggage: "2-3 Bags",
+        image: "/images/cabs/sedan.png"
+    },
+    {
+        id: "7seater",
+        name: "7 Seater (SUV)",
+        capacity: "7 Passengers",
+        luggage: "4-5 Bags",
+        image: "/images/cabs/suv.png"
+    },
+    {
+        id: "tempo",
+        name: "Tempo Traveller",
+        capacity: "12-14 Passengers",
+        luggage: "8-10 Bags",
+        image: "/images/cabs/tempo.png"
+    },
+    {
+        id: "minibus",
+        name: "Mini Bus",
+        capacity: "20-22 Passengers",
+        luggage: "15+ Bags",
+        image: "/images/cabs/minibus.png"
+    }
+];
 
 const POPULAR_LOCATIONS = [
-    "Bangalore",
-    "Ooty",
     "Kodaikanal",
-    "Munnar",
-    "Coonoor",
+    "Kodai Road",
+    "Dindigul",
+    "Batlagundu",
+    "Madurai",
     "Coimbatore",
+    "Bangalore",
     "Chennai",
-    "Kochi",
-    "Madurai"
+    "Ooty",
+    "Munnar",
+    "Kochi"
 ];
 
 export default function CabsPage() {
     const [fromLocation, setFromLocation] = useState("");
     const [toLocation, setToLocation] = useState("");
-    const [searchResults, setSearchResults] = useState<CabSearchResult[]>([]);
-    const [loading, setLoading] = useState(false);
-    const [searched, setSearched] = useState(false);
+    const [selectedVehicle, setSelectedVehicle] = useState<string>("4seater");
 
-    async function handleSearch(e: React.FormEvent) {
-        e.preventDefault();
-
-        if (!fromLocation || !toLocation) {
-            alert("Please select both from and to locations");
-            return;
-        }
-
-        setLoading(true);
-        setSearched(true);
-
-        try {
-            const res = await fetch(`${API_URL}/cabs/search`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    from_location: fromLocation,
-                    to_location: toLocation
-                })
-            });
-
-            if (!res.ok) {
-                const error = await res.json();
-                alert(error.detail || "No route found");
-                setSearchResults([]);
-                return;
-            }
-
-            const data = await res.json();
-            setSearchResults(data);
-        } catch (error) {
-            console.error("Search failed", error);
-            alert("Search failed. Please try again.");
-        } finally {
-            setLoading(false);
-        }
+    function getWhatsappUrl() {
+        const vehicleName = VEHICLE_TYPES.find(v => v.id === selectedVehicle)?.name || "a cab";
+        const from = fromLocation || "[Pickup Location]";
+        const to = toLocation || "[Drop Location]";
+        const message = `Hello! I would like to book a cab.\n\nFrom: ${from}\nTo: ${to}\nVehicle Type: ${vehicleName}\n\nPlease let me know the pricing and availability.`;
+        return `https://wa.me/919003922073?text=${encodeURIComponent(message)}`;
     }
 
     return (
-        <main className="min-h-screen bg-background text-foreground uppercase tracking-tight">
-
-
+        <main className="min-h-screen bg-background text-foreground uppercase tracking-tight pb-24">
             {/* Header */}
             <div className="pt-48 pb-12 px-6">
                 <div className="max-w-4xl mx-auto text-center">
                     <h1 className="text-5xl md:text-7xl font-bold mb-6 tracking-tight">Book Your <span className="text-primary italic">Cab</span></h1>
-                    <p className="text-foreground/70 text-lg">Comfortable rides to hill stations across Kodaikanal.</p>
+                    <p className="text-foreground/70 text-lg">Safe, comfortable, and reliable rides for your Kodaikanal trip.</p>
                 </div>
             </div>
 
-            <div className="max-w-4xl mx-auto px-6 py-8">
-                {/* Search Form */}
-                <div className="bg-card glass rounded-[2rem] p-8 mb-12 border border-border">
-                    <form onSubmit={handleSearch}>
-                        <div className="grid md:grid-cols-2 gap-6 mb-6">
+            <div className="max-w-5xl mx-auto px-6">
+                {/* Main Form Container */}
+                <div className="bg-card glass rounded-[2.5rem] p-8 md:p-12 border border-border shadow-2xl">
+                    
+                    {/* Route Selection */}
+                    <div className="mb-12">
+                        <h3 className="text-xl font-bold mb-6 flex items-center gap-2">
+                            <span className="w-8 h-8 rounded-full bg-primary/10 text-primary flex items-center justify-center text-sm">1</span>
+                            Select Route
+                        </h3>
+                        <div className="grid md:grid-cols-2 gap-6">
                             {/* From Location */}
                             <div>
-                                <label className="block text-sm font-semibold text-foreground/80 mb-2">
-                                    From
+                                <label className="block text-xs font-black tracking-widest text-foreground/50 mb-3">
+                                    PICKUP LOCATION
                                 </label>
-                                <div className="relative">
-                                    <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
+                                <div className="relative group">
+                                    <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-primary/50 group-focus-within:text-primary transition-colors" />
                                     <select
                                         value={fromLocation}
                                         onChange={(e) => setFromLocation(e.target.value)}
-                                        className="w-full pl-11 pr-4 py-3 bg-secondary/50 border border-border rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none text-foreground"
+                                        className="w-full pl-12 pr-4 py-4 bg-secondary/30 border border-border rounded-2xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none text-foreground text-sm font-bold appearance-none cursor-pointer transition-all hover:bg-secondary/50"
                                         required
                                     >
-                                        <option value="">Select pickup location</option>
+                                        <option value="" disabled>Choose your starting point</option>
                                         {POPULAR_LOCATIONS.map((loc) => (
-                                            <option key={loc} value={loc}>{loc}</option>
+                                            <option key={loc} value={loc} className="bg-background">{loc}</option>
                                         ))}
                                     </select>
                                 </div>
@@ -127,164 +116,95 @@ export default function CabsPage() {
 
                             {/* To Location */}
                             <div>
-                                <label className="block text-sm font-semibold text-foreground/80 mb-2">
-                                    To
+                                <label className="block text-xs font-black tracking-widest text-foreground/50 mb-3">
+                                    DROP LOCATION
                                 </label>
-                                <div className="relative">
-                                    <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
+                                <div className="relative group">
+                                    <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-primary/50 group-focus-within:text-primary transition-colors" />
                                     <select
                                         value={toLocation}
                                         onChange={(e) => setToLocation(e.target.value)}
-                                        className="w-full pl-11 pr-4 py-3 bg-secondary/50 border border-border rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none text-foreground"
+                                        className="w-full pl-12 pr-4 py-4 bg-secondary/30 border border-border rounded-2xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none text-foreground text-sm font-bold appearance-none cursor-pointer transition-all hover:bg-secondary/50"
                                         required
                                     >
-                                        <option value="">Select drop location</option>
+                                        <option value="" disabled>Choose your destination</option>
                                         {POPULAR_LOCATIONS.map((loc) => (
-                                            <option key={loc} value={loc}>{loc}</option>
+                                            <option key={loc} value={loc} className="bg-background">{loc}</option>
                                         ))}
                                     </select>
                                 </div>
                             </div>
                         </div>
-
-                        <button
-                            type="submit"
-                            disabled={loading}
-                            className="w-full bg-primary text-white py-4 rounded-xl font-bold text-lg shadow-xl shadow-primary/20 hover:brightness-110 active:scale-98 transition-all disabled:opacity-50 flex items-center justify-center gap-2"
-                        >
-                            <Search className="w-5 h-5" />
-                            {loading ? "Searching..." : "Search Cabs"}
-                        </button>
-                    </form>
-                </div>
-
-                {/* Route Info */}
-                {searched && searchResults.length > 0 && (
-                    <div className="bg-secondary/40 rounded-[2rem] p-6 mb-8 border border-border">
-                        <div className="flex items-center justify-between flex-wrap gap-4">
-                            <div className="flex items-center gap-3">
-                                <div className="bg-white p-3 rounded-xl shadow-sm">
-                                    <MapPin className="w-6 h-6 text-blue-600" />
-                                </div>
-                                <div>
-                                    <div className="text-sm text-foreground/60">Route</div>
-                                    <div className="font-bold text-foreground text-lg">
-                                        {searchResults[0].route.from_location} <ArrowRight className="inline w-4 h-4 mx-1" /> {searchResults[0].route.to_location}
-                                    </div>
-                                </div>
-                            </div>
-                             <div className="flex gap-6">
-                                <div>
-                                    <div className="text-sm text-foreground/60">Distance</div>
-                                    <div className="font-bold text-foreground">{searchResults[0].route.distance_km} km</div>
-                                </div>
-                                <div>
-                                    <div className="text-sm text-foreground/60">Duration</div>
-                                    <div className="font-bold text-foreground">{searchResults[0].route.duration_hours} hrs</div>
-                                </div>
-                            </div>
-                        </div>
                     </div>
-                )}
 
-                {/* Vehicle Results */}
-                {searched && searchResults.length > 0 && (
-                    <div>
-                        <h2 className="text-2xl font-bold text-foreground mb-6">Available Vehicles</h2>
-                        <div className="space-y-4">
-                            {searchResults.map((result, index) => (
-                                <motion.div
-                                    key={index}
-                                    initial={{ opacity: 0, y: 20 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    transition={{ delay: index * 0.1 }}
-                                    className="bg-card rounded-[2rem] p-8 border border-border hover:border-primary/20 transition-all shadow-lg"
-                                >
-                                    <div className="flex items-center justify-between flex-wrap gap-4">
-                                        {/* Vehicle Info */}
-                                        <div className="flex items-center gap-4">
-                                            <div className="bg-secondary p-4 rounded-xl">
-                                                <Car className="w-8 h-8 text-primary" />
+                    {/* Vehicle Selection */}
+                    <div className="mb-12">
+                        <h3 className="text-xl font-bold mb-6 flex items-center gap-2">
+                            <span className="w-8 h-8 rounded-full bg-primary/10 text-primary flex items-center justify-center text-sm">2</span>
+                            Choose Vehicle
+                        </h3>
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                            {VEHICLE_TYPES.map((vehicle) => {
+                                const isSelected = selectedVehicle === vehicle.id;
+                                return (
+                                    <div 
+                                        key={vehicle.id}
+                                        onClick={() => setSelectedVehicle(vehicle.id)}
+                                        className={`relative rounded-3xl overflow-hidden cursor-pointer transition-all duration-300 border-2 ${isSelected ? 'border-primary shadow-xl shadow-primary/20 scale-[1.02]' : 'border-border/50 hover:border-border bg-secondary/10'}`}
+                                    >
+                                        {isSelected && (
+                                            <div className="absolute top-3 right-3 z-20 w-6 h-6 bg-primary rounded-full flex items-center justify-center shadow-lg">
+                                                <CheckCircle2 className="w-4 h-4 text-white" />
                                             </div>
-                                            <div>
-                                                <h3 className="text-xl font-bold text-foreground mb-1">
-                                                    {result.vehicle.name}
-                                                </h3>
-                                                <div className="flex items-center gap-4 text-sm text-foreground/60">
-                                                    <span className="flex items-center gap-1">
-                                                        <Users className="w-4 h-4" /> {result.vehicle.capacity} seats
-                                                    </span>
-                                                    <span className="flex items-center gap-1">
-                                                        <Luggage className="w-4 h-4" /> {result.vehicle.luggage_capacity}
-                                                    </span>
+                                        )}
+                                        <div className="aspect-[4/3] w-full relative bg-secondary/30">
+                                            <Image 
+                                                src={vehicle.image} 
+                                                alt={vehicle.name} 
+                                                fill 
+                                                className="object-cover transition-transform duration-500 hover:scale-105"
+                                            />
+                                            {/* Gradient overlay for text */}
+                                            <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-black/80 to-transparent" />
+                                            
+                                            <div className="absolute bottom-4 left-4 right-4 text-white">
+                                                <h4 className="font-black text-sm lg:text-base leading-tight">{vehicle.name}</h4>
+                                            </div>
+                                        </div>
+                                        <div className="p-4 bg-card">
+                                            <div className="flex flex-col gap-3">
+                                                <div className="flex items-center gap-2 text-foreground/70 text-xs font-bold">
+                                                    <Users className="w-4 h-4 text-primary" />
+                                                    {vehicle.capacity}
                                                 </div>
-                                                <div className="text-xs text-slate-500 mt-2">
-                                                    {result.vehicle.features}
+                                                <div className="flex items-center gap-2 text-foreground/70 text-xs font-bold">
+                                                    <Luggage className="w-4 h-4 text-primary" />
+                                                    {vehicle.luggage}
                                                 </div>
                                             </div>
                                         </div>
-
-                                        {/* Price & CTA */}
-                                         <div className="flex items-center gap-4">
-                                            <div className="text-right">
-                                                <div className="text-sm text-foreground/40">Total Fare</div>
-                                                <div className="text-3xl font-bold text-foreground">
-                                                    ₹{result.price.toLocaleString()}
-                                                </div>
-                                            </div>
-                                             <a
-                                                href={`https://wa.me/919003922073?text=${encodeURIComponent(`Hello! I'd like to enquire about booking a ${result.vehicle.name} from ${result.route.from_location} to ${result.route.to_location}.`)}`}
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                                className="bg-primary text-white px-8 py-4 rounded-xl font-bold hover:brightness-110 active:scale-95 transition-all whitespace-nowrap shadow-xl shadow-primary/20"
-                                            >
-                                                Enquire Now
-                                            </a>
-                                        </div>
                                     </div>
-                                </motion.div>
-                            ))}
+                                );
+                            })}
                         </div>
                     </div>
-                )}
 
-                {/* Empty State / WhatsApp Fallback */}
-                {searched && searchResults.length === 0 && !loading && (
-                    <div className="text-center py-16 px-6">
-                        <div className="bg-primary/5 w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-8">
-                            <Car className="w-12 h-12 text-primary" />
-                        </div>
-                        <h3 className="text-3xl font-black text-foreground mb-4">No Digital Routes Found</h3>
-                        <p className="text-foreground/60 mb-10 max-w-sm mx-auto">We might have cabs available offline for this route. Contact us directly for instant booking.</p>
-                        
-                        <a 
-                            href={`https://wa.me/919003922073?text=${encodeURIComponent(`Hello! I'm looking for a cab from ${fromLocation} to ${toLocation}. Please let me know the availability and pricing.`)}`}
+                    {/* Submit Action */}
+                    <div className="pt-8 border-t border-border flex flex-col items-center">
+                        <a
+                            href={getWhatsappUrl()}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="inline-flex items-center gap-3 bg-primary text-white px-10 py-5 rounded-2xl font-black uppercase tracking-widest text-xs hover:brightness-110 active:scale-95 transition-all shadow-2xl shadow-primary/20"
+                            className="bg-primary text-white py-5 px-12 rounded-2xl font-black text-lg tracking-widest shadow-2xl shadow-primary/30 hover:brightness-110 active:scale-95 transition-all w-full md:w-auto text-center"
                         >
-                            Enquire on WhatsApp <ArrowRight className="w-4 h-4" />
+                            ENQUIRE NOW
                         </a>
-
-                        <button 
-                            onClick={() => {setSearched(false); setFromLocation(""); setToLocation("");}}
-                            className="block mx-auto mt-8 text-foreground/40 font-bold uppercase tracking-widest text-[10px] hover:text-primary transition-colors"
-                        >
-                            Reset Search
-                        </button>
+                        <p className="text-xs font-bold text-foreground/40 mt-4 tracking-widest text-center">
+                            Redirects to WhatsApp for instant booking
+                        </p>
                     </div>
-                )}
 
-                {/* Initial State */}
-                {!searched && (
-                    <div className="text-center py-16">
-                        <div className="bg-blue-50 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4">
-                            <Search className="w-10 h-10 text-blue-600" />
-                        </div>
-                        <h3 className="text-xl font-bold text-slate-700 mb-2">Search for cabs</h3>
-                        <p className="text-slate-500">Select your pickup and drop locations to see available vehicles</p>
-                    </div>
-                )}
+                </div>
             </div>
         </main>
     );

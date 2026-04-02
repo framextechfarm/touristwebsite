@@ -34,7 +34,7 @@ export const Hero = ({ heroImages, currentHero }: HeroProps) => {
         </h1>
 
         <p className="text-white/80 text-lg md:text-xl max-w-2xl leading-relaxed mb-16">
-          Experience the grandeur of nature with our professionally curated mountain treks and adventure expeditions. Your soul&apos;s adventure starts here.
+          Experience the beauty and charm of Kodaikanal with our thoughtfully planned travel services. Your perfect getaway starts here.
         </p>
 
         {/* Floating Top Destination Card (Desktop only) */}

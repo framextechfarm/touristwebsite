@@ -3,9 +3,9 @@ import { Instagram, Facebook, Phone, Mail, MapPin } from "lucide-react";
 
 export function Footer() {
   return (
-    <footer className="bg-secondary/30 pt-20 md:pt-32 pb-12 border-t border-white/5">
+    <footer className="bg-secondary/30 pt-16 md:pt-24 pb-8 border-t border-white/5">
       <div className="max-w-7xl mx-auto px-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 md:gap-16 mb-16 md:mb-24">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 md:gap-16 mb-12 md:mb-16">
           <div className="space-y-6 md:space-y-8">
             <div className="flex items-center gap-2">
               <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center shrink-0">
@@ -30,9 +30,6 @@ export function Footer() {
             <h5 className="font-bold mb-6 md:mb-8 text-lg text-foreground">Company</h5>
             <ul className="space-y-4 text-foreground/60 text-[15px]">
               <li><Link href="/" className="hover:text-primary transition-colors inline-block py-1">About Us</Link></li>
-              <li><Link href="/" className="hover:text-primary transition-colors inline-block py-1">Careers</Link></li>
-              <li><Link href="/" className="hover:text-primary transition-colors inline-block py-1">Blog</Link></li>
-              <li><Link href="/" className="hover:text-primary transition-colors inline-block py-1">Press Kit</Link></li>
               <li><Link href="/admin/login" className="hover:text-primary transition-colors inline-block py-1 text-primary/70 font-black uppercase tracking-widest text-[10px]">Admin Login</Link></li>
             </ul>
           </div>
@@ -40,8 +37,6 @@ export function Footer() {
           <div>
             <h5 className="font-bold mb-6 md:mb-8 text-lg text-foreground">Support</h5>
             <ul className="space-y-4 text-foreground/60 text-[15px]">
-              <li><Link href="/" className="hover:text-primary transition-colors inline-block py-1">Help Center</Link></li>
-              <li><Link href="/" className="hover:text-primary transition-colors inline-block py-1">Safety Guides</Link></li>
               <li><Link href="/cancellation-policy" className="hover:text-primary transition-colors inline-block py-1">Cancellation Policy</Link></li>
               <li><Link href="/terms" className="hover:text-primary transition-colors inline-block py-1">Terms of Service</Link></li>
             </ul>

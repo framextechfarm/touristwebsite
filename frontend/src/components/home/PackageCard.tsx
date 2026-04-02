@@ -132,7 +132,7 @@ const PackageCardContent = ({ pkg, API_URL, isMobile = false }: { pkg: Package, 
           <div className="flex flex-col">
             <div className="flex items-baseline gap-1">
               {pkg.price === 0 || pkg.title.toLowerCase().includes("tour 4") || pkg.title.toLowerCase().includes("tour 5") ? (
-                <span className="text-sm font-black text-primary uppercase tracking-tighter">seasonal package (negotiable)</span>
+                <span className="text-sm font-black text-primary uppercase tracking-tighter">Enquire For Price</span>
               ) : (
                 <>
                   <span className="text-[10px] font-bold text-white/60 uppercase tracking-widest mr-1">Starting from</span>
@@ -142,7 +142,7 @@ const PackageCardContent = ({ pkg, API_URL, isMobile = false }: { pkg: Package, 
             </div>
             
             <a 
-              href={`https://wa.me/919003922073?text=${encodeURIComponent(`Hello! I'm interested in the "${pkg.title}" package priced at ₹${pkg.price}. Please provide more details.`)}`}
+              href={`https://wa.me/919003922073?text=${encodeURIComponent(`Hello! I'm interested in the "${pkg.title}" package. Please provide more details.`)}`}
               onClick={(e) => e.stopPropagation()}
               target="_blank"
               rel="noopener noreferrer"
