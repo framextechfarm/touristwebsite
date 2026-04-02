@@ -10,6 +10,7 @@ const cabsRouter = require("./routes/cabs");
 const bookingsRouter = require("./routes/bookings");
 const adminRouter = require("./routes/admin");
 const reviewsRouter = require("./routes/reviews");
+const enquiriesRouter = require("./routes/enquiries");
 
 const app = express();
 const PORT = process.env.PORT || 8000;
@@ -57,6 +58,7 @@ app.use("/cabs", cabsRouter);
 app.use("/bookings", bookingsRouter);
 app.use("/admin", adminRouter);
 app.use("/reviews", reviewsRouter);
+app.use("/enquiries", enquiriesRouter);
 
 // ─── Root & Health ───────────────────────────────────────────────────────────
 app.get("/", (req, res) => {

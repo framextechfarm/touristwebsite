@@ -5,6 +5,7 @@ import { Star, Menu, X, Home, Map, Bed, Car } from "lucide-react";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { ThemeToggle } from "./ThemeToggle";
+import { EnquiryModal } from "./EnquiryModal";
 import { API_URL } from "@/lib/config";
 
 const navLinks = [
@@ -23,6 +24,7 @@ const mobileNavLinks = [
 
 export function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isEnquiryOpen, setIsEnquiryOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
@@ -64,14 +66,12 @@ export function Navbar() {
         </div>
         <div className="flex items-center gap-6">
           <ThemeToggle />
-          <a 
-            href="https://wa.me/919003922073?text=Hello! I have an enquiry about your services."
-            target="_blank"
-            rel="noopener noreferrer"
-            className="btn-primary py-2.5 px-6 min-h-[44px]"
+          <button 
+            onClick={() => setIsEnquiryOpen(true)}
+            className="btn-primary py-2.5 px-6 min-h-[44px] flex items-center justify-center gap-2"
           >
             Enquire Now
-          </a>
+          </button>
         </div>
       </nav>
 
@@ -199,19 +199,22 @@ export function Navbar() {
               </div>
 
               <div className="mt-auto pt-8 flex flex-col gap-4">
-                <a 
-                  href="https://wa.me/919003922073?text=Hello! I have an enquiry about your services."
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <button 
+                  onClick={() => setIsEnquiryOpen(true)}
                   className="w-full btn-primary py-4 text-lg text-center"
                 >
                   Enquire Now
-                </a>
+                </button>
               </div>
             </motion.div>
           </>
         )}
       </AnimatePresence>
+
+      <EnquiryModal 
+        isOpen={isEnquiryOpen} 
+        onClose={() => setIsEnquiryOpen(false)} 
+      />
     </header>
   );
 }

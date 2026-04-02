@@ -183,3 +183,24 @@ model Review {
 
   @@map("reviews")
 }
+
+// ─── ENQUIRIES MODULE ────────────────────────────────────────────────────────
+
+model Enquiry {
+  id               Int      @id @default(autoincrement())
+  tripDate         String
+  nights           Int
+  category         String   // Family, Friends, Couple
+  totalPersons     Int
+  males            Int      @default(0)
+  females          Int      @default(0)
+  children         Int      @default(0)
+  mobileNumber     String
+  needCab          Boolean  @default(false)
+  location         String
+  status           String   @default("new")   // new, contacted, closed
+  createdAt        DateTime @default(now())
+
+  @@map("enquiries")
+}
+
