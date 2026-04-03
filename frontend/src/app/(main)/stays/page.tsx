@@ -278,6 +278,9 @@ const StaysContent = () => {
                                             alt={activeStay.name}
                                             fill
                                             className="object-contain pointer-events-none"
+                                            onError={(e) => {
+                                                (e.target as HTMLImageElement).src = 'https://placehold.co/800x600?text=Image+Not+Found';
+                                            }}
                                         />
                                     </motion.div>
                                 </AnimatePresence>
@@ -313,7 +316,15 @@ const StaysContent = () => {
                                             activeImageIndex === idx ? "ring-4 ring-primary ring-offset-4 ring-offset-black" : "opacity-40 hover:opacity-100"
                                         }`}
                                     >
-                                        <Image src={img.url} alt="thumbnail" fill className="object-cover" />
+                                        <Image 
+                                            src={img.url} 
+                                            alt="thumbnail" 
+                            fill 
+                                            className="object-cover"
+                                            onError={(e) => {
+                                                (e.target as HTMLImageElement).style.opacity = '0';
+                                            }}
+                                        />
                                     </button>
                                 ))}
                             </div>
