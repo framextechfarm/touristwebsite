@@ -160,17 +160,6 @@ model Booking {
 
 // ─── ADMIN MODULE ─────────────────────────────────────────────────────────────
 
-model ImageSlot {
-  id          Int     @id @default(autoincrement())
-  slotKey     String  @unique
-  title       String?
-  description String?
-  imageUrl    String?
-  category    String?
-
-  @@map("image_slots")
-}
-
 model Review {
   id          Int      @id @default(autoincrement())
   userName    String

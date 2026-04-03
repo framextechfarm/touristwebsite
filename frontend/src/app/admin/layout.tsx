@@ -48,7 +48,6 @@ export default function AdminLayout({
 
   const menuItems = [
     { title: "Dashboard", icon: LayoutDashboard, href: "/admin" },
-    { title: "Image Slots", icon: Images, href: "/admin/images" },
     { title: "Reviews", icon: MessageSquare, href: "/admin/reviews" },
   ];
 

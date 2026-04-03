@@ -8,25 +8,21 @@ import { motion } from "framer-motion";
 export default function AdminDashboard() {
   const [stats, setStats] = useState({
     reviews: 0,
-    slots: 0,
   });
 
   useEffect(() => {
     const fetchStats = async () => {
       try {
-        const [reviewsRes, slotsRes] = await Promise.all([
+        const [reviewsRes] = await Promise.all([
           fetch(`${API_URL}/reviews/admin`),
-          fetch(`${API_URL}/admin/image-slots`),
         ]);
         
-        if (reviewsRes.ok && slotsRes.ok) {
-          const [reviews, slots] = await Promise.all([
+        if (reviewsRes.ok) {
+          const [reviews] = await Promise.all([
             reviewsRes.json(),
-            slotsRes.json(),
           ]);
           setStats({
             reviews: reviews.length,
-            slots: slots.length,
           });
         }
       } catch (err) {
@@ -38,7 +34,6 @@ export default function AdminDashboard() {
 
   const statCards = [
     { title: "Total Reviews", value: stats.reviews, icon: MessageSquare, color: "bg-blue-500" },
-    { title: "Image Slots", value: stats.slots, icon: Images, color: "bg-emerald-500" },
     { title: "Avg. Rating", value: "4.9", icon: Star, color: "bg-amber-500" },
     { title: "Active Users", value: "2.4k", icon: Users, color: "bg-purple-500" },
   ];
@@ -75,10 +70,6 @@ export default function AdminDashboard() {
             <button className="p-4 bg-slate-50 hover:bg-slate-100 rounded-2xl border border-slate-200 transition-all text-left group">
               <span className="block font-bold text-slate-900">Add New Review</span>
               <span className="text-sm text-slate-500">Post a customer testimonial</span>
-            </button>
-            <button className="p-4 bg-slate-50 hover:bg-slate-100 rounded-2xl border border-slate-200 transition-all text-left group">
-              <span className="block font-bold text-slate-900">Manage Images</span>
-              <span className="text-sm text-slate-500">Update homepage slots</span>
             </button>
           </div>
         </div>
