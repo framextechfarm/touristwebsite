@@ -118,7 +118,11 @@ const STAY_CATEGORIES: RoomType[] = [
       "/images/stays/homestay/IMG-20251229-WA0005.jpg.jpeg",
       "/images/stays/homestay/IMG-20260309-WA0015.jpg.jpeg",
       "/images/stays/homestay/IMG-20260309-WA0019.jpg.jpeg",
-      "/images/stays/homestay/IMG-20260309-WA0020.jpg.jpeg"
+      "/images/stays/homestay/IMG-20260309-WA0020.jpg.jpeg",
+      "/images/stays/homestay/IMG-20260309-WA0023.jpg.jpeg",
+      "/images/stays/homestay/IMG-20260327-WA0007.jpg.jpeg",
+      "/images/stays/homestay/IMG-20260327-WA0009.jpg.jpeg",
+      "/images/stays/homestay/IMG-20260327-WA0039.jpg.jpeg"
     ]
   },
   {
