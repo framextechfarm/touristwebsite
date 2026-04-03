@@ -72,79 +72,58 @@ export function Navbar() {
         </div>
       </nav>
 
-      {/* --- MOBILE NAVBAR --- */}
-      <motion.nav 
-        layout
-        transition={{ type: "spring", stiffness: 300, damping: 30 }}
-        className={`flex lg:hidden mx-auto overflow-hidden backdrop-blur-lg border border-white/10 ${
-          scrolled 
-            ? 'rounded-full px-4 py-2 w-fit bg-black/20' 
-            : 'rounded-[2rem] px-5 py-3 w-full bg-transparent'
-        }`}
-      >
-        <AnimatePresence mode="wait">
-          {!scrolled ? (
-            <motion.div 
-              key="full-mobile"
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.9 }}
+      {/* --- MOBILE TOP NAVBAR --- */}
+      <nav className={`flex lg:hidden w-full items-center justify-between px-5 py-3 transition-all duration-300 ${
+        scrolled ? 'bg-black/20 backdrop-blur-lg shadow-xl border border-white/10 rounded-[2rem]' : 'bg-transparent'
+      }`}>
+        <Link href="/" className="flex items-center gap-2">
+          <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center shrink-0">
+            <span className="text-white font-bold text-lg">S</span>
+          </div>
+          <span className="text-lg font-bold tracking-tight text-foreground whitespace-nowrap">
+            SMR
+          </span>
+        </Link>
+        <AnimatePresence>
+          {scrolled && (
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: 20 }}
               transition={{ duration: 0.2 }}
-              className="flex justify-between items-center w-full"
             >
-              <Link href="/" className="flex items-center gap-2">
-                <motion.div layout className="w-8 h-8 bg-primary rounded-full flex items-center justify-center shrink-0">
-                  <span className="text-white font-bold text-lg">S</span>
-                </motion.div>
-                <motion.span layout className="text-lg font-bold tracking-tight text-foreground whitespace-nowrap">
-                  SMR Holidays
-                </motion.span>
-              </Link>
-              <div className="flex items-center gap-3">
-                <button 
-                  onClick={() => setIsMenuOpen(true)} 
-                  className="w-10 h-10 flex items-center justify-center rounded-full glass hover:bg-white/20 active:scale-95 transition-all outline-none"
-                  aria-label="Open menu"
-                >
-                  <Menu className="w-5 h-5 text-foreground" />
-                </button>
-              </div>
-            </motion.div>
-          ) : (
-            <motion.div 
-              key="icon-mobile"
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.8 }}
-              transition={{ duration: 0.2 }}
-              className="flex items-center justify-center gap-4 md:gap-6"
-            >
-              {mobileNavLinks.map((link, i) => {
-                const Icon = link.icon;
-                return (
-                  <motion.div
-                    key={link.name}
-                    initial={{ opacity: 0, x: 10 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: i * 0.05 }}
-                  >
-                    <Link href={link.href} className="flex flex-col items-center justify-center p-2 rounded-full hover:bg-white/10 dark:hover:bg-white/5 active:scale-90 transition-all">
-                      <Icon className="w-5 h-5 text-foreground/80 hover:text-primary transition-colors" strokeWidth={2.5} />
-                    </Link>
-                  </motion.div>
-                );
-              })}
-              <div className="w-px h-6 bg-border mx-1" />
               <button 
-                onClick={() => setIsMenuOpen(true)}
-                className="p-2 rounded-full hover:bg-white/10 dark:hover:bg-white/5 active:scale-90 transition-all"
+                onClick={() => setIsEnquiryOpen(true)}
+                className="btn-primary py-2 px-4 shadow-lg shadow-primary/20 text-xs flex items-center justify-center gap-2 font-black tracking-widest uppercase rounded-xl"
               >
-                <Menu className="w-5 h-5 text-foreground/80 hover:text-primary transition-colors" strokeWidth={2.5} />
+                Enquire Now
               </button>
             </motion.div>
           )}
         </AnimatePresence>
-      </motion.nav>
+      </nav>
+
+      {/* --- MOBILE BOTTOM NAVBAR (PILL) --- */}
+      <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-[60] lg:hidden">
+        <nav className="flex items-center justify-center gap-4 bg-black/40 backdrop-blur-xl border border-white/10 rounded-[2rem] px-6 py-3 shadow-2xl w-fit">
+          {mobileNavLinks.map((link, i) => {
+            const Icon = link.icon;
+            return (
+              <Link key={link.name} href={link.href} className="flex flex-col items-center justify-center p-2 rounded-full hover:bg-white/10 active:scale-90 transition-all">
+                <Icon className="w-5 h-5 text-white/80 hover:text-primary transition-colors" strokeWidth={2.5} />
+              </Link>
+            );
+          })}
+          <div className="w-px h-6 bg-white/20 mx-1" />
+          <button 
+            onClick={() => setIsMenuOpen(true)}
+            className="p-2 rounded-full hover:bg-white/10 active:scale-90 transition-all"
+            aria-label="Open menu"
+          >
+            <Menu className="w-5 h-5 text-white/80 hover:text-primary transition-colors" strokeWidth={2.5} />
+          </button>
+        </nav>
+      </div>
 
 
       {/* Mobile Slide-out Drawer (Sheet) */}

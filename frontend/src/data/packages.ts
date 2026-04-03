@@ -10,12 +10,36 @@ export interface Package {
   rating: number;
   images: { url: string }[];
   itinerary: { day: number; title: string; description: string }[];
+  highlights?: string[];
 }
 
 export const staticPackages: Package[] = [
   {
     id: 1,
-    title: "TOUR 1: VALLEY TOUR",
+    title: "TOUR 1: GROUP TOUR",
+    slug: "group-tour",
+    duration: "1 Day",
+    description: "Experience Kodaikanal together with our special group tour. Explore the best spots with fellow travelers in a comfortable 20-seater vehicle.",
+    price: 0,
+    location: "Kodaikanal",
+    isFeatured: true,
+    rating: 5,
+    images: [{ url: "/images/tours/group_tour.png" }],
+    itinerary: [],
+    highlights: [
+      "We provide group tours in Kodaikanal at affordable price.",
+      "Suitable for friends, families, and groups.",
+      "Includes Valley Tour, Village Tour, and Forest Tour.",
+      "Travel in a comfortable 20-seater vehicle.",
+      "Experienced guide to assist you during the tour.",
+      "We give enough time at each place to enjoy and explore.",
+      "Safe and well-organized trip for everyone.",
+      "Easy and best way to enjoy Kodaikanal together."
+    ]
+  },
+  {
+    id: 2,
+    title: "TOUR 2: VALLEY TOUR",
     slug: "valley-tour",
     duration: "1 Day",
     description: "Explore the heart of Kodaikanal. From the historic Coakers Walk to the breathtaking Pillar Rocks, witness the valley's most iconic landmarks.",
@@ -41,8 +65,8 @@ export const staticPackages: Package[] = [
     ]
   },
   {
-    id: 2,
-    title: "TOUR 2: VILLAGE TOUR",
+    id: 3,
+    title: "TOUR 3: VILLAGE TOUR",
     slug: "village-tour",
     duration: "1 Day",
     description: "Experience the authentic rural charm of Kodaikanal. Visit ancient temples, agricultural terraces, and peaceful farms for a glimpse into local life.",
@@ -62,8 +86,8 @@ export const staticPackages: Package[] = [
     ]
   },
   {
-    id: 3,
-    title: "TOUR 3: WILD WAYS TOUR",
+    id: 4,
+    title: "TOUR 4: WILD WAYS TOUR",
     slug: "wild-ways-tour",
     duration: "1 Day",
     description: "Venture into the restricted forest areas and serene lakes. Experience the 'Memory Loss Forest' and the pristine beauty of Berijam Lake area.",
@@ -82,8 +106,8 @@ export const staticPackages: Package[] = [
     ]
   },
   {
-    id: 4,
-    title: "TOUR 4: TREKKING TOUR",
+    id: 5,
+    title: "TOUR 5: TREKKING TOUR",
     slug: "trekking-tour",
     duration: "1 Day",
     description: "For the active adventurer. A trekking focused tour visiting hidden falls and the famous Dolphin's Nose for spectacular cliff-side views.",
@@ -103,8 +127,8 @@ export const staticPackages: Package[] = [
     ]
   },
   {
-    id: 5,
-    title: "TOUR 5: ADVENTURE JEEP SAFARI",
+    id: 6,
+    title: "TOUR 6: ADVENTURE JEEP SAFARI",
     slug: "adventure-jeep-safari",
     duration: "1 Day",
     description: "Go off-the-beaten-path with an exhilarating jeep safari. Visit remote viewpoints and hidden waterfalls accessible only by 4x4 vehicles.",

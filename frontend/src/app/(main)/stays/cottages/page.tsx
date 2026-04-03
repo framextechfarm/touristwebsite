@@ -175,9 +175,9 @@ const ImageCarousel = ({ images, name }: { images: string[], name: string }) => 
 
   return (
     <div className="relative w-full h-[300px] md:h-[500px] rounded-3xl overflow-hidden group bg-secondary/50">
-      {/* Fallback pattern when images fail to load or are missing */}
-      <div className="absolute inset-0 flex items-center justify-center text-muted-foreground bg-secondary">
-         <span className="text-sm font-bold uppercase tracking-widest opacity-50">Upload {name} Images</span>
+      {/* Fallback loading pattern while images load */}
+      <div className="absolute inset-0 flex items-center justify-center text-muted-foreground bg-secondary/50">
+         <div className="w-8 h-8 rounded-full border-2 border-primary border-t-transparent animate-spin opacity-50" />
       </div>
 
       <AnimatePresence initial={false} custom={direction}>

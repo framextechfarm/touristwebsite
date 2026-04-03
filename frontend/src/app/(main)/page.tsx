@@ -9,7 +9,6 @@ import { Stats } from "@/components/home/Stats";
 import { StaysSection } from "@/components/home/StaysSection";
 import { CabService } from "@/components/home/CabService";
 import { ReviewCarousel } from "@/components/home/ReviewCarousel";
-import { GroupToursSection } from "@/components/home/GroupToursSection";
 import { staticPackages } from "@/data/packages";
 
 type Slot = {
@@ -114,7 +113,6 @@ export default function Home() {
         <FeaturedPackages packages={packages} API_URL={API_URL} loading={loading} />
       )}
       
-      <GroupToursSection />
       <Stats />
       <StaysSection />
       <CabService />

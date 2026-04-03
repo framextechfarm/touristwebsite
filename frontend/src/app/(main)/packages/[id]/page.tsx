@@ -27,6 +27,7 @@ type Package = {
     description: string;
     images: { url: string }[];
     itinerary: ItineraryItem[];
+    highlights?: string[];
 };
 
 export default function PackageDetailsPage() {
@@ -97,7 +98,9 @@ export default function PackageDetailsPage() {
                         <div className="bg-card glass rounded-[2.5rem] p-8 md:p-12 border border-border shadow-2xl">
                             {/* Tabs */}
                             <div className="flex gap-4 border-b border-border mb-12 overflow-x-auto pb-4">
-                                {["Overview", "Itinerary", "Policies"].map((tab) => (
+                                {["Overview", "Itinerary", "Policies"]
+                                    .filter(tab => tab !== "Itinerary" || (pkg.itinerary && pkg.itinerary.length > 0))
+                                    .map((tab) => (
                                     <button
                                         key={tab}
                                         onClick={() => setActiveTab(tab.toLowerCase())}
@@ -122,6 +125,20 @@ export default function PackageDetailsPage() {
                                             <h3 className="text-2xl font-bold mb-6">About this Trip</h3>
                                             <p className="text-muted-foreground text-lg leading-relaxed">{pkg.description}</p>
                                         </div>
+                                        
+                                        {pkg.highlights && pkg.highlights.length > 0 && (
+                                            <div>
+                                                <h3 className="text-xl font-bold mb-6 mt-8">Highlights</h3>
+                                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                                    {pkg.highlights.map((point, idx) => (
+                                                        <div key={idx} className="flex gap-3 items-start">
+                                                            <CheckCircle className="w-5 h-5 text-primary shrink-0 mt-0.5" />
+                                                            <p className="text-muted-foreground leading-relaxed">{point}</p>
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            </div>
+                                        )}
 
                                     </motion.div>
                                 )}
