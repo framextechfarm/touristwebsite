@@ -32,7 +32,7 @@ type Package = {
 
 export default function PackageDetailsPage() {
     const { id } = useParams();
-    const [activeTab, setActiveTab] = useState("itinerary");
+    const [activeTab, setActiveTab] = useState("overview");
 
     const idString = Array.isArray(id) ? id[0] : id;
     const pkg = staticPackages.find(p => p.id.toString() === idString);

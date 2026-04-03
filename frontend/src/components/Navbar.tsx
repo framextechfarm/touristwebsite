@@ -47,22 +47,26 @@ export function Navbar() {
     <header className={`fixed top-0 left-0 right-0 z-50 px-4 md:px-6 transition-all duration-300 ${scrolled ? 'py-4' : 'py-4 md:py-6'}`}>
       
       {/* --- DESKTOP NAVBAR --- */}
-      <nav className={`hidden lg:flex max-w-7xl mx-auto rounded-[2rem] px-8 py-4 items-center justify-between transition-all duration-500 border border-white/10 ${scrolled ? 'bg-black/20 backdrop-blur-lg shadow-2xl' : 'bg-transparent backdrop-blur-md'}`}>
-        <Link href="/" className="flex items-center gap-2 relative z-[60]">
-          <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center relative shrink-0">
-            <span className="text-white font-bold text-xl">S</span>
-            <div className="absolute -top-1 -right-1 w-3 h-3 bg-primary rounded-full border-2 border-background" />
-          </div>
-          <span className="text-xl md:text-2xl font-bold tracking-tight text-white whitespace-nowrap">SMR Holidays</span>
-        </Link>
-        <div className="flex items-center gap-10">
+      <nav className={`hidden lg:flex max-w-7xl mx-auto rounded-[2rem] px-8 py-4 items-center justify-between transition-all duration-500 border border-white/10 relative ${scrolled ? 'bg-black/20 backdrop-blur-lg shadow-2xl' : 'bg-transparent backdrop-blur-md'}`}>
+        <div className="flex-1 flex justify-start">
+          <Link href="/" className="flex items-center gap-2 relative z-[60]">
+            <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center relative shrink-0">
+              <span className="text-white font-bold text-xl">S</span>
+              <div className="absolute -top-1 -right-1 w-3 h-3 bg-primary rounded-full border-2 border-background" />
+            </div>
+            <span className="text-xl md:text-2xl font-bold tracking-tight text-white whitespace-nowrap">SMR Holidays</span>
+          </Link>
+        </div>
+        
+        <div className="absolute left-1/2 -translate-x-1/2 flex items-center gap-10">
           {navLinks.map((item) => (
             <Link key={item.name} href={item.href} className="text-[15px] font-medium text-white/70 hover:text-primary transition-colors">
               {item.name}
             </Link>
           ))}
         </div>
-        <div className="flex items-center gap-6">
+
+        <div className="flex-1 flex justify-end items-center gap-6">
           <button 
             onClick={() => setIsEnquiryOpen(true)}
             className="btn-primary py-2.5 px-6 min-h-[44px] flex items-center justify-center gap-2"
@@ -81,7 +85,7 @@ export function Navbar() {
             <span className="text-white font-bold text-lg">S</span>
           </div>
           <span className="text-lg font-bold tracking-tight text-foreground whitespace-nowrap">
-            SMR
+            {scrolled ? "SMR" : "SMR Holidays"}
           </span>
         </Link>
         <AnimatePresence>
@@ -104,12 +108,12 @@ export function Navbar() {
       </nav>
 
       {/* --- MOBILE BOTTOM NAVBAR (PILL) --- */}
-      <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-[60] lg:hidden">
-        <nav className="flex items-center justify-center gap-4 bg-black/40 backdrop-blur-xl border border-white/10 rounded-[2rem] px-6 py-3 shadow-2xl w-fit">
+      <div className="fixed bottom-4 left-1/2 -translate-x-1/2 z-[60] lg:hidden w-[95%] max-w-[350px]">
+        <nav className="flex items-center justify-around gap-2 bg-black/50 backdrop-blur-xl border border-white/10 rounded-[2rem] px-4 py-2.5 shadow-2xl w-full">
           {mobileNavLinks.map((link, i) => {
             const Icon = link.icon;
             return (
-              <Link key={link.name} href={link.href} className="flex flex-col items-center justify-center p-2 rounded-full hover:bg-white/10 active:scale-90 transition-all">
+              <Link key={link.name} href={link.href} className="flex flex-col items-center justify-center p-2 rounded-full hover:bg-white/10 active:scale-95 transition-all">
                 <Icon className="w-5 h-5 text-white/80 hover:text-primary transition-colors" strokeWidth={2.5} />
               </Link>
             );
@@ -117,7 +121,7 @@ export function Navbar() {
           <div className="w-px h-6 bg-white/20 mx-1" />
           <button 
             onClick={() => setIsMenuOpen(true)}
-            className="p-2 rounded-full hover:bg-white/10 active:scale-90 transition-all"
+            className="p-2 rounded-full hover:bg-white/10 active:scale-95 transition-all"
             aria-label="Open menu"
           >
             <Menu className="w-5 h-5 text-white/80 hover:text-primary transition-colors" strokeWidth={2.5} />
