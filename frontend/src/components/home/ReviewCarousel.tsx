@@ -3,21 +3,13 @@
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Star, Quote, ChevronLeft, ChevronRight, User } from "lucide-react";
-
-interface Review {
-  id: number;
-  userName: string;
-  userRole: string;
-  rating: number;
-  comment: string;
-  userImage: string;
-}
+import { staticReviews, type Review } from "@/data/reviews";
 
 export function ReviewCarousel({ API_URL }: { API_URL: string }) {
-  const [reviews, setReviews] = useState<Review[]>([]);
+  const [reviews, setReviews] = useState<Review[]>(staticReviews);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [direction, setDirection] = useState(0);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   const paginate = (newDirection: number) => {
     setDirection(newDirection);
@@ -30,12 +22,13 @@ export function ReviewCarousel({ API_URL }: { API_URL: string }) {
         const response = await fetch(`${API_URL}/reviews`);
         if (response.ok) {
           const data = await response.json();
-          setReviews(data);
+          // Only update if we have new reviews and they are different from static ones
+          if (data && data.length > 0) {
+            setReviews(data);
+          }
         }
       } catch (err) {
         console.error("Error fetching reviews:", err);
-      } finally {
-        setLoading(false);
       }
     };
     fetchReviews();
