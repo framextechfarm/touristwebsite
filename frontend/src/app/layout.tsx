@@ -14,10 +14,10 @@ export const metadata: Metadata = {
     template: "%s | Hill Trek"
   },
   description: "Experience the ultimate hill station adventure with our curated trekking and stay packages in Kodaikanal and beyond. Premium cottages, villas, and unforgettable experiences.",
-  keywords: ["Kodaikanal", "Kodaikanal Tour Packages", "Hill Station", "Trekking", "Cottages in Kodaikanal", "Villas in Kodaikanal", "Tour Packages", "Hill Trek", "South India Tourism", "Mountain Escapes", "Cab Bookings Kodaikanal", "SMR Holidays", "Homestay Kodaikanal"],
-  authors: [{ name: "SMR Holidays Team" }],
-  creator: "SMR Holidays",
-  publisher: "SMR Holidays",
+  keywords: ["Kodaikanal", "Kodaikanal Tour Packages", "Hill Station", "Trekking", "Cottages in Kodaikanal", "Villas in Kodaikanal", "Tour Packages", "Hill Trek", "South India Tourism", "Mountain Escapes", "Cab Bookings Kodaikanal", "SMR holidays Kodaikanal", "Homestay Kodaikanal"],
+  authors: [{ name: "SMR holidays Kodaikanal Team" }],
+  creator: "SMR holidays Kodaikanal",
+  publisher: "SMR holidays Kodaikanal",
   formatDetection: {
     email: false,
     address: false,
@@ -70,7 +70,7 @@ export default function RootLayout({
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "TravelAgency",
-    "name": "SMR Holidays Kodaikanal",
+    "name": "SMR holidays Kodaikanal",
     "image": "https://hilltrek.vercel.app/og-image.jpg",
     "description": "Experience the ultimate hill station adventure with our curated trekking and stay packages in Kodaikanal and beyond. Premium cottages, villas, and unforgettable experiences.",
     "address": {

@@ -28,7 +28,7 @@ export default function TermsOfService() {
                             <h2 className="text-2xl font-bold uppercase tracking-tight">Booking & Confirmation</h2>
                         </div>
                         <div className="bg-card border border-border rounded-[2.5rem] p-8 md:p-12 space-y-6 text-foreground/70 leading-relaxed font-medium">
-                            <p>SMR Holidays acts as an aggregator for hill station services. Bookings are confirmed only upon receipt of the advance payment.</p>
+                            <p>SMR holidays Kodaikanal acts as an aggregator for hill station services. Bookings are confirmed only upon receipt of the advance payment.</p>
                             <ul className="space-y-4 list-disc pl-6">
                                 <li>All prices are subject to availability and seasonal fluctuations.</li>
                                 <li>Identification documents (Aadhaar/Voter ID) are mandatory for all guests at check-in.</li>
@@ -45,7 +45,7 @@ export default function TermsOfService() {
                             <h2 className="text-2xl font-bold uppercase tracking-tight">Travel & Transport</h2>
                         </div>
                         <div className="bg-card border border-border rounded-[2.5rem] p-8 md:p-12 text-foreground/70 leading-relaxed font-medium">
-                            <p>For cab services, the route must be pre-confirmed. Any last-minute diversions or extra stops may incur additional charges payable directly to the driver. SMR Holidays is not responsible for delays caused by traffic, landslides, or vehicle breakdowns, though we will assist in alternative arrangements where possible.</p>
+                            <p>For cab services, the route must be pre-confirmed. Any last-minute diversions or extra stops may incur additional charges payable directly to the driver. SMR holidays Kodaikanal is not responsible for delays caused by traffic, landslides, or vehicle breakdowns, though we will assist in alternative arrangements where possible.</p>
                         </div>
                     </section>
 
@@ -57,13 +57,13 @@ export default function TermsOfService() {
                             <h2 className="text-2xl font-bold uppercase tracking-tight">Liability Limitation</h2>
                         </div>
                         <div className="bg-card border border-border rounded-[2.5rem] p-8 md:p-12 text-foreground/70 leading-relaxed font-medium">
-                            <p>SMR Holidays is not liable for any personal injury, loss of belongings, or damages occurring during the stay or travel. Travelers are encouraged to have their own travel insurance for mountain trekking and adventure activities.</p>
+                            <p>SMR holidays Kodaikanal is not liable for any personal injury, loss of belongings, or damages occurring during the stay or travel. Travelers are encouraged to have their own travel insurance for mountain trekking and adventure activities.</p>
                         </div>
                     </section>
                 </div>
 
                 <div className="mt-20 pt-12 border-t border-border text-center">
-                    <p className="text-foreground/40 font-bold uppercase tracking-widest text-[10px]">© 2026 SMR HOLIDAYS | ALL RIGHTS RESERVED</p>
+                    <p className="text-foreground/40 font-bold uppercase tracking-widest text-[10px]">© 2026 SMR holidays Kodaikanal | ALL RIGHTS RESERVED</p>
                 </div>
             </div>
         </main>

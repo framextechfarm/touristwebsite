@@ -7,6 +7,13 @@ import { motion } from "framer-motion";
 
 const STAY_CATEGORIES = [
   {
+    id: "premium-family",
+    title: "Premium Family Cottage",
+    description: "Expansive luxury spaces designed for the perfect family retreat.",
+    image: "/images/cottages/111.jpeg",
+    link: "/stays/family-cottage"
+  },
+  {
     id: "cottages",
     title: "Cottages / Rooms",
     description: "Cozy spaces with breathtaking views of the valley.",

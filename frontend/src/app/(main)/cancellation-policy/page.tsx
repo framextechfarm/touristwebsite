@@ -28,7 +28,7 @@ export default function CancellationPolicy() {
                             <h2 className="text-2xl font-bold uppercase tracking-tight">Standard Refund Policy</h2>
                         </div>
                         <div className="bg-card border border-border rounded-[2.5rem] p-8 md:p-12 space-y-6 text-foreground/70 leading-relaxed font-medium">
-                            <p>At SMR Holidays, we understand that plans can change. Our cancellation policy is designed to be fair to both our travelers and our local partners.</p>
+                            <p>At SMR holidays Kodaikanal, we understand that plans can change. Our cancellation policy is designed to be fair to both our travelers and our local partners.</p>
                             <ul className="space-y-4 list-disc pl-6">
                                 <li><strong>15 Days or More Before Trip:</strong> 90% refund of the total booking amount.</li>
                                 <li><strong>7 to 14 Days Before Trip:</strong> 50% refund of the total booking amount.</li>
@@ -46,7 +46,7 @@ export default function CancellationPolicy() {
                             <h2 className="text-2xl font-bold uppercase tracking-tight">Force Majeure</h2>
                         </div>
                         <div className="bg-card border border-border rounded-[2.5rem] p-8 md:p-12 text-foreground/70 leading-relaxed font-medium">
-                            <p>In case of unforeseen circumstances like natural disasters, government restrictions, or extreme weather conditions in hill stations (Kodaikanal/Ooty), SMR Holidays reserves the right to postpone the trip or offer credit notes for future bookings instead of cash refunds.</p>
+                            <p>In case of unforeseen circumstances like natural disasters, government restrictions, or extreme weather conditions in hill stations (Kodaikanal/Ooty), SMR holidays Kodaikanal reserves the right to postpone the trip or offer credit notes for future bookings instead of cash refunds.</p>
                         </div>
                     </section>
 

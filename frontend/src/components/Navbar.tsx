@@ -3,6 +3,7 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { Star, Menu, X, Home, Map, Bed, Car } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 import { useState, useEffect } from "react";
 import { EnquiryModal } from "./EnquiryModal";
 import { API_URL } from "@/lib/config";
@@ -50,11 +51,14 @@ export function Navbar() {
       <nav className={`hidden lg:flex max-w-7xl mx-auto rounded-[2rem] px-8 py-4 items-center justify-between transition-all duration-500 border border-white/10 relative ${scrolled ? 'bg-black/20 backdrop-blur-lg shadow-2xl' : 'bg-transparent backdrop-blur-md'}`}>
         <div className="flex-1 flex justify-start">
           <Link href="/" className="flex items-center gap-2 relative z-[60]">
-            <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center relative shrink-0">
-              <span className="text-white font-bold text-xl">S</span>
-              <div className="absolute -top-1 -right-1 w-3 h-3 bg-primary rounded-full border-2 border-background" />
-            </div>
-            <span className="text-xl md:text-2xl font-bold tracking-tight text-white whitespace-nowrap">SMR Holidays</span>
+            <Image 
+              src="/images/logo/smr holidays 3D.png" 
+              alt="SMR holidays Kodaikanal" 
+              width={200} 
+              height={80} 
+              className="h-12 md:h-16 w-auto object-contain brightness-110 drop-shadow-2xl"
+              priority
+            />
           </Link>
         </div>
         
@@ -81,12 +85,14 @@ export function Navbar() {
         scrolled ? 'bg-black/20 backdrop-blur-lg shadow-xl border border-white/10 rounded-[2rem]' : 'bg-transparent'
       }`}>
         <Link href="/" className="flex items-center gap-2">
-          <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center shrink-0">
-            <span className="text-white font-bold text-lg">S</span>
-          </div>
-          <span className="text-lg font-bold tracking-tight text-foreground whitespace-nowrap">
-            {scrolled ? "SMR" : "SMR Holidays"}
-          </span>
+          <Image 
+            src="/images/logo/smr holidays 3D.png" 
+            alt="SMR holidays Kodaikanal" 
+            width={120} 
+            height={48} 
+            className="h-8 md:h-10 w-auto object-contain brightness-110"
+            priority
+          />
         </Link>
         <AnimatePresence>
           {scrolled && (

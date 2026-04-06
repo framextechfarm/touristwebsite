@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Shield, Lock, ArrowRight, Zap } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 
 export default function AdminLoginPage() {
     const [password, setPassword] = useState("");
@@ -32,8 +33,14 @@ export default function AdminLoginPage() {
 
             <div className="w-full max-w-md">
                 <div className="text-center mb-12">
-                    <div className="w-20 h-20 bg-primary/10 rounded-3xl flex items-center justify-center mx-auto mb-6 transform -rotate-12">
-                        <Shield className="w-10 h-10 text-primary" />
+                    <div className="w-24 h-24 bg-primary/10 rounded-3xl flex items-center justify-center mx-auto mb-6 transform -rotate-12 overflow-hidden border border-primary/20 p-4">
+                        <Image 
+                            src="/images/logo/smr holidays 3D.png" 
+                            alt="Logo" 
+                            width={100} 
+                            height={100} 
+                            className="w-full h-full object-contain brightness-110"
+                        />
                     </div>
                     <h1 className="text-4xl font-black tracking-tighter mb-2">Admin <span className="text-primary italic">Access.</span></h1>
                     <p className="text-foreground/40 font-bold uppercase tracking-widest text-[10px]">Authorization Required</p>

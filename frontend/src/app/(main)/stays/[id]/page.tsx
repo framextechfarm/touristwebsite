@@ -8,33 +8,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { API_URL } from "@/lib/config";
 
-type Amenity = {
-    id: number;
-    name: string;
-    icon: string;
-};
-
-type StayImage = {
-    id: number;
-    url: string;
-};
-
-type Stay = {
-    id: number;
-    name: string;
-    slug: string;
-    property_type: string;
-    description: string;
-    location: string;
-    price_per_night: number;
-    capacity: number;
-    bedrooms: number;
-    bathrooms: number;
-    rating: number;
-    is_featured: boolean;
-    images: StayImage[];
-    amenities: Amenity[];
-};
+import { staticStays, Stay } from "@/data/stays";
 
 // Icon mapping for amenities
 const iconMap: Record<string, LucideIcon> = {
@@ -49,19 +23,9 @@ export default function StayDetailsPage() {
 
     useEffect(() => {
         if (!id) return;
-        async function fetchStay() {
-            try {
-                const res = await fetch(`${API_URL}/stays/${id}`);
-                if (!res.ok) throw new Error("Not found");
-                const data = await res.json();
-                setStay(data);
-            } catch (error) {
-                console.error("Failed to fetch stay", error);
-            } finally {
-                setLoading(false);
-            }
-        }
-        fetchStay();
+        const foundStay = staticStays.find(s => s.slug === id);
+        setStay(foundStay || null);
+        setLoading(false);
     }, [id]);
 
     if (loading) return (
@@ -126,9 +90,9 @@ export default function StayDetailsPage() {
                         className="flex items-center gap-3 mb-6"
                     >
                         <span className="bg-primary text-white text-[10px] font-black px-4 py-1.5 rounded-full uppercase tracking-widest shadow-lg">
-                            {stay.property_type}
+                            {stay.propertyType}
                         </span>
-                        {stay.is_featured && (
+                        {stay.isFeatured && (
                             <span className="bg-amber-500 text-white text-[10px] font-black px-4 py-1.5 rounded-full uppercase tracking-widest shadow-lg">
                                 <Star className="inline w-3 h-3 mr-1 fill-current" /> Featured
                             </span>
@@ -194,29 +158,6 @@ export default function StayDetailsPage() {
                                 <p className="text-foreground/70 text-lg leading-relaxed">{stay.description}</p>
                             </div>
 
-                            {/* Amenities */}
-                            <div className="mb-16">
-                                <h4 className="text-xs font-black uppercase tracking-widest text-primary mb-8">Included Amenities</h4>
-                                <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
-                                    {stay.amenities.map((amenity) => {
-                                        const Icon = iconMap[amenity.icon] || HomeIcon;
-                                        return (
-                                            <div
-                                                key={amenity.id}
-                                                className="flex items-center gap-4 p-5 bg-secondary/30 rounded-2xl border border-border/50 group hover:border-primary/30 transition-all"
-                                            >
-                                                <div className="w-10 h-10 rounded-xl bg-background flex items-center justify-center group-hover:bg-primary transition-colors">
-                                                    <Icon className="w-5 h-5 text-primary group-hover:text-white" />
-                                                </div>
-                                                <span className="text-sm font-bold uppercase tracking-wide">
-                                                    {amenity.name}
-                                                </span>
-                                            </div>
-                                        );
-                                    })}
-                                </div>
-                            </div>
-
                             {/* House Rules */}
                             <div className="pt-12 border-t border-border">
                                 <h4 className="text-xs font-black uppercase tracking-widest text-primary mb-6">House Rules</h4>
@@ -244,7 +185,7 @@ export default function StayDetailsPage() {
                         <div className="bg-card glass rounded-[2.5rem] p-8 border border-border shadow-2xl sticky top-32">
                             <p className="text-xs font-black uppercase tracking-widest text-foreground/40 mb-2">Price per night</p>
                             <div className="flex items-baseline gap-2 mb-8">
-                                <span className="text-5xl font-black text-foreground">₹{stay.price_per_night.toLocaleString()}</span>
+                                <span className="text-5xl font-black text-foreground">₹{stay.pricePerNight.toLocaleString()}</span>
                                 <span className="text-xs font-bold text-foreground/40 uppercase">EXCLUDING TAX</span>
                             </div>
 
@@ -281,7 +222,7 @@ export default function StayDetailsPage() {
                             Price per night
                         </span>
                         <span className="text-xl font-black">
-                            ₹{stay.price_per_night.toLocaleString()}
+                            ₹{stay.pricePerNight.toLocaleString()}
                         </span>
                     </div>
                     <a

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { Instagram, Facebook, Phone, Mail, MapPin } from "lucide-react";
 
 export function Footer() {
@@ -8,10 +9,13 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 md:gap-16 mb-12 md:mb-16">
           <div className="space-y-6 md:space-y-8">
             <div className="flex items-center gap-2">
-              <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center shrink-0">
-                <span className="text-white font-bold text-xl">S</span>
-              </div>
-              <span className="text-2xl font-bold tracking-tight text-foreground">SMR Holidays</span>
+              <Image 
+                src="/images/logo/smr holidays 3D.png" 
+                alt="SMR holidays Kodaikanal" 
+                width={200} 
+                height={80} 
+                className="h-16 w-auto object-contain brightness-110"
+              />
             </div>
             <p className="text-foreground/60 leading-relaxed text-[15px]">
               Making mountain adventures accessible and safe for everyone. Join us for a journey of a lifetime.

@@ -12,7 +12,6 @@ type RoomType = {
   description: string;
   capacity: string;
   bedType: string;
-  amenities: string[];
   images: string[];
 };
 
@@ -23,7 +22,6 @@ const STAY_CATEGORIES: RoomType[] = [
     description: "Perfect for small families or groups of three. Enjoy a spacious setup with comfortable bedding, stunning valley views, and modern amenities designed for a relaxing mountain getaway.",
     capacity: "Up to 3 guests",
     bedType: "1 Double Bed + 1 Single Bed",
-    amenities: ["Valley View", "En-suite Bathroom", "Free Wi-Fi", "Room Heater", "TV", "24/7 Hot Water"],
     images: [
       "/assets/rooms/triple-cot/1.jpg",
       "/assets/rooms/triple-cot/2.jpg"
@@ -35,7 +33,6 @@ const STAY_CATEGORIES: RoomType[] = [
     description: "Experience luxury at its finest. Our premium deluxe rooms feature elegant interiors, a private balcony with panoramic hill views, and top-tier furnishings ensuring maximum comfort.",
     capacity: "Up to 2 adults + 1 child",
     bedType: "1 King Size Bed",
-    amenities: ["Private Balcony", "Premium Toiletries", "Mini Fridge", "Free Wi-Fi", "Smart TV", "Room Service"],
     images: [
       "/assets/rooms/premium-deluxe/1.jpg",
       "/assets/rooms/premium-deluxe/2.jpg",
@@ -50,7 +47,6 @@ const STAY_CATEGORIES: RoomType[] = [
     description: "Offering a perfect blend of modern comfort and rustic charm, the super deluxe rooms are highly spacious and designed to give you a cozy retreat after a long day of sightseeing.",
     capacity: "Up to 3 guests",
     bedType: "1 Queen Size Bed + Extra Bed option",
-    amenities: ["Large Windows", "Lounge Area", "Free Wi-Fi", "Coffee Maker", "TV", "24/7 Hot Water"],
     images: [
       "/assets/rooms/super-deluxe/1.jpg",
       "/assets/rooms/super-deluxe/2.jpg",
@@ -69,7 +65,6 @@ const STAY_CATEGORIES: RoomType[] = [
     description: "A comfortable, budget-friendly option without compromising on quality. The deluxe rooms are well-appointed, neat, and equipped with all essential amenities for a pleasant stay.",
     capacity: "Up to 2 guests",
     bedType: "1 Double Bed",
-    amenities: ["Comfortable Bedding", "En-suite Bathroom", "Free Wi-Fi", "Wardrobe", "TV"],
     images: [
       "/assets/rooms/deluxe/1.jpg",
       "/assets/rooms/deluxe/2.jpg",
@@ -86,7 +81,6 @@ const STAY_CATEGORIES: RoomType[] = [
     description: "The ideal choice for larger groups or families. This highly spacious room features four individual beds, ensuring everyone has their own comfortable space to unwind.",
     capacity: "Up to 4 guests",
     bedType: "4 Single Beds OR 2 Double Beds",
-    amenities: ["Extra Spacious", "Multiple Bathrooms option", "Free Wi-Fi", "Lounge Area", "TV", "Room Heater"],
     images: [
       "/assets/rooms/four-cot/1.jpg",
       "/assets/rooms/four-cot/2.jpg"
@@ -98,7 +92,6 @@ const STAY_CATEGORIES: RoomType[] = [
     description: "Experience the unique charm of our A-frame cabins. Architecturally stunning and cozy, these stays offer a perfect blend of modern design and mountain serenity.",
     capacity: "Up to 2 adults + 1 child",
     bedType: "1 Queen Size Bed + Attic Space",
-    amenities: ["Unique Architecture", "Attic Bedroom", "Glass Frontage", "Free Wi-Fi", "Mountain View", "Private Setup"],
     images: [
       "/images/stays/aframestay/IMG-20260331-WA0013.jpg.jpeg",
       "/images/stays/aframestay/IMG-20260331-WA0015.jpg.jpeg",
@@ -112,7 +105,6 @@ const STAY_CATEGORIES: RoomType[] = [
     description: "Immerse yourself in local culture with our handpicked homestays. Enjoy home-cooked traditional meals and warm hospitality from local families in the heart of Kodaikanal.",
     capacity: "Up to 4 guests",
     bedType: "Varies per home (Double/Twin)",
-    amenities: ["Traditional Meals", "Local Experience", "Garden Access", "Free Wi-Fi", "Parking", "Personalized Care"],
     images: [
       "/images/stays/homestay/IMG-20251120-WA0000.jpg.jpeg",
       "/images/stays/homestay/IMG-20251229-WA0005.jpg.jpeg",
@@ -131,7 +123,6 @@ const STAY_CATEGORIES: RoomType[] = [
     description: "Connect with nature in our traditional-style huts. These stays provide an eco-friendly and minimalist experience without compromising on essential comforts.",
     capacity: "Up to 2 guests",
     bedType: "1 Queen Size Bed",
-    amenities: ["Eco-friendly Design", "Rustic Interirors", "Private Campfire Area", "Essential Amenities", "Scenic Surroundings"],
     images: [
       "/images/stays/hutstay/IMG-20260331-WA0027.jpg.jpeg",
       "/images/stays/hutstay/IMG-20260331-WA0029.jpg.jpeg",
@@ -146,7 +137,6 @@ const STAY_CATEGORIES: RoomType[] = [
     description: "The ultimate adventure experience. Our secure and high-grade tents offer an authentic camping vibe with comfortable bedding and access to shared quality facilities.",
     capacity: "2-4 guests",
     bedType: "Floor Mattresses / Sleeping Bags",
-    amenities: ["Star Gazing", "Secure Camping Site", "Shared Facilities", "Early Morning Trek", "Campfire", "Quality Gear"],
     images: [
       "/images/stays/tentstay/IMG-20260331-WA0051.jpg.jpeg",
       "/images/stays/tentstay/IMG-20260331-WA0056.jpg.jpeg",
@@ -154,6 +144,22 @@ const STAY_CATEGORIES: RoomType[] = [
       "/images/stays/tentstay/IMG-20260331-WA0059.jpg.jpeg",
       "/images/stays/tentstay/IMG-20260331-WA0067.jpg.jpeg",
       "/images/stays/tentstay/IMG-20260331-WA0072.jpg.jpeg"
+    ]
+  },
+  {
+    id: "family-cottage",
+    name: "Premium Family Cottage",
+    description: "Designed for families seeking a home away from home. These cottages offer expansive living areas, private garden access, and multiple bedding options for a comfortable and memorable group stay.",
+    capacity: "Up to 5 guests",
+    bedType: "2 Queen Size Beds + 1 Extra Bed",
+    images: [
+      "/images/cottages/111.jpeg",
+      "/images/cottages/1111.jpeg",
+      "/images/cottages/11111.jpeg",
+      "/images/cottages/111111.jpeg",
+      "/images/cottages/1111111.jpeg",
+      "/images/cottages/11111111.jpeg",
+      "/images/cottages/111111111.jpeg"
     ]
   }
 ];

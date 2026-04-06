@@ -16,7 +16,13 @@ interface Review {
 export function ReviewCarousel({ API_URL }: { API_URL: string }) {
   const [reviews, setReviews] = useState<Review[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [direction, setDirection] = useState(0);
   const [loading, setLoading] = useState(true);
+
+  const paginate = (newDirection: number) => {
+    setDirection(newDirection);
+    setCurrentIndex((prev) => (prev + newDirection + reviews.length) % reviews.length);
+  };
 
   useEffect(() => {
     const fetchReviews = async () => {
@@ -38,14 +44,58 @@ export function ReviewCarousel({ API_URL }: { API_URL: string }) {
   useEffect(() => {
     if (reviews.length === 0) return;
     const timer = setInterval(() => {
-      setCurrentIndex((prev) => (prev + 1) % reviews.length);
+      paginate(1);
     }, 6000);
     return () => clearInterval(timer);
-  }, [reviews.length]);
+  }, [reviews.length, currentIndex]);
 
-  if (loading || reviews.length === 0) return null;
+  if (loading) {
+    return (
+      <section className="py-24 px-6 relative overflow-hidden bg-slate-50/50">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-16 animate-pulse">
+            <div className="w-24 h-4 bg-slate-200 rounded-full mx-auto mb-4" />
+            <div className="w-64 h-10 bg-slate-200 rounded-xl mx-auto" />
+          </div>
+          <div className="max-w-4xl mx-auto h-[400px] bg-white rounded-[3rem] p-16 shadow-2xl shadow-slate-200/50 border border-slate-100 flex flex-col items-center animate-pulse">
+            <div className="w-40 h-8 bg-slate-100 rounded-lg mb-8" />
+            <div className="w-full h-24 bg-slate-50 rounded-2xl mb-12" />
+            <div className="w-16 h-16 bg-slate-100 rounded-full mb-4" />
+            <div className="w-32 h-6 bg-slate-100 rounded-lg" />
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  if (reviews.length === 0) return null;
 
   const currentReview = reviews[currentIndex];
+
+  const swipeConfidenceThreshold = 10000;
+  const swipePower = (offset: number, velocity: number) => {
+    return Math.abs(offset) * velocity;
+  };
+
+  const variants = {
+    enter: (direction: number) => ({
+      x: direction > 0 ? 1000 : -1000,
+      opacity: 0,
+      scale: 0.95
+    }),
+    center: {
+      zIndex: 1,
+      x: 0,
+      opacity: 1,
+      scale: 1
+    },
+    exit: (direction: number) => ({
+      zIndex: 0,
+      x: direction < 0 ? 1000 : -1000,
+      opacity: 0,
+      scale: 0.95
+    })
+  };
 
   return (
     <section className="py-24 px-6 relative overflow-hidden bg-slate-50/50">
@@ -61,21 +111,38 @@ export function ReviewCarousel({ API_URL }: { API_URL: string }) {
           </h3>
         </div>
 
-        <div className="relative max-w-4xl mx-auto h-[400px] flex items-center justify-center">
-          <AnimatePresence mode="wait">
+        <div className="relative max-w-4xl mx-auto min-h-[450px] flex items-center justify-center">
+          <AnimatePresence initial={false} custom={direction}>
             <motion.div
-              key={currentReview.id}
-              initial={{ opacity: 0, x: 20, scale: 0.95 }}
-              animate={{ opacity: 1, x: 0, scale: 1 }}
-              exit={{ opacity: 0, x: -20, scale: 0.95 }}
-              transition={{ duration: 0.6, ease: "easeOut" }}
-              className="bg-white rounded-[3rem] p-10 md:p-16 shadow-2xl shadow-slate-200/50 border border-slate-100 flex flex-col items-center text-center relative"
+              key={currentIndex}
+              custom={direction}
+              variants={variants}
+              initial="enter"
+              animate="center"
+              exit="exit"
+              transition={{
+                x: { type: "spring", stiffness: 300, damping: 30 },
+                opacity: { duration: 0.2 }
+              }}
+              drag="x"
+              dragConstraints={{ left: 0, right: 0 }}
+              dragElastic={1}
+              onDragEnd={(e, { offset, velocity }) => {
+                const swipe = swipePower(offset.x, velocity.x);
+
+                if (swipe < -swipeConfidenceThreshold) {
+                  paginate(1);
+                } else if (swipe > swipeConfidenceThreshold) {
+                  paginate(-1);
+                }
+              }}
+              className="bg-white rounded-[3rem] p-10 md:p-16 shadow-2xl shadow-slate-200/50 border border-slate-100 flex flex-col items-center text-center relative cursor-grab active:cursor-grabbing w-full"
             >
-              <div className="absolute top-8 left-8 text-slate-100">
+              <div className="absolute top-8 left-8 text-slate-100 pointer-events-none">
                 <Quote size={80} className="fill-current" />
               </div>
               
-              <div className="flex gap-1 mb-6 relative z-10">
+              <div className="flex gap-1 mb-6 relative z-10 pointer-events-none">
                 {[...Array(5)].map((_, i) => (
                   <Star 
                     key={i} 
@@ -85,11 +152,11 @@ export function ReviewCarousel({ API_URL }: { API_URL: string }) {
                 ))}
               </div>
 
-              <p className="text-xl md:text-2xl font-body text-slate-700 leading-relaxed mb-10 relative z-10 italic">
+              <p className="text-xl md:text-2xl font-body text-slate-700 leading-relaxed mb-10 relative z-10 italic pointer-events-none select-none">
                 &quot;{currentReview.comment}&quot;
               </p>
 
-              <div className="flex flex-col items-center">
+              <div className="flex flex-col items-center pointer-events-none">
                 <div className="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mb-4 text-slate-400 border-2 border-primary/20">
                   <User size={32} />
                 </div>
