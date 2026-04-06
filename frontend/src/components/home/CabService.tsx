@@ -34,36 +34,67 @@ export const CabService = () => {
     <section className="py-32 max-w-7xl mx-auto px-6 overflow-hidden">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-24 items-center">
         {/* Car Image Showcases */}
-        <div className="grid grid-cols-2 gap-4">
-          <motion.div 
-            initial={{ opacity: 0, scale: 0.95 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-            className="relative rounded-[2rem] overflow-hidden shadow-2xl border border-white/10 aspect-[3/4]"
-          >
-            <Image
-              src="/assets/car1.jpeg"
-              alt="Premium Cab Service 1"
-              fill
-              className="object-cover"
-            />
-          </motion.div>
-
-          <motion.div 
-            initial={{ opacity: 0, scale: 0.95 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            viewport={{ once: true }}
-            className="relative rounded-[2rem] overflow-hidden shadow-2xl border border-white/10 aspect-[3/4] mt-12"
-          >
-            <Image
-              src="/assets/car2.jpeg"
-              alt="Premium Cab Service 2"
-              fill
-              className="object-cover"
-            />
-          </motion.div>
+        <div className="grid grid-cols-2 gap-4 h-full">
+          <div className="space-y-4">
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true }}
+              className="relative rounded-[2rem] overflow-hidden shadow-2xl border border-white/10 aspect-[3/4] group"
+            >
+              <Image
+                src="/assets/car1.jpeg"
+                alt="Premium Cab 1"
+                fill
+                className="object-cover transition-transform duration-700 group-hover:scale-110"
+              />
+            </motion.div>
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              viewport={{ once: true }}
+              className="relative rounded-[2rem] overflow-hidden shadow-2xl border border-white/10 aspect-[3/4] group"
+            >
+              <Image
+                src="/images/cars/1234.jpeg"
+                alt="Premium Cab 2"
+                fill
+                className="object-cover transition-transform duration-700 group-hover:scale-110"
+              />
+            </motion.div>
+          </div>
+          <div className="space-y-4 mt-12 md:mt-24">
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.4 }}
+              viewport={{ once: true }}
+              className="relative rounded-[2rem] overflow-hidden shadow-2xl border border-white/10 aspect-[3/4] group"
+            >
+              <Image
+                src="/assets/car2.jpeg"
+                alt="Premium Cab 3"
+                fill
+                className="object-cover transition-transform duration-700 group-hover:scale-110"
+              />
+            </motion.div>
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.6 }}
+              viewport={{ once: true }}
+              className="relative rounded-[2rem] overflow-hidden shadow-2xl border border-white/10 aspect-[3/4] group"
+            >
+              <Image
+                src="/images/cars/12345.jpeg"
+                alt="Premium Cab 4"
+                fill
+                className="object-cover transition-transform duration-700 group-hover:scale-110"
+              />
+            </motion.div>
+          </div>
         </div>
 
         {/* Text Content */}

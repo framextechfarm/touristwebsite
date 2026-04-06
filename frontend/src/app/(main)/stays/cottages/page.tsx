@@ -17,6 +17,22 @@ type RoomType = {
 
 const STAY_CATEGORIES: RoomType[] = [
   {
+    id: "family-cottage",
+    name: "Premium Family Cottage",
+    description: "Designed for families seeking a home away from home. These cottages offer expansive living areas, private garden access, and multiple bedding options for a comfortable and memorable group stay.",
+    capacity: "Up to 5 guests",
+    bedType: "2 Queen Size Beds + 1 Extra Bed",
+    images: [
+      "/images/cottages/1111.jpeg",
+      "/images/cottages/111.jpeg",
+      "/images/cottages/11111.jpeg",
+      "/images/cottages/111111.jpeg",
+      "/images/cottages/1111111.jpeg",
+      "/images/cottages/11111111.jpeg",
+      "/images/cottages/111111111.jpeg"
+    ]
+  },
+  {
     id: "triple-cot",
     name: "Triple Cot Room",
     description: "Perfect for small families or groups of three. Enjoy a spacious setup with comfortable bedding, stunning valley views, and modern amenities designed for a relaxing mountain getaway.",
@@ -144,22 +160,6 @@ const STAY_CATEGORIES: RoomType[] = [
       "/images/stays/tentstay/IMG-20260331-WA0059.jpg.jpeg",
       "/images/stays/tentstay/IMG-20260331-WA0067.jpg.jpeg",
       "/images/stays/tentstay/IMG-20260331-WA0072.jpg.jpeg"
-    ]
-  },
-  {
-    id: "family-cottage",
-    name: "Premium Family Cottage",
-    description: "Designed for families seeking a home away from home. These cottages offer expansive living areas, private garden access, and multiple bedding options for a comfortable and memorable group stay.",
-    capacity: "Up to 5 guests",
-    bedType: "2 Queen Size Beds + 1 Extra Bed",
-    images: [
-      "/images/cottages/111.jpeg",
-      "/images/cottages/1111.jpeg",
-      "/images/cottages/11111.jpeg",
-      "/images/cottages/111111.jpeg",
-      "/images/cottages/1111111.jpeg",
-      "/images/cottages/11111111.jpeg",
-      "/images/cottages/111111111.jpeg"
     ]
   }
 ];

@@ -8,14 +8,19 @@ export function Footer() {
       <div className="max-w-7xl mx-auto px-6">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 md:gap-16 mb-12 md:mb-16">
           <div className="space-y-6 md:space-y-8">
-            <div className="flex items-center gap-2">
-              <Image 
-                src="/images/logo/smr holidays 3D.png" 
-                alt="SMR holidays Kodaikanal" 
-                width={200} 
-                height={80} 
-                className="h-16 w-auto object-contain brightness-110"
-              />
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 md:w-16 md:h-16 rounded-full overflow-hidden border-2 border-primary/20 bg-white/10 flex items-center justify-center shrink-0 shadow-lg">
+                <Image 
+                  src="/images/logo/smr holidays 3D.png" 
+                  alt="SMR holidays Kodaikanal" 
+                  width={80} 
+                  height={80} 
+                  className="w-full h-full object-contain brightness-110 p-1.5"
+                />
+              </div>
+              <span className="text-xl md:text-2xl font-bold tracking-tight text-foreground leading-tight">
+                SMR holidays<br />Kodaikanal
+              </span>
             </div>
             <p className="text-foreground/60 leading-relaxed text-[15px]">
               Making mountain adventures accessible and safe for everyone. Join us for a journey of a lifetime.
@@ -33,7 +38,7 @@ export function Footer() {
           <div>
             <h5 className="font-bold mb-6 md:mb-8 text-lg text-foreground">Company</h5>
             <ul className="space-y-4 text-foreground/60 text-[15px]">
-              <li><Link href="/" className="hover:text-primary transition-colors inline-block py-1">About Us</Link></li>
+              <li><Link href="/#about" className="hover:text-primary transition-colors inline-block py-1">About Us</Link></li>
               <li><Link href="/admin/login" className="hover:text-primary transition-colors inline-block py-1 text-primary/70 font-black uppercase tracking-widest text-[10px]">Admin Login</Link></li>
             </ul>
           </div>

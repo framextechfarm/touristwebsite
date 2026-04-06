@@ -48,23 +48,28 @@ export function Navbar() {
     <header className={`fixed top-0 left-0 right-0 z-50 px-4 md:px-6 transition-all duration-300 ${scrolled ? 'py-4' : 'py-4 md:py-6'}`}>
       
       {/* --- DESKTOP NAVBAR --- */}
-      <nav className={`hidden lg:flex max-w-7xl mx-auto rounded-[2rem] px-8 py-4 items-center justify-between transition-all duration-500 border border-white/10 relative ${scrolled ? 'bg-black/20 backdrop-blur-lg shadow-2xl' : 'bg-transparent backdrop-blur-md'}`}>
+      <nav className={`hidden lg:flex max-w-7xl mx-auto rounded-[2rem] px-6 py-2.5 items-center justify-between transition-all duration-500 border border-white/10 relative ${scrolled ? 'bg-black/20 backdrop-blur-lg shadow-2xl' : 'bg-transparent backdrop-blur-md'}`}>
         <div className="flex-1 flex justify-start">
-          <Link href="/" className="flex items-center gap-2 relative z-[60]">
-            <Image 
-              src="/images/logo/smr holidays 3D.png" 
-              alt="SMR holidays Kodaikanal" 
-              width={200} 
-              height={80} 
-              className="h-12 md:h-16 w-auto object-contain brightness-110 drop-shadow-2xl"
-              priority
-            />
+          <Link href="/" className="flex items-center gap-3 relative z-[60] group">
+            <div className="w-10 h-10 md:w-11 md:h-11 rounded-full overflow-hidden border-2 border-primary/20 bg-white/10 flex items-center justify-center shrink-0 shadow-lg group-hover:scale-110 transition-transform">
+              <Image 
+                src="/images/logo/smr holidays 3D.png" 
+                alt="Logo" 
+                width={64} 
+                height={64} 
+                className="w-full h-full object-contain brightness-110 p-1"
+                priority
+              />
+            </div>
+            <span className="text-lg md:text-xl font-bold tracking-tight text-white whitespace-nowrap drop-shadow-md transition-all">
+              {scrolled ? "SMR" : "SMR holidays Kodaikanal"}
+            </span>
           </Link>
         </div>
         
         <div className="absolute left-1/2 -translate-x-1/2 flex items-center gap-10">
           {navLinks.map((item) => (
-            <Link key={item.name} href={item.href} className="text-[15px] font-medium text-white/70 hover:text-primary transition-colors">
+            <Link key={item.name} href={item.href} className="text-[14px] font-medium text-white/70 hover:text-primary transition-colors">
               {item.name}
             </Link>
           ))}
@@ -73,7 +78,7 @@ export function Navbar() {
         <div className="flex-1 flex justify-end items-center gap-6">
           <button 
             onClick={() => setIsEnquiryOpen(true)}
-            className="btn-primary py-2.5 px-6 min-h-[44px] flex items-center justify-center gap-2"
+            className="btn-primary py-2 px-5 min-h-[40px] text-xs font-black tracking-widest uppercase flex items-center justify-center gap-2"
           >
             Enquire Now
           </button>
@@ -81,18 +86,23 @@ export function Navbar() {
       </nav>
 
       {/* --- MOBILE TOP NAVBAR --- */}
-      <nav className={`flex lg:hidden w-full items-center justify-between px-5 py-3 transition-all duration-300 ${
+      <nav className={`flex lg:hidden w-full items-center justify-between px-5 py-2 transition-all duration-300 ${
         scrolled ? 'bg-black/20 backdrop-blur-lg shadow-xl border border-white/10 rounded-[2rem]' : 'bg-transparent'
       }`}>
         <Link href="/" className="flex items-center gap-2">
-          <Image 
-            src="/images/logo/smr holidays 3D.png" 
-            alt="SMR holidays Kodaikanal" 
-            width={120} 
-            height={48} 
-            className="h-8 md:h-10 w-auto object-contain brightness-110"
-            priority
-          />
+          <div className="w-9 h-9 rounded-full overflow-hidden border border-primary/20 bg-white/10 flex items-center justify-center shrink-0">
+            <Image 
+              src="/images/logo/smr holidays 3D.png" 
+              alt="Logo" 
+              width={40} 
+              height={40} 
+              className="w-full h-full object-contain brightness-110 p-0.5"
+              priority
+            />
+          </div>
+          <span className="text-sm font-bold tracking-tight text-foreground whitespace-nowrap">
+            {scrolled ? "SMR" : "SMR holidays Kodaikanal"}
+          </span>
         </Link>
         <AnimatePresence>
           {scrolled && (

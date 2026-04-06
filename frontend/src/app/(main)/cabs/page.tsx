@@ -205,6 +205,43 @@ export default function CabsPage() {
                     </div>
 
                 </div>
+
+                {/* New Fleet Gallery Section */}
+                <div className="mt-32">
+                    <div className="text-center mb-16">
+                        <h2 className="text-4xl md:text-6xl font-black mb-6 tracking-tighter">Our Premium <span className="text-primary italic">Fleet</span></h2>
+                        <p className="text-foreground/60 text-lg max-w-2xl mx-auto">Take a closer look at our well-maintained vehicles, ready to take you on your next mountain adventure.</p>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        {[
+                            { src: "/assets/car1.jpeg", alt: "Premium Fleet - Sedan" },
+                            { src: "/assets/car2.jpeg", alt: "Premium Fleet - SUV" },
+                            { src: "/images/cars/1234.jpeg", alt: "Premium Fleet - Deluxe Sedan" },
+                            { src: "/images/cars/12345.jpeg", alt: "Premium Fleet - Luxury SUV" }
+                        ].map((car, idx) => (
+                            <motion.div
+                                key={idx}
+                                initial={{ opacity: 0, y: 30 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                viewport={{ once: true }}
+                                transition={{ duration: 0.6, delay: idx * 0.1 }}
+                                className="relative aspect-video rounded-[2.5rem] overflow-hidden border border-border group"
+                            >
+                                <Image
+                                    src={car.src}
+                                    alt={car.alt}
+                                    fill
+                                    className="object-cover transition-transform duration-700 group-hover:scale-110"
+                                />
+                                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                                <div className="absolute bottom-8 left-8 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all">
+                                    <p className="text-white font-black uppercase tracking-widest text-xs">{car.alt}</p>
+                                </div>
+                            </motion.div>
+                        ))}
+                    </div>
+                </div>
             </div>
         </main>
     );

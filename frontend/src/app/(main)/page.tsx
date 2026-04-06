@@ -5,6 +5,7 @@ import { API_URL } from "@/lib/config";
 import { Hero } from "@/components/home/Hero";
 import { CategoryCards } from "@/components/home/CategoryCards";
 import { FeaturedPackages } from "@/components/home/FeaturedPackages";
+import { WhyChooseUs } from "@/components/home/WhyChooseUs";
 import { Stats } from "@/components/home/Stats";
 import { StaysSection } from "@/components/home/StaysSection";
 import { CabService } from "@/components/home/CabService";
@@ -35,6 +36,7 @@ export default function Home() {
       <CategoryCards />
       
       <FeaturedPackages packages={packages} API_URL={API_URL} loading={false} />
+      <WhyChooseUs />
       
       <Stats />
       <StaysSection />
