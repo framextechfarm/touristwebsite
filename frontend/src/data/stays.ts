@@ -128,13 +128,14 @@ export const staticStays: Stay[] = [
     rating: 5.0,
     isFeatured: true,
     images: [
-      { id: 25, url: "/images/cottages/111.jpeg" },
-      { id: 26, url: "/images/cottages/1111.jpeg" },
-      { id: 27, url: "/images/cottages/11111.jpeg" },
-      { id: 28, url: "/images/cottages/111111.jpeg" },
-      { id: 29, url: "/images/cottages/1111111.jpeg" },
-      { id: 30, url: "/images/cottages/11111111.jpeg" },
-      { id: 31, url: "/images/cottages/111111111.jpeg" }
+      { id: 25, url: "/images/cottages/10.jpeg" },
+      { id: 26, url: "/images/cottages/3.jpeg" },
+      { id: 27, url: "/images/cottages/8.jpeg" },
+      { id: 28, url: "/images/cottages/14.jpeg" },
+      { id: 29, url: "/images/cottages/18.jpeg" },
+      { id: 30, url: "/images/cottages/17.jpeg" },
+      { id: 31, url: "/images/cottages/5.jpeg" },
+      { id: 32, url: "/images/cottages/19.jpeg" }
     ]
   }
 ];

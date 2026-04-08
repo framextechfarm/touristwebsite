@@ -215,10 +215,10 @@ export default function CabsPage() {
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                         {[
-                            { src: "/assets/car1.jpeg", alt: "Premium Fleet - Sedan" },
-                            { src: "/assets/car2.jpeg", alt: "Premium Fleet - SUV" },
-                            { src: "/images/cars/1234.jpeg", alt: "Premium Fleet - Deluxe Sedan" },
-                            { src: "/images/cars/12345.jpeg", alt: "Premium Fleet - Luxury SUV" }
+                            { src: "/images/cars/car2.jpeg", alt: "Premium Fleet - SUV" },
+                            { src: "/images/cars/car4.jpeg", alt: "Premium Fleet - Mini Bus" },
+                            { src: "/images/cars/car3.jpeg", alt: "Premium Fleet - Deluxe Sedan" },
+                            { src: "/images/cars/car1.jpeg", alt: "Premium Fleet - Sedan" }
                         ].map((car, idx) => (
                             <motion.div
                                 key={idx}

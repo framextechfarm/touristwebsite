@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { staticPackages } from "@/data/packages";
+import { title } from "process";
 
 type Props = {
   params: Promise<{ id: string }>;

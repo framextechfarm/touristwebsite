@@ -23,13 +23,14 @@ const STAY_CATEGORIES: RoomType[] = [
     capacity: "Up to 5 guests",
     bedType: "2 Queen Size Beds + 1 Extra Bed",
     images: [
-      "/images/cottages/1111.jpeg",
-      "/images/cottages/111.jpeg",
-      "/images/cottages/11111.jpeg",
-      "/images/cottages/111111.jpeg",
-      "/images/cottages/1111111.jpeg",
-      "/images/cottages/11111111.jpeg",
-      "/images/cottages/111111111.jpeg"
+      "/images/cottages/10.jpeg",
+      "/images/cottages/3.jpeg",
+      "/images/cottages/8.jpeg",
+      "/images/cottages/14.jpeg",
+      "/images/cottages/18.jpeg",
+      "/images/cottages/17.jpeg",
+      "/images/cottages/5.jpeg",
+      "/images/cottages/19.jpeg"
     ]
   },
   {

@@ -44,7 +44,7 @@ export const CabService = () => {
               className="relative rounded-[2rem] overflow-hidden shadow-2xl border border-white/10 aspect-[3/4] group"
             >
               <Image
-                src="/assets/car1.jpeg"
+                src="/images/cars/car2.jpeg"
                 alt="Premium Cab 1"
                 fill
                 className="object-cover transition-transform duration-700 group-hover:scale-110"
@@ -58,7 +58,7 @@ export const CabService = () => {
               className="relative rounded-[2rem] overflow-hidden shadow-2xl border border-white/10 aspect-[3/4] group"
             >
               <Image
-                src="/images/cars/1234.jpeg"
+                src="/images/cars/car4.jpeg"
                 alt="Premium Cab 2"
                 fill
                 className="object-cover transition-transform duration-700 group-hover:scale-110"
@@ -74,7 +74,7 @@ export const CabService = () => {
               className="relative rounded-[2rem] overflow-hidden shadow-2xl border border-white/10 aspect-[3/4] group"
             >
               <Image
-                src="/assets/car2.jpeg"
+                src="/images/cars/car3.jpeg"
                 alt="Premium Cab 3"
                 fill
                 className="object-cover transition-transform duration-700 group-hover:scale-110"
@@ -88,7 +88,7 @@ export const CabService = () => {
               className="relative rounded-[2rem] overflow-hidden shadow-2xl border border-white/10 aspect-[3/4] group"
             >
               <Image
-                src="/images/cars/12345.jpeg"
+                src="/images/cars/car1.jpeg"
                 alt="Premium Cab 4"
                 fill
                 className="object-cover transition-transform duration-700 group-hover:scale-110"
