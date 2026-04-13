@@ -92,7 +92,7 @@ export default function CabsPage() {
                             <span className="w-8 h-8 rounded-full bg-primary/10 text-primary flex items-center justify-center text-sm">1</span>
                             Select Route
                         </h3>
-                        <div className="grid md:grid-cols-2 gap-6">
+                        <div className="grid md:grid-cols-3 gap-6">
                             {/* From Location */}
                             <div>
                                 <label className="block text-xs font-black tracking-widest text-foreground/50 mb-3">
@@ -106,7 +106,7 @@ export default function CabsPage() {
                                         className="w-full pl-12 pr-4 py-4 bg-secondary/30 border border-border rounded-2xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none text-foreground text-sm font-bold appearance-none cursor-pointer transition-all hover:bg-secondary/50"
                                         required
                                     >
-                                        <option value="" disabled>Choose your starting point</option>
+                                        <option value="" disabled>Choose pickup</option>
                                         {POPULAR_LOCATIONS.map((loc) => (
                                             <option key={loc} value={loc} className="bg-background">{loc}</option>
                                         ))}
@@ -127,65 +127,35 @@ export default function CabsPage() {
                                         className="w-full pl-12 pr-4 py-4 bg-secondary/30 border border-border rounded-2xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none text-foreground text-sm font-bold appearance-none cursor-pointer transition-all hover:bg-secondary/50"
                                         required
                                     >
-                                        <option value="" disabled>Choose your destination</option>
+                                        <option value="" disabled>Choose destination</option>
                                         {POPULAR_LOCATIONS.map((loc) => (
                                             <option key={loc} value={loc} className="bg-background">{loc}</option>
                                         ))}
                                     </select>
                                 </div>
                             </div>
-                        </div>
-                    </div>
 
-                    {/* Vehicle Selection */}
-                    <div className="mb-12">
-                        <h3 className="text-xl font-bold mb-6 flex items-center gap-2">
-                            <span className="w-8 h-8 rounded-full bg-primary/10 text-primary flex items-center justify-center text-sm">2</span>
-                            Choose Vehicle
-                        </h3>
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                            {VEHICLE_TYPES.map((vehicle) => {
-                                const isSelected = selectedVehicle === vehicle.id;
-                                return (
-                                    <div 
-                                        key={vehicle.id}
-                                        onClick={() => setSelectedVehicle(vehicle.id)}
-                                        className={`relative rounded-3xl overflow-hidden cursor-pointer transition-all duration-300 border-2 ${isSelected ? 'border-primary shadow-xl shadow-primary/20 scale-[1.02]' : 'border-border/50 hover:border-border bg-secondary/10'}`}
+                            {/* Vehicle Type */}
+                            <div>
+                                <label className="block text-xs font-black tracking-widest text-foreground/50 mb-3">
+                                    VEHICLE TYPE
+                                </label>
+                                <div className="relative group">
+                                    <Car className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-primary/50 group-focus-within:text-primary transition-colors" />
+                                    <select
+                                        value={selectedVehicle}
+                                        onChange={(e) => setSelectedVehicle(e.target.value)}
+                                        className="w-full pl-12 pr-4 py-4 bg-secondary/30 border border-border rounded-2xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none text-foreground text-sm font-bold appearance-none cursor-pointer transition-all hover:bg-secondary/50"
+                                        required
                                     >
-                                        {isSelected && (
-                                            <div className="absolute top-3 right-3 z-20 w-6 h-6 bg-primary rounded-full flex items-center justify-center shadow-lg">
-                                                <CheckCircle2 className="w-4 h-4 text-white" />
-                                            </div>
-                                        )}
-                                        <div className="aspect-[4/3] w-full relative bg-secondary/30">
-                                            <Image 
-                                                src={vehicle.image} 
-                                                alt={vehicle.name} 
-                                                fill 
-                                                className="object-cover transition-transform duration-500 hover:scale-105"
-                                            />
-                                            {/* Gradient overlay for text */}
-                                            <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-black/80 to-transparent" />
-                                            
-                                            <div className="absolute bottom-4 left-4 right-4 text-white">
-                                                <h4 className="font-black text-sm lg:text-base leading-tight">{vehicle.name}</h4>
-                                            </div>
-                                        </div>
-                                        <div className="p-4 bg-card">
-                                            <div className="flex flex-col gap-3">
-                                                <div className="flex items-center gap-2 text-foreground/70 text-xs font-bold">
-                                                    <Users className="w-4 h-4 text-primary" />
-                                                    {vehicle.capacity}
-                                                </div>
-                                                <div className="flex items-center gap-2 text-foreground/70 text-xs font-bold">
-                                                    <Luggage className="w-4 h-4 text-primary" />
-                                                    {vehicle.luggage}
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                );
-                            })}
+                                        {VEHICLE_TYPES.map((vehicle) => (
+                                            <option key={vehicle.id} value={vehicle.id} className="bg-background">
+                                                {vehicle.name} ({vehicle.capacity})
+                                            </option>
+                                        ))}
+                                    </select>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -215,10 +185,10 @@ export default function CabsPage() {
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                         {[
-                            { src: "/images/cars/car2.jpeg", alt: "Premium Fleet - SUV" },
-                            { src: "/images/cars/car4.jpeg", alt: "Premium Fleet - Mini Bus" },
-                            { src: "/images/cars/car3.jpeg", alt: "Premium Fleet - Deluxe Sedan" },
-                            { src: "/images/cars/car1.jpeg", alt: "Premium Fleet - Sedan" }
+                            { src: "/images/cars/car1.jpeg", alt: "Premium Fleet - Sedan" },
+                            { src: "/images/cars/car2.jpeg", alt: "Premium Fleet - Budget Sedan" },
+                            { src: "/images/cars/car3.jpeg", alt: "Premium Fleet - Deluxe SUV" },
+                            { src: "/images/cars/car4.jpeg", alt: "Premium Fleet - Compact Hatch" }
                         ].map((car, idx) => (
                             <motion.div
                                 key={idx}
