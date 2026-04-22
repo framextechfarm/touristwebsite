@@ -62,7 +62,7 @@ export function Navbar() {
               />
             </div>
             <span className="text-lg md:text-xl font-bold tracking-tight text-white whitespace-nowrap drop-shadow-md transition-all">
-              {scrolled ? "SMR" : "SMR holidays Kodaikanal"}
+              smr holidays
             </span>
           </Link>
         </div>
@@ -101,7 +101,7 @@ export function Navbar() {
             />
           </div>
           <span className="text-sm font-bold tracking-tight text-foreground whitespace-nowrap">
-            {scrolled ? "SMR" : "SMR holidays Kodaikanal"}
+            smr holidays
           </span>
         </Link>
         <AnimatePresence>

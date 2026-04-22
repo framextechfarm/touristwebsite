@@ -10,8 +10,8 @@ const inter = Inter({
 export const metadata: Metadata = {
   metadataBase: new URL("https://hilltrek.vercel.app"),
   title: {
-    default: "Hill Trek - Premium Mountain Escapes",
-    template: "%s | Hill Trek"
+    default: "smr holidays - Premium Mountain Escapes",
+    template: "%s | smr holidays"
   },
   description: "Experience the ultimate hill station adventure with our curated trekking and stay packages in Kodaikanal and beyond. Premium cottages, villas, and unforgettable experiences.",
   keywords: ["Kodaikanal", "Kodaikanal Tour Packages", "Hill Station", "Trekking", "Cottages in Kodaikanal", "Villas in Kodaikanal", "Tour Packages", "Hill Trek", "South India Tourism", "Mountain Escapes", "Cab Bookings Kodaikanal", "SMR holidays Kodaikanal", "Homestay Kodaikanal"],
@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     telephone: false,
   },
   openGraph: {
-    title: "Hill Trek - Premium Mountain Escapes",
+    title: "smr holidays - Premium Mountain Escapes",
     description: "Experience the ultimate hill station adventure with our curated trekking and stay packages in Kodaikanal.",
     url: "https://hilltrek.vercel.app",
     siteName: "Hill Trek",
@@ -41,7 +41,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Hill Trek - Premium Mountain Escapes",
+    title: "smr holidays - Premium Mountain Escapes",
     description: "Experience the ultimate hill station adventure with our curated trekking and stay packages in Kodaikanal.",
     images: ["/og-image.jpg"],
   },
