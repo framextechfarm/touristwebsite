@@ -110,11 +110,13 @@
     @apply bg-gradient-to-br from-white/10 to-transparent border border-white/5 backdrop-blur-sm;
   }
 
-  .no-scrollbar::-webkit-scrollbar {
-    display: none;
-  }
-  .no-scrollbar {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
+  @media (max-width: 768px) {
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
   }
 }
